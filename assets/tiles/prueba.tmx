@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="45" height="30" tilewidth="512" tileheight="512" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="34" height="18" tilewidth="512" tileheight="512" infinite="0" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
- <layer id="1" name="Capa de patrones 1" width="45" height="30">
+ <layer id="1" name="terrain" width="34" height="18">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAMAiDXv/RieAgJSAAAgIZrBwAAhj0epAAC
+   eJztlk0PwiAMhl9nXIYRPw5Tb3rz//9DSxixLqXgIOLBJs+JAg9NIRgA5gc4KvTEJpFTSj95aDEQ20ROaQx/D9GjI27EhbhmepynfGnOUg8T2UvzKAl+Bsc+02MHX7N1ZR++R8rjgNf9OjX0yI15rTl36LXkHiPq9Z20j3bOmvX4tseS+yp58HUe8P3Xuh4hanisEO/FEg+3bsfQ+t3lWvh3Rsr7xCO8VQGL97/BfDyWK+XZxPxA6/9P4Am98QrA
+  </data>
+ </layer>
+ <layer id="4" name="background" width="34" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAHgaCZAAAQ==
+  </data>
+ </layer>
+ <objectgroup id="3" name="ground"/>
+ <layer id="2" name="graphics" width="34" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAHgaCZAAAQ==
   </data>
  </layer>
 </map>
