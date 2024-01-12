@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="34" height="18" tilewidth="512" tileheight="512" infinite="0" nextlayerid="5" nextobjectid="40">
+ <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
+ <layer id="1" name="background" width="34" height="18">
+  <data encoding="base64" compression="zlib">
+   eJzjZGBg4BzFo3gUj+JRPIpH8SgexQOGARnBFYU=
+  </data>
+ </layer>
+ <layer id="2" name="graphics" width="34" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztlk0PwiAMhl9nXIYRPw5Tb3rz//9DSxixLqXgIOLBJs+JAg9NIRgA5gc4KvTEJpFTSj95aDEQ20ROaQx/D9GjI27EhbhmepynfGnOUg8T2UvzKAl+Bsc+02MHX7N1ZR++R8rjgNf9OjX0yI15rTl36LXkHiPq9Z20j3bOmvX4tseS+yp58HUe8P3Xuh4hanisEO/FEg+3bsfQ+t3lWvh3Rsr7xCO8VQGL97/BfDyWK+XZxPxA6/9P4Am98QrA
+  </data>
+ </layer>
+ <objectgroup id="4" name="ground">
+  <object id="1" x="0" y="0" width="17408" height="512"/>
+  <object id="2" x="0" y="3072" width="512" height="6144"/>
+  <object id="3" x="400" y="8704" width="17008" height="516"/>
+  <object id="4" x="16896" y="512" width="512" height="5632"/>
+  <object id="7" x="12424" y="4776" width="744" height="3952"/>
+  <object id="8" x="9072" y="4776" width="3592" height="200"/>
+  <object id="9" x="8848" y="7312" width="720" height="1472"/>
+  <object id="10" x="8344" y="7816" width="1752" height="1272"/>
+  <object id="15" x="464" y="8320" width="16944" height="432"/>
+  <object id="16" x="2712" y="7824" width="2264" height="616"/>
+  <object id="19" x="448" y="3072" width="424" height="5624"/>
+  <object id="20" x="12" y="2712" width="1652" height="228"/>
+  <object id="23" x="8" y="2924" width="856" height="208"/>
+  <object id="25" x="6003.03" y="6293.94" width="1275.76" height="215.152"/>
+  <object id="26" x="7033.33" y="2724.24" width="1296.97" height="200"/>
+  <object id="27" x="3742.42" y="3757.58" width="1739.39" height="669.697"/>
+  <object id="28" x="3744" y="800" width="720" height="3000"/>
+  <object id="29" x="-96" y="336" width="17136" height="544"/>
+  <object id="32" x="16520" y="792" width="392" height="5584"/>
+  <object id="33" x="14700" y="3228" width="2048" height="216"/>
+  <object id="34" x="15224" y="6300" width="2204" height="208"/>
+  <object id="35" x="16804" y="5976" width="616" height="384"/>
+ </objectgroup>
+</map>

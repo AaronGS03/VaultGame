@@ -8,7 +8,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.vault.Screens.PlayScreen;
 
 public class Vault extends Game {
-
+	public static final int V_WIDTH = 17000;
+	public static final int V_HEIGHT = 10800;
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public SpriteBatch batch;
 	
