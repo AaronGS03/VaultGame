@@ -19,13 +19,13 @@ public class Mage extends Sprite {
 
     public void defineMage(){
         BodyDef bdef= new BodyDef();
-        bdef.position.set(1000/Vault.PPM,1300/Vault.PPM);
+        bdef.position.set(1200/Vault.PPM,1400/Vault.PPM);
         bdef.type= BodyDef.BodyType.DynamicBody;
         b2body= world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape= new CircleShape();
-        shape.setRadius(50/Vault.PPM);
+        shape.setRadius(250/Vault.PPM);
 
         fdef.shape=shape;
         b2body.createFixture(fdef);

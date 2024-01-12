@@ -10,7 +10,7 @@ import com.mygdx.vault.Screens.PlayScreen;
 public class Vault extends Game {
 	public static final int V_WIDTH = 17408;
 	public static final int V_HEIGHT = 9216;
-	public static  final float PPM = 100;//pixeles que se mueve un objeto por metro en box2d
+	public static  final float PPM = 200;//pixeles que se mueve un objeto por metro en box2d
 
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public SpriteBatch batch;
