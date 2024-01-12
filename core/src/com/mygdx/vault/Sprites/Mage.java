@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.vault.Vault;
 
 public class Mage extends Sprite {
     public World world;
@@ -18,13 +19,13 @@ public class Mage extends Sprite {
 
     public void defineMage(){
         BodyDef bdef= new BodyDef();
-        bdef.position.set(100,100);
+        bdef.position.set(1000/Vault.PPM,1300/Vault.PPM);
         bdef.type= BodyDef.BodyType.DynamicBody;
         b2body= world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape= new CircleShape();
-        shape.setRadius(5);
+        shape.setRadius(50/Vault.PPM);
 
         fdef.shape=shape;
         b2body.createFixture(fdef);

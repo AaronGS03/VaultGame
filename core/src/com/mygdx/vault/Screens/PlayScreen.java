@@ -40,33 +40,36 @@ public class PlayScreen implements Screen {
 
 
     private Hud hud;
+
     public PlayScreen(Vault game) {
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
-        gamePort = new FitViewport(Vault.V_WIDTH,Vault.V_HEIGHT, gamecam);//Muestra el mapa de forma que pone barras en los margenes
+        gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0,0), true);
-        b2dr= new Box2DDebugRenderer();
+        world = new World(new Vector2(0, -10), true);
+        b2dr = new Box2DDebugRenderer();
 
-        BodyDef bdef= new BodyDef();
+        BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
-        FixtureDef fdef=  new FixtureDef();
+        FixtureDef fdef = new FixtureDef();
         Body body;
 
-        for (MapObject object: map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+        //Creacion de los muros y suelos en Box2d
+
+        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type= BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX()+rect.getWidth()/2,rect.getY()+rect.getHeight()/2);
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2)/Vault.PPM, (rect.getY() + rect.getHeight() / 2)/Vault.PPM);
 
-            body= world.createBody(bdef);
+            body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth()/2, rect.getHeight()/2);
-            fdef.shape= shape;
+            shape.setAsBox(rect.getWidth() / 2 / Vault.PPM, rect.getHeight() / 2/ Vault.PPM);
+            fdef.shape = shape;
             body.createFixture(fdef);
 
         }
@@ -89,6 +92,8 @@ public class PlayScreen implements Screen {
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
         handleInput(dt);
+
+        world.step(1 / 60f, 6, 2);
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
     }
@@ -104,7 +109,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         //render Lineas debug Box2d
-        b2dr.render(world,gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
