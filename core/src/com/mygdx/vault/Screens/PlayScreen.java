@@ -26,6 +26,8 @@ import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Vault;
 
+import java.util.ArrayList;
+
 public class PlayScreen implements Screen {
     private Vault game;
 
@@ -41,7 +43,6 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
 
-
     private Hud hud;
 
     public PlayScreen(Vault game) {
@@ -54,7 +55,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0, -50), true);
+        world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
@@ -86,7 +87,7 @@ public class PlayScreen implements Screen {
 
     //maneja tocar pantalla
     public void handleInput(float dt) {
-        //prueba para ver el mapa al tocar
+        //Moviento del personaje
         if (Gdx.input.isTouched()) {
             if (Gdx.input.getX()< gamePort.getScreenWidth()/2 && player.b2body.getLinearVelocity().x>= -20){
                 player.b2body.applyForce(new Vector2(-50f,0), player.b2body.getWorldCenter(),true);
@@ -100,13 +101,13 @@ public class PlayScreen implements Screen {
 
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            player.b2body.applyLinearImpulse(new Vector2(0, 20f), player.b2body.getWorldCenter(),true);
+            player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(),true);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x<= 20) {
-            player.b2body.applyForce(new Vector2(50f,0), player.b2body.getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x<= 12) {
+            player.b2body.applyForce(new Vector2(25f,0), player.b2body.getWorldCenter(),true);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x>= -20) {
-            player.b2body.applyForce(new Vector2(-50f,0), player.b2body.getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x>= -12) {
+            player.b2body.applyForce(new Vector2(-25f,0), player.b2body.getWorldCenter(),true);
         }
     }
 
