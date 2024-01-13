@@ -29,6 +29,7 @@ public class Mage extends Sprite {
         shape.setAsBox(1,2);
 
         fdef.shape=shape;
+        fdef.friction=0.3f;
         b2body.createFixture(fdef);
     }
 }

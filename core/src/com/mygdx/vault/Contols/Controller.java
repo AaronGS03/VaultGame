@@ -41,7 +41,7 @@ public class Controller {
 
         Image upImage = new Image(new Texture("up.png"));
 
-        upImage.setSize(6, 6);
+        upImage.setSize(7, 7);
         upImage.addListener(new InputListener() {
 
             @Override
@@ -59,7 +59,7 @@ public class Controller {
 
 
         leftImage = new Image(new Texture("left.png"));
-        leftImage.setSize(6, 6);
+        leftImage.setSize(7, 7);
         leftImage.addListener(new InputListener() {
 
             @Override
@@ -80,7 +80,7 @@ public class Controller {
 
 
         Image rightImage = new Image(new Texture("right.png"));
-        rightImage.setSize(6, 6);
+        rightImage.setSize(7, 7);
         rightImage.addListener(new InputListener() {
 
             @Override
