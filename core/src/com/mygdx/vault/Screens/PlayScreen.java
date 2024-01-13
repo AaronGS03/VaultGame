@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,12 +27,13 @@ import com.mygdx.vault.Contols.Controller;
 import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Vault;
+import com.mygdx.vault.tools.B2WorldCreator;
 
 import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
     private Vault game;
-
+    private TextureAtlas atlas;
     private OrthographicCamera gamecam; //camara del juego (2d)
     private Viewport gamePort; // determina la escala o forma en la que se muestra la pantalla
 
@@ -49,6 +51,8 @@ public class PlayScreen implements Screen {
     private Hud hud;
 
     public PlayScreen(Vault game) {
+        atlas= new TextureAtlas("Mage_plants.pack");
+
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
@@ -61,28 +65,15 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
 
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
+        new B2WorldCreator(world,map);
 
-        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Vault.PPM, (rect.getY() + rect.getHeight() / 2) / Vault.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / Vault.PPM, rect.getHeight() / 2 / Vault.PPM);
-            fdef.shape = shape;
-            fdef.friction=1;
-            body.createFixture(fdef);
-
-        }
-
-        player = new Mage(world);
+        player = new Mage(world, this);
         controller = new Controller();
 
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
     }
 
     @Override
@@ -175,6 +166,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        b2dr.dispose();
+        hud.dispose();
+        controller.dispose();
     }
 }

@@ -1,21 +1,30 @@
 package com.mygdx.vault.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
 public class Mage extends Sprite {
     public World world;
     public Body b2body;
+    private TextureRegion mageIdle;
 
-    public Mage(World world){
+    public Mage(World world, PlayScreen screen){
+        super(screen.getAtlas().findRegion(""));//TODO
+
         this.world= world;
         defineMage();
+     //   mageIdle = new TextureRegion(getTexture(),);
+        setBounds(0,0,16/Vault.PPM,16/Vault.PPM);
+        setRegion(mageIdle);
+
     }
 
     public void defineMage(){

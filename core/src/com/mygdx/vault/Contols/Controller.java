@@ -8,11 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Vault;
 
-public class Controller {
+public class Controller implements Disposable {
     Viewport viewport;
     Stage stage;
     boolean leftPressed, rightPressed, upPressed;
@@ -139,5 +140,10 @@ public class Controller {
     }
     public void resize(int width, int height) {
         viewport.update(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
     }
 }
