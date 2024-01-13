@@ -13,7 +13,7 @@ public class Vault extends Game {
 	public static  final float PPM = 200;//pixeles que se mueve un objeto por metro en box2d
 
 	//SpriteBatch contiene todos los sprites, que luego se muestran
-	public SpriteBatch batch;
+	public static SpriteBatch batch;
 	
 	@Override
 	public void create () {
