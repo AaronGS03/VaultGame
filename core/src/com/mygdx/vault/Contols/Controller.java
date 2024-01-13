@@ -18,6 +18,9 @@ public class Controller {
     boolean leftPressed, rightPressed, upPressed;
     OrthographicCamera cam;
 
+    public Image leftImage;
+    public Image rightImage;
+    public Image upImage;
 
 
 
@@ -35,7 +38,9 @@ public class Controller {
         tableR.bottom();
 
 
-        Image upImage = new Image(new Texture("up2.png"));
+
+        Image upImage = new Image(new Texture("up.png"));
+
         upImage.setSize(6, 6);
         upImage.addListener(new InputListener() {
 
@@ -53,25 +58,28 @@ public class Controller {
         });
 
 
-        Image leftImage = new Image(new Texture("left2.png"));
+        leftImage = new Image(new Texture("left.png"));
         leftImage.setSize(6, 6);
         leftImage.addListener(new InputListener() {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 leftPressed = true;
+                leftImage = new Image(new Texture("left2.png"));
+                draw();
                 return true;
+
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 leftPressed = false;
-
+                leftImage = new Image(new Texture("left2.png"));
             }
         });
 
 
-        Image rightImage = new Image(new Texture("right2.png"));
+        Image rightImage = new Image(new Texture("right.png"));
         rightImage.setSize(6, 6);
         rightImage.addListener(new InputListener() {
 
@@ -114,6 +122,7 @@ public class Controller {
     }
 
     public boolean isUpPressed() {
+
         return upPressed;
     }
 
