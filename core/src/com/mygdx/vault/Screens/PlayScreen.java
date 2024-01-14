@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,6 +36,8 @@ public class PlayScreen implements Screen {
     private Vault game;
     private TextureAtlas atlas;
     private OrthographicCamera gamecam; //camara del juego (2d)
+
+    private Camera backCam;
     private Viewport gamePort; // determina la escala o forma en la que se muestra la pantalla
 
     private TmxMapLoader mapLoader; //carga el mapa
@@ -47,6 +50,7 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
 
     Controller controller;
+    ParallaxLayer[] layers;
 
     private Hud hud;
 
@@ -55,12 +59,14 @@ public class PlayScreen implements Screen {
 
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
+        backCam = new OrthographicCamera(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        backCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
@@ -70,6 +76,16 @@ public class PlayScreen implements Screen {
         player = new Mage(world, this);
         controller = new Controller();
 
+        layers = new ParallaxLayer[7];
+        layers[0] = new ParallaxLayer(new Texture("01.png"), 0.1f, true, false);
+        layers[1] = new ParallaxLayer(new Texture("02.png"), 0.2f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("03.png"), 0.3f, true, false);
+        layers[3] = new ParallaxLayer(new Texture("04.png"), 0.5f, true, false);
+        layers[4] = new ParallaxLayer(new Texture("05.png"), 0.8f, true, false);
+        layers[5] = new ParallaxLayer(new Texture("06.png"), 1.0f, true, false);
+        for (int i = 5; i >=0; i--) {
+            layers[i].setCamera(gamecam);
+        }
     }
 
     public TextureAtlas getAtlas() {
@@ -120,7 +136,8 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
-
+        backCam.position.x= player.b2body.getPosition().x;
+        backCam.update();
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
     }
@@ -134,8 +151,12 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Renderizar el personaje
+        game.batch.setProjectionMatrix(backCam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+        for (int i = 5; i >=0; i--) {
+            layers[i].render(game.batch);
+        }
         player.draw(game.batch);
         game.batch.end();
 
