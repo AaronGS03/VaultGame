@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
     private Hud hud;
 
     public PlayScreen(Vault game) {
-        atlas= new TextureAtlas("Mage_plants.pack");
+        atlas= new TextureAtlas("mage.atlas");
 
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
@@ -119,6 +119,7 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
 
+        player.update(dt);
 
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
@@ -136,6 +137,12 @@ public class PlayScreen implements Screen {
 
         //render Lineas debug Box2d
         b2dr.render(world, gamecam.combined);
+
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
+
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();

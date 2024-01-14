@@ -1,0 +1,15 @@
+mage.png
+size:2048,512
+repeat:none
+idle sheet-Sheet
+bounds:2,150,1440,80
+itch hurt 2 sheet-Sheet
+bounds:2,68,560,80
+itch jump sheet-Sheet
+bounds:2,232,1520,80
+itch run-Sheet sheet
+bounds:2,314,1920,80
+run turnaround-Sheet
+bounds:2,2,400,64
+wall slide-Sheet
+bounds:1524,248,320,64

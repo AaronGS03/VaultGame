@@ -66,8 +66,6 @@ public class Controller implements Disposable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 leftPressed = true;
-                leftImage = new Image(new Texture("left2.png"));
-                draw();
                 return true;
 
             }
@@ -75,7 +73,6 @@ public class Controller implements Disposable {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 leftPressed = false;
-                leftImage = new Image(new Texture("left2.png"));
             }
         });
 
