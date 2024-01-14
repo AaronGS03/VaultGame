@@ -15,9 +15,7 @@ import com.mygdx.vault.Vault;
 
 public class Mage extends Sprite {
 
-    public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING}
-
-    ;
+    public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING};
     public State currentState;
     public State previousState;
 
@@ -32,6 +30,8 @@ public class Mage extends Sprite {
     private Animation<TextureRegion> mageLanding;
     private float stateTimer;
     private boolean runningRight;
+    private Array<TextureRegion> frames;
+    private float runframeduration = 0.1f;
 
     public Mage(World world, PlayScreen screen) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
@@ -41,20 +41,50 @@ public class Mage extends Sprite {
         stateTimer = 0;
         runningRight = true;
 
-        Array<TextureRegion> frames = new Array<>();
+        frames = new Array<>();
         //run
         for (int i = 0; i < 24; i++) {
             frames.add(new TextureRegion(getTexture(), i * 80, 314, 64, 64));
         }
-        mageRun = new Animation(0.1f, frames);
+        mageRun = new Animation(runframeduration, frames);
         frames.clear();
+
         //idle
         for (int i = 0; i < 18; i++) {
-            frames.add(new TextureRegion(getTexture(), i*80, 152, 64, 64));
+            frames.add(new TextureRegion(getTexture(), i * 80 - 2, 152, 64, 64));
         }
         mageIdle = new Animation(0.1f, frames);
         frames.clear();
 
+        //jump
+        for (int i = 0; i < 3; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 80, 232, 64, 64));
+        }
+        mageJump = new Animation(0.1f, frames);
+        frames.clear();
+
+        //jumptrans
+        for (int i = 3; i < 10; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 80, 232, 64, 64));
+        }
+        mageJumpTF = new Animation(0.1f, frames);
+        frames.clear();
+
+        //falling
+        for (int i = 10; i < 13; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 80, 232, 64, 64));
+        }
+        mageFalling = new Animation(0.1f, frames);
+        frames.clear();
+
+        //landing
+        for (int i = 15; i < 19; i++) {
+            frames.add(new TextureRegion(getTexture(), i * 80, 232, 64, 64));
+        }
+        mageLanding = new Animation(0.06f, frames);
+        frames.clear();
+
+        //stand
         mageStand = new TextureRegion(getTexture(), 0, 152, 64, 64);
 
         defineMage();
@@ -64,7 +94,7 @@ public class Mage extends Sprite {
     }
 
     public void update(float dt) {
-        setPosition(b2body.getPosition().x+0.2f - getWidth() / 2, b2body.getPosition().y+1f - getHeight() / 2);
+        setPosition(b2body.getPosition().x + 0f - getWidth() / 2, b2body.getPosition().y + 1f - getHeight() / 2);
         setRegion(getFrame(dt));
     }
 
@@ -78,8 +108,15 @@ public class Mage extends Sprite {
             case RUNNING:
                 region = mageRun.getKeyFrame(stateTimer, true);
                 break;
+            case AIRTRANSITION:
+                region= mageJumpTF.getKeyFrame(stateTimer);
+                break;
             case FALLING:
                 region = mageFalling.getKeyFrame(stateTimer);
+                break;
+            case LANDING:
+                region = mageLanding.getKeyFrame(stateTimer);
+                break;
             case STANDING:
             default:
                 region = mageIdle.getKeyFrame(stateTimer, true);
@@ -88,26 +125,28 @@ public class Mage extends Sprite {
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
             region.flip(true, false);
             runningRight = false;
+
         } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
             region.flip(true, false);
             runningRight = true;
         }
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
-        previousState= currentState;
+        previousState = currentState;
         return region;
     }
 
     public State getState() {
-        //  if (b2body.getLinearVelocity().y > 0.5) {
-        //     return State.JUMPING;
-        // } else if (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) {
-        //   return State.AIRTRANSITION;
-        //} else if (b2body.getLinearVelocity().y < 0 && previousState == State.AIRTRANSITION) {
-        //   return State.FALLING;
-        //}else if (b2body.getLinearVelocity().y == 0 && previousState == State.FALLING) {
-        //   return State.LANDING;
-        // } else
-        if (b2body.getLinearVelocity().x != 0) {
+        if (b2body.getLinearVelocity().y > 0) {
+            return State.JUMPING;
+        } else if (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) {
+            return State.AIRTRANSITION;
+        } else if ((b2body.getLinearVelocity().y < 0 && previousState == State.AIRTRANSITION)||b2body.getLinearVelocity().y<0) {
+            return State.FALLING;
+        }else if (b2body.getLinearVelocity().y == 0 && previousState == State.FALLING ) {
+            return State.LANDING;
+        } else if (b2body.getLinearVelocity().y == 0 && previousState == State.LANDING && stateTimer<0.2f) {
+            return State.LANDING;
+        } else if (b2body.getLinearVelocity().x != 0 && b2body.getLinearVelocity().y==0&&previousState!=State.LANDING) {
             return State.RUNNING;
         } else {
             return State.STANDING;
@@ -123,7 +162,7 @@ public class Mage extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1, 2);
+        shape.setAsBox(1f, 2);
 
         fdef.shape = shape;
         fdef.friction = 0.3f;
