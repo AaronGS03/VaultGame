@@ -35,6 +35,8 @@ public class PlayScreen implements Screen {
     private Vault game;
     private TextureAtlas atlas;
     private OrthographicCamera gamecam; //camara del juego (2d)
+    private OrthographicCamera backcam; //camara del fondo (2d)
+
     private Viewport gamePort; // determina la escala o forma en la que se muestra la pantalla
 
     private TmxMapLoader mapLoader; //carga el mapa
@@ -45,30 +47,47 @@ public class PlayScreen implements Screen {
     //Variables de Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
+    private ParallaxLayer[] layers;
 
     Controller controller;
 
     private Hud hud;
 
+
     public PlayScreen(Vault game) {
-        atlas= new TextureAtlas("mage.atlas");
+        atlas = new TextureAtlas("mage.atlas");
 
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
+        backcam = new OrthographicCamera(1,1);//camara que sigue al personaje
+        backcam = new OrthographicCamera(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al mapa
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world,map);
+        new B2WorldCreator(world, map);
 
         player = new Mage(world, this);
         controller = new Controller();
+
+        layers = new ParallaxLayer[7];
+        layers[0] = new ParallaxLayer(new Texture("01.png"), 0.1f, true, false);
+        layers[1] = new ParallaxLayer(new Texture("02.png"), 0.2f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("03.png"), 0.3f, true, false);
+        layers[3] = new ParallaxLayer(new Texture("04.png"), 0.5f, true, false);
+        layers[4] = new ParallaxLayer(new Texture("05.png"), 0.8f, true, false);
+        layers[5] = new ParallaxLayer(new Texture("06.png"), 1.0f, true, false);
+
+        for (int i = 5; i >= 0; i--) {
+            layers[i].setCamera(backcam);
+        }
 
     }
 
@@ -120,7 +139,8 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
-
+        backcam.position.x= player.b2body.getPosition().x; // Ajusta el factor de parallax según sea necesario
+        backcam.update();
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
     }
@@ -132,16 +152,19 @@ public class PlayScreen implements Screen {
         //limpiar pantalla
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        game.batch.setProjectionMatrix(backcam.combined);
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+        for (int i = 5; i >= 0; i--) {
+            layers[i].render(game.batch);
+        }
+        player.draw(game.batch);
+        game.batch.end();
         //mostrar pantalla
         renderer.render();
 
         //render Lineas debug Box2d
-        b2dr.render(world, gamecam.combined);
-
-        game.batch.setProjectionMatrix(gamecam.combined);
-        game.batch.begin();
-        player.draw(game.batch);
-        game.batch.end();
+        //b2dr.render(world, gamecam.combined);
 
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
