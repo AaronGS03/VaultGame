@@ -59,7 +59,7 @@ public class PlayScreen implements Screen {
 
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
-        backcam = new OrthographicCamera(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
+        backcam = new OrthographicCamera(Vault.V_WIDTH*2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
@@ -77,12 +77,12 @@ public class PlayScreen implements Screen {
         controller = new Controller();
 
         layers = new ParallaxLayer[7];
-        layers[0] = new ParallaxLayer(new Texture("01.png"), 0.1f, true, false);
-        layers[1] = new ParallaxLayer(new Texture("02.png"), 0.2f, true, false);
-        layers[2] = new ParallaxLayer(new Texture("03.png"), 0.3f, true, false);
-        layers[3] = new ParallaxLayer(new Texture("04.png"), 0.5f, true, false);
-        layers[4] = new ParallaxLayer(new Texture("05.png"), 0.8f, true, false);
-        layers[5] = new ParallaxLayer(new Texture("06.png"), 1.0f, true, false);
+        layers[0] = new ParallaxLayer(new Texture("01.png"), 21, true, false);
+        layers[1] = new ParallaxLayer(new Texture("02.png"), 22f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("03.png"), 24f, true, false);
+        layers[3] = new ParallaxLayer(new Texture("04.png"), 24f, true, false);
+        layers[4] = new ParallaxLayer(new Texture("05.png"), 25, true, false);
+        layers[5] = new ParallaxLayer(new Texture("06.png"), 25, true, false);
 
         for (int i = 5; i >= 0; i--) {
             layers[i].setCamera(backcam);
@@ -138,7 +138,9 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
-        backcam.position.x= player.b2body.getPosition().x; // Ajusta el factor de parallax según sea necesario
+
+        backcam.position.x = player.b2body.getPosition().x;
+
         backcam.update();
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
