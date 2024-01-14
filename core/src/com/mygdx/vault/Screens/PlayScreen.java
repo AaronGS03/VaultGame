@@ -59,15 +59,14 @@ public class PlayScreen implements Screen {
 
         this.game = game;
         gamecam = new OrthographicCamera();//camara que sigue al mapa
-        backcam = new OrthographicCamera(1,1);//camara que sigue al personaje
-        backcam = new OrthographicCamera(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al mapa
+        backcam = new OrthographicCamera(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        backcam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
