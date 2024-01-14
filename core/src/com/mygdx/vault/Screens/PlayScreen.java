@@ -129,21 +129,20 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
         update(delta);
 
-        //limpiar pantalla
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        // Limpiar pantalla
+        Gdx.gl.glClearColor(0.09f, 0.09f, 0.09f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //mostrar pantalla
-        renderer.render();
 
-        //render Lineas debug Box2d
-        b2dr.render(world, gamecam.combined);
-
+        // Renderizar el personaje
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
         game.batch.end();
 
+        // Renderizar el fondo
+        renderer.render();
 
+        // Renderizar el HUD y otros elementos
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 

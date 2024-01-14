@@ -162,7 +162,7 @@ public class Mage extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1f, 2);
+        shape.setAsBox(1f, 1.6f);
 
         fdef.shape = shape;
         fdef.friction = 0.3f;

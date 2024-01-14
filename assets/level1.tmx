@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
  <layer id="1" name="background" width="34" height="18">
   <data encoding="base64" compression="zlib">
-   eJzjZGBg4BzFo3gUj+JRPIpH8SgexQOGARnBFYU=
+   eJztwTEBAAAAwqD1T20MH6AAAHgaCZAAAQ==
   </data>
  </layer>
  <layer id="2" name="graphics" width="34" height="18">
