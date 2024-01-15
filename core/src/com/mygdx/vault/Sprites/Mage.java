@@ -3,9 +3,11 @@ package com.mygdx.vault.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -146,7 +148,7 @@ public class Mage extends Sprite {
     public State getState() {
         if (b2body.getLinearVelocity().y > 0) {
             return State.JUMPING;
-        } else if (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING) {
+        } else if (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING &&stateTimer<0.2f) {
             return State.AIRTRANSITION;
         } else if ((b2body.getLinearVelocity().y < 0 && previousState == State.AIRTRANSITION)||b2body.getLinearVelocity().y<0) {
             return State.FALLING;
@@ -175,5 +177,28 @@ public class Mage extends Sprite {
         fdef.shape = shape;
         fdef.friction = 0.3f;
         b2body.createFixture(fdef);
+
+        EdgeShape head =new EdgeShape();
+        head.set(new Vector2(-160/Vault.PPM, 360 /Vault.PPM), new Vector2(160/Vault.PPM, 360 /Vault.PPM));
+        fdef.shape=head;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("head");
+
+        EdgeShape feet =new EdgeShape();
+        feet.set(new Vector2(-200/Vault.PPM, -360 /Vault.PPM), new Vector2(200/Vault.PPM, -360 /Vault.PPM));
+        fdef.shape=feet;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("feet");
+
+        EdgeShape sideL =new EdgeShape();
+        sideL.set(new Vector2(-220/Vault.PPM, -280 /Vault.PPM), new Vector2(-220/Vault.PPM, 280 /Vault.PPM));
+        fdef.shape=sideL;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("sideL");
+        EdgeShape sideR =new EdgeShape();
+        sideR.set(new Vector2(230/Vault.PPM, -280 /Vault.PPM), new Vector2(230/Vault.PPM, 280 /Vault.PPM));
+        fdef.shape=sideR;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData("sideR");
     }
 }

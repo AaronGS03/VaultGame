@@ -29,6 +29,7 @@ import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
+import com.mygdx.vault.tools.WorldContactListener;
 
 import java.util.ArrayList;
 
@@ -83,17 +84,18 @@ public class PlayScreen implements Screen {
         controller = new Controller();
 
         layers = new ParallaxLayer[7];
-        layers[0] = new ParallaxLayer(new Texture("01.png"), 18f, true, false);
-        layers[1] = new ParallaxLayer(new Texture("02.png"), 20f, true, false);
-        layers[2] = new ParallaxLayer(new Texture("03.png"), 19f, true, false);
-        layers[3] = new ParallaxLayer(new Texture("04.png"), 19f, true, false);
-        layers[4] = new ParallaxLayer(new Texture("05.png"), 11, true, false);
-        layers[5] = new ParallaxLayer(new Texture("06.png"), 11, true, false);
+        layers[0] = new ParallaxLayer(new Texture("01.png"), 23f, true, false);
+        layers[1] = new ParallaxLayer(new Texture("02.png"), 25f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("03.png"), 29f, true, false);
+        layers[3] = new ParallaxLayer(new Texture("04.png"), 29f, true, false);
+        layers[4] = new ParallaxLayer(new Texture("05.png"), 16, true, false);
+        layers[5] = new ParallaxLayer(new Texture("06.png"), 16, true, false);
 
         for (int i = 5; i >= 0; i--) {
             layers[i].setCamera(backcam);
         }
 
+        world.setContactListener(new WorldContactListener());
     }
 
     public TextureAtlas getAtlas() {
@@ -112,12 +114,9 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isTouched() && !touch) {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
-
-            // Convertir las coordenadas de la pantalla a las coordenadas del mundo
             Vector3 touchPoint = new Vector3(touchX, touchY, 0);
-            gamecam.unproject(touchPoint);
+            gamecam.unproject(touchPoint); // devuelve el punto tocado
 
-            // Obtener el rectángulo del sprite del personaje
             Rectangle playerBounds = player.getBoundingRectangle();
 
             // Verificar si el toque está dentro del rectángulo del sprite del personaje
@@ -136,7 +135,7 @@ public class PlayScreen implements Screen {
                 intervalTouch--;
                 if (intervalTouch == 0) {
                     touch = false;
-                    intervalTouch =500;
+                    intervalTouch =5;
 
             }
         }
@@ -209,7 +208,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         //render Lineas debug Box2d
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
