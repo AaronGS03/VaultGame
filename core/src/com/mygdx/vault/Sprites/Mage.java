@@ -33,6 +33,14 @@ public class Mage extends Sprite {
     private Array<TextureRegion> frames;
     private float runframeduration = 0.1f;
 
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public State getPreviousState() {
+        return previousState;
+    }
+
     public Mage(World world, PlayScreen screen) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
         this.world = world;

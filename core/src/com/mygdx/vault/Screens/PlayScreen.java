@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -43,7 +44,10 @@ public class PlayScreen implements Screen {
     private TiledMap map; //este es el mapa
     private OrthogonalTiledMapRenderer renderer;
     private Mage player;
-
+    private boolean secretSetting = false;
+    private boolean touch = true;
+    private int touchCount;
+    private int intervalTouch;
     //Variables de Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
@@ -58,8 +62,10 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas("mage.atlas");
 
         this.game = game;
+        intervalTouch = 500;
+
         gamecam = new OrthographicCamera();//camara que sigue al mapa
-        backcam = new OrthographicCamera(Vault.V_WIDTH*2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
+        backcam = new OrthographicCamera(Vault.V_WIDTH * 2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
@@ -77,12 +83,12 @@ public class PlayScreen implements Screen {
         controller = new Controller();
 
         layers = new ParallaxLayer[7];
-        layers[0] = new ParallaxLayer(new Texture("01.png"), 21, true, false);
-        layers[1] = new ParallaxLayer(new Texture("02.png"), 22f, true, false);
-        layers[2] = new ParallaxLayer(new Texture("03.png"), 24f, true, false);
-        layers[3] = new ParallaxLayer(new Texture("04.png"), 24f, true, false);
-        layers[4] = new ParallaxLayer(new Texture("05.png"), 25, true, false);
-        layers[5] = new ParallaxLayer(new Texture("06.png"), 25, true, false);
+        layers[0] = new ParallaxLayer(new Texture("01.png"), 18f, true, false);
+        layers[1] = new ParallaxLayer(new Texture("02.png"), 20f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("03.png"), 19f, true, false);
+        layers[3] = new ParallaxLayer(new Texture("04.png"), 19f, true, false);
+        layers[4] = new ParallaxLayer(new Texture("05.png"), 11, true, false);
+        layers[5] = new ParallaxLayer(new Texture("06.png"), 11, true, false);
 
         for (int i = 5; i >= 0; i--) {
             layers[i].setCamera(backcam);
@@ -101,7 +107,42 @@ public class PlayScreen implements Screen {
 
     //maneja tocar pantalla
     public void handleInput(float dt) {
+        //Funcion secreta tocar personaje
+        // Manejar toques en el sprite del personaje
+        if (Gdx.input.isTouched() && !touch) {
+            float touchX = Gdx.input.getX();
+            float touchY = Gdx.input.getY();
+
+            // Convertir las coordenadas de la pantalla a las coordenadas del mundo
+            Vector3 touchPoint = new Vector3(touchX, touchY, 0);
+            gamecam.unproject(touchPoint);
+
+            // Obtener el rectángulo del sprite del personaje
+            Rectangle playerBounds = player.getBoundingRectangle();
+
+            // Verificar si el toque está dentro del rectángulo del sprite del personaje
+            if (playerBounds.contains(touchPoint.x, touchPoint.y)) {
+                touchCount++;
+
+                // Realizar la acción después de 3 toques
+                if (touchCount == 3) {
+                    secretSetting = !secretSetting;
+                    touch = true;
+                    touchCount = 0;
+                }
+            }
+            } else if (touch) {
+
+                intervalTouch--;
+                if (intervalTouch == 0) {
+                    touch = false;
+                    intervalTouch =500;
+
+            }
+        }
+
         //Moviento del personaje movil
+
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
 
             if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
@@ -110,7 +151,7 @@ public class PlayScreen implements Screen {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
 
             }
-            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
                 player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
                 controller.setUpPressed(false);
             }
@@ -153,11 +194,14 @@ public class PlayScreen implements Screen {
         //limpiar pantalla
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         game.batch.setProjectionMatrix(backcam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-        for (int i = 5; i >= 0; i--) {
-            layers[i].render(game.batch);
+        if (secretSetting) {
+            for (int i = 5; i >= 0; i--) {
+                layers[i].render(game.batch);
+            }
         }
         player.draw(game.batch);
         game.batch.end();
