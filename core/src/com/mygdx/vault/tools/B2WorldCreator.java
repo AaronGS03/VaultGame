@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.vault.Sprites.Wall;
 import com.mygdx.vault.Vault;
 
 public class B2WorldCreator {
@@ -29,6 +30,8 @@ public class B2WorldCreator {
             fdef.shape = shape;
             fdef.friction=1;
             body.createFixture(fdef);
+
+            new Wall(world,map,rect);
 
         }
     }

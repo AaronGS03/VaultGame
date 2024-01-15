@@ -59,6 +59,10 @@ public class PlayScreen implements Screen {
     private Hud hud;
 
 
+    public boolean isSecretSetting() {
+        return secretSetting;
+    }
+
     public PlayScreen(Vault game) {
         atlas = new TextureAtlas("mage.atlas");
 
@@ -208,7 +212,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         //render Lineas debug Box2d
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

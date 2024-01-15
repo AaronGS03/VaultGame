@@ -41,5 +41,5 @@ protected World world;
     }
 
     public abstract void onHeadHit();
-    public abstract void onSideHit();
+    public abstract void onSideLHit();
 }
