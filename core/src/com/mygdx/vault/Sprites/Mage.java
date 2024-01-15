@@ -150,7 +150,7 @@ public class Mage extends Sprite {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING &&stateTimer<0.2f) {
             return State.AIRTRANSITION;
-        } else if ((b2body.getLinearVelocity().y < 0 && previousState == State.AIRTRANSITION)||b2body.getLinearVelocity().y<0) {
+        } else if ((b2body.getLinearVelocity().y < 0 && previousState == State.AIRTRANSITION)||b2body.getLinearVelocity().y<-0.1) {
             return State.FALLING;
         }else if (b2body.getLinearVelocity().y == 0 && previousState == State.FALLING ) {
             return State.LANDING;
