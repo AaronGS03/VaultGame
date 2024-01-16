@@ -2,6 +2,7 @@ package com.mygdx.vault.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,12 +13,17 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.vault.Contols.Controller;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
+import java.util.HashMap;
+
 public class Mage extends Sprite {
 
-    public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING};
+    public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING, WALLSLIDEL, WALLSLIDER}
+
+    ;
     public State currentState;
     public State previousState;
 
@@ -30,9 +36,23 @@ public class Mage extends Sprite {
     private Animation<TextureRegion> mageJumpTF;
     private Animation<TextureRegion> mageFalling;
     private Animation<TextureRegion> mageLanding;
+    private Animation<TextureRegion> mageWallSlideR;
+    private Animation<TextureRegion> mageWallSlideL;
     private float stateTimer;
+    private TextureAtlas atlas;
     private boolean runningRight;
     private Array<TextureRegion> frames;
+
+    public boolean isTouchingWall() {
+        return isTouchingWall;
+    }
+
+    public void setTouchingWall(boolean touchingWall) {
+        isTouchingWall = touchingWall;
+    }
+
+    private boolean isTouchingWall = false;
+
     private float runframeduration = 0.1f;
 
     public State getCurrentState() {
@@ -43,7 +63,10 @@ public class Mage extends Sprite {
         return previousState;
     }
 
-    public Mage(World world, PlayScreen screen) {
+    private Controller controller;
+
+
+    public Mage(World world, PlayScreen screen, Controller controller, TextureAtlas atlas) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
         this.world = world;
         currentState = State.STANDING;
@@ -51,7 +74,11 @@ public class Mage extends Sprite {
         stateTimer = 0;
         runningRight = true;
 
+        this.controller = controller;
+        this.atlas = atlas;
+
         frames = new Array<>();
+
         //run
         for (int i = 0; i < 24; i++) {
             frames.add(new TextureRegion(getTexture(), i * 80, 314, 64, 64));
@@ -94,6 +121,13 @@ public class Mage extends Sprite {
         mageLanding = new Animation(0.06f, frames);
         frames.clear();
 
+        //wallslideL
+
+
+        TextureAtlas.AtlasRegion atlasRegion= atlas.findRegion("wall slide-Sheet");
+        TextureRegion[][] temp= atlasRegion.split(atlasRegion.getRegionWidth()/4,atlasRegion.getRegionHeight());
+        mageWallSlideL = new Animation(0.1f, temp[0]);
+
         //stand
         mageStand = new TextureRegion(getTexture(), 0, 152, 64, 64);
 
@@ -104,7 +138,13 @@ public class Mage extends Sprite {
     }
 
     public void update(float dt) {
-        setPosition(b2body.getPosition().x + 0f - getWidth() / 2, b2body.getPosition().y + 1f - getHeight() / 2);
+        if (currentState==State.WALLSLIDEL||currentState==State.WALLSLIDER){
+            setPosition(b2body.getPosition().x  - getWidth() / 2, b2body.getPosition().y  - getHeight() / 2);
+        } else{
+            setPosition(b2body.getPosition().x  - getWidth() / 2, b2body.getPosition().y +1f - getHeight() / 2);
+
+        }
+
         setRegion(getFrame(dt));
     }
 
@@ -118,8 +158,15 @@ public class Mage extends Sprite {
             case RUNNING:
                 region = mageRun.getKeyFrame(stateTimer, true);
                 break;
+            case WALLSLIDEL:
+                region = mageWallSlideL.getKeyFrame(stateTimer);
+                break;
+            case WALLSLIDER:
+                region = mageWallSlideL.getKeyFrame(stateTimer);
+                region.flip(true, false);
+                break;
             case AIRTRANSITION:
-                region= mageJumpTF.getKeyFrame(stateTimer);
+                region = mageJumpTF.getKeyFrame(stateTimer);
                 break;
             case FALLING:
                 region = mageFalling.getKeyFrame(stateTimer);
@@ -148,15 +195,19 @@ public class Mage extends Sprite {
     public State getState() {
         if (b2body.getLinearVelocity().y > 0) {
             return State.JUMPING;
-        } else if (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING &&stateTimer<0.2f) {
+        } else if (b2body.getLinearVelocity().y < 0 && (previousState == State.WALLSLIDER || previousState == State.WALLSLIDEL || previousState == State.JUMPING || previousState == State.AIRTRANSITION || previousState == State.FALLING) && isTouchingWall && controller.isRightPressed()) {
+            return State.WALLSLIDER;
+        } else if (b2body.getLinearVelocity().y < 0 && (previousState == State.WALLSLIDER || previousState == State.WALLSLIDEL || previousState == State.JUMPING || previousState == State.AIRTRANSITION || previousState == State.FALLING) && isTouchingWall && controller.isLeftPressed()) {
+            return State.WALLSLIDEL;
+        } else if (b2body.getLinearVelocity().y < 0 && (previousState == State.JUMPING || previousState == State.WALLSLIDEL || previousState == State.WALLSLIDER) && stateTimer < 0.2f) {
             return State.AIRTRANSITION;
-        } else if ((b2body.getLinearVelocity().y < 0 && previousState == State.AIRTRANSITION)||b2body.getLinearVelocity().y<-0.1) {
+        } else if ((b2body.getLinearVelocity().y < 0 && (previousState == State.AIRTRANSITION || previousState == State.WALLSLIDEL || previousState == State.WALLSLIDER)) || b2body.getLinearVelocity().y < -0.1) {
             return State.FALLING;
-        }else if (b2body.getLinearVelocity().y == 0 && previousState == State.FALLING ) {
+        } else if (b2body.getLinearVelocity().y == 0 && (previousState == State.FALLING || previousState == State.WALLSLIDEL || previousState == State.WALLSLIDER)) {
             return State.LANDING;
-        } else if (b2body.getLinearVelocity().y == 0 && previousState == State.LANDING && stateTimer<0.2f) {
+        } else if (b2body.getLinearVelocity().y == 0 && previousState == State.LANDING && stateTimer < 0.2f) {
             return State.LANDING;
-        } else if (b2body.getLinearVelocity().x != 0 && b2body.getLinearVelocity().y==0&&previousState!=State.LANDING) {
+        } else if (b2body.getLinearVelocity().x != 0 && b2body.getLinearVelocity().y == 0 && previousState != State.LANDING) {
             return State.RUNNING;
         } else {
             return State.STANDING;
@@ -178,26 +229,26 @@ public class Mage extends Sprite {
         fdef.friction = 0.3f;
         b2body.createFixture(fdef);
 
-        EdgeShape head =new EdgeShape();
-        head.set(new Vector2(-160/Vault.PPM, 360 /Vault.PPM), new Vector2(160/Vault.PPM, 360 /Vault.PPM));
-        fdef.shape=head;
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-160 / Vault.PPM, 360 / Vault.PPM), new Vector2(160 / Vault.PPM, 360 / Vault.PPM));
+        fdef.shape = head;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("head");
 
-        EdgeShape feet =new EdgeShape();
-        feet.set(new Vector2(-200/Vault.PPM, -360 /Vault.PPM), new Vector2(200/Vault.PPM, -360 /Vault.PPM));
-        fdef.shape=feet;
+        EdgeShape feet = new EdgeShape();
+        feet.set(new Vector2(-200 / Vault.PPM, -360 / Vault.PPM), new Vector2(200 / Vault.PPM, -360 / Vault.PPM));
+        fdef.shape = feet;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("feet");
 
-        EdgeShape sideL =new EdgeShape();
-        sideL.set(new Vector2(-220/Vault.PPM, -280 /Vault.PPM), new Vector2(-220/Vault.PPM, 280 /Vault.PPM));
-        fdef.shape=sideL;
+        EdgeShape sideL = new EdgeShape();
+        sideL.set(new Vector2(-220 / Vault.PPM, -280 / Vault.PPM), new Vector2(-220 / Vault.PPM, 280 / Vault.PPM));
+        fdef.shape = sideL;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("sideL");
-        EdgeShape sideR =new EdgeShape();
-        sideR.set(new Vector2(230/Vault.PPM, -280 /Vault.PPM), new Vector2(230/Vault.PPM, 280 /Vault.PPM));
-        fdef.shape=sideR;
+        EdgeShape sideR = new EdgeShape();
+        sideR.set(new Vector2(230 / Vault.PPM, -280 / Vault.PPM), new Vector2(230 / Vault.PPM, 280 / Vault.PPM));
+        fdef.shape = sideR;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("sideR");
     }

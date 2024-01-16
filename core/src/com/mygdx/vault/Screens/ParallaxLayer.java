@@ -19,7 +19,7 @@ public class ParallaxLayer {
         this.wrapHorizontally = wrapHorizontally;
         this.wrapVertically = wrapVertically;
         this.texture.setWrap(
-                Texture.TextureWrap.Repeat,
+                Texture.TextureWrap.MirroredRepeat,
                 Texture.TextureWrap.ClampToEdge
         );
     }

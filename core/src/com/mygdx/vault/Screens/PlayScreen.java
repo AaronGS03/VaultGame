@@ -45,7 +45,7 @@ public class PlayScreen implements Screen {
     private TiledMap map; //este es el mapa
     private OrthogonalTiledMapRenderer renderer;
     private Mage player;
-    private boolean secretSetting = false;
+    private boolean secretSetting = true;
     private boolean touch = true;
     private int touchCount;
     private int intervalTouch;
@@ -91,10 +91,10 @@ public class PlayScreen implements Screen {
 
         layers = new ParallaxLayer[7];
         layers[0] = new ParallaxLayer(new Texture("01.png"), 23f, true, false);
-        layers[1] = new ParallaxLayer(new Texture("02.png"), 25f, true, false);
-        layers[2] = new ParallaxLayer(new Texture("03.png"), 29f, true, false);
-        layers[3] = new ParallaxLayer(new Texture("04.png"), 29f, true, false);
-        layers[4] = new ParallaxLayer(new Texture("05.png"), 16, true, false);
+        layers[4] = new ParallaxLayer(new Texture("02.png"), 25f, true, false);
+        layers[3] = new ParallaxLayer(new Texture("03.png"), 25f, true, false);
+        layers[1] = new ParallaxLayer(new Texture("04.png"), 26f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("05.png"), 29, true, false);
         layers[5] = new ParallaxLayer(new Texture("06.png"), 16, true, false);
 
         for (int i = 5; i >= 0; i--) {
