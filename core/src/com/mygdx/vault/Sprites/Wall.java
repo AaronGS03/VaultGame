@@ -8,8 +8,11 @@ import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
 public class Wall extends InteractiveTileObject{
-    public Wall(World world, TiledMap map, Rectangle bounds){
+    private Mage player;
+
+    public Wall(World world, TiledMap map, Rectangle bounds, Mage player){
         super(world, map, bounds);
+        this.player= player;
         fixture.setUserData(this);
     }
     @Override
@@ -19,6 +22,20 @@ public class Wall extends InteractiveTileObject{
 
     @Override
     public void onSideLHit() {
+        player.setTouchingWall(true);
+    }
+    @Override
+    public void onSideLNotHit() {
+        player.setTouchingWall(false);
+    }
 
+    @Override
+    public void onSideRHit() {
+        player.setTouchingWall(true);
+    }
+
+    @Override
+    public void onSideRNotHit() {
+        player.setTouchingWall(false);
     }
 }

@@ -20,11 +20,34 @@ public class WorldContactListener implements ContactListener {
                 ((InteractiveTileObject)object.getUserData()).onSideLHit();
             }
         }
+        if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
+            Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onSideLHit();
+            }
+        }
     }
 
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
 
+        if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
+            Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onSideLNotHit();
+            }
+        }
+        if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
+            Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onSideLNotHit();
+            }
+        }
     }
 
     @Override

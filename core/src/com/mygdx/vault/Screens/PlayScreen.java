@@ -82,10 +82,12 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world, map);
 
-        player = new Mage(world, this);
         controller = new Controller();
+
+        player = new Mage(world, this,controller,atlas);
+        new B2WorldCreator(world, map, player);
+
 
         layers = new ParallaxLayer[7];
         layers[0] = new ParallaxLayer(new Texture("01.png"), 23f, true, false);

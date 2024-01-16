@@ -42,4 +42,9 @@ protected World world;
 
     public abstract void onHeadHit();
     public abstract void onSideLHit();
+
+    public abstract void onSideLNotHit();
+    public abstract void onSideRHit();
+
+    public abstract void onSideRNotHit();
 }

@@ -9,11 +9,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Wall;
 import com.mygdx.vault.Vault;
 
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map){
+
+    public B2WorldCreator(World world, TiledMap map, Mage player){
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -31,7 +33,7 @@ public class B2WorldCreator {
             fdef.friction=1;
             body.createFixture(fdef);
 
-            new Wall(world,map,rect);
+            new Wall(world,map,rect,player);
 
         }
     }
