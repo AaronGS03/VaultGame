@@ -89,15 +89,17 @@ public class PlayScreen implements Screen {
         new B2WorldCreator(world, map, player);
 
 
-        layers = new ParallaxLayer[7];
-        layers[0] = new ParallaxLayer(new Texture("01.png"), 23f, true, false);
-        layers[4] = new ParallaxLayer(new Texture("02.png"), 25f, true, false);
-        layers[3] = new ParallaxLayer(new Texture("03.png"), 25f, true, false);
-        layers[1] = new ParallaxLayer(new Texture("04.png"), 26f, true, false);
-        layers[2] = new ParallaxLayer(new Texture("05.png"), 29, true, false);
-        layers[5] = new ParallaxLayer(new Texture("06.png"), 16, true, false);
+        layers = new ParallaxLayer[8];
+        layers[0] = new ParallaxLayer(new Texture("ParallaxCave1.png"), 7f, false, false);
+        layers[1] = new ParallaxLayer(new Texture("ParallaxCave2.png"), 7.2f, false, false);
+        layers[2] = new ParallaxLayer(new Texture("ParallaxCave3.png"), 7.3f, false, false);
+        layers[3] = new ParallaxLayer(new Texture("ParallaxCave4.png"), 7.4f, false, false);
+        layers[4] = new ParallaxLayer(new Texture("03.png"), 14f, true, false);
+        layers[5] = new ParallaxLayer(new Texture("05.png"), 0.1f, true, false);
+        layers[6] = new ParallaxLayer(new Texture("03.png"), 0.1f, true, false);
+        layers[7] = new ParallaxLayer(new Texture("02.png"), 0.1f, true, false);
 
-        for (int i = 5; i >= 0; i--) {
+        for (int i = layers.length-1; i >= 0; i--) {
             layers[i].setCamera(backcam);
         }
 
@@ -214,7 +216,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         //render Lineas debug Box2d
-        b2dr.render(world, gamecam.combined);
+        //b2dr.render(world, gamecam.combined);
 
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
