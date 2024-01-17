@@ -45,7 +45,7 @@ public class PlayScreen implements Screen {
     private TiledMap map; //este es el mapa
     private OrthogonalTiledMapRenderer renderer;
     private Mage player;
-    private boolean secretSetting = true;
+    private boolean secretSetting = false;
     private boolean touch = true;
     private int touchCount;
     private int intervalTouch;
@@ -85,21 +85,22 @@ public class PlayScreen implements Screen {
 
         controller = new Controller();
 
-        player = new Mage(world, this,controller,atlas);
+        player = new Mage(world, this, controller, atlas);
         new B2WorldCreator(world, map, player);
 
 
-        layers = new ParallaxLayer[8];
+        layers = new ParallaxLayer[9];
         layers[0] = new ParallaxLayer(new Texture("ParallaxCave1.png"), 7f, false, false);
-        layers[1] = new ParallaxLayer(new Texture("ParallaxCave2.png"), 7.2f, false, false);
-        layers[2] = new ParallaxLayer(new Texture("ParallaxCave3.png"), 7.3f, false, false);
-        layers[3] = new ParallaxLayer(new Texture("ParallaxCave4.png"), 7.4f, false, false);
-        layers[4] = new ParallaxLayer(new Texture("03.png"), 14f, true, false);
-        layers[5] = new ParallaxLayer(new Texture("05.png"), 0.1f, true, false);
-        layers[6] = new ParallaxLayer(new Texture("03.png"), 0.1f, true, false);
-        layers[7] = new ParallaxLayer(new Texture("02.png"), 0.1f, true, false);
+        layers[2] = new ParallaxLayer(new Texture("ParallaxCave2.png"), 7.2f, false, false);
+        layers[1] = new ParallaxLayer(new Texture("secs.png"), 7.2f, false, false);
+        layers[3] = new ParallaxLayer(new Texture("ParallaxCave3.png"), 7.3f, false, false);
+        layers[4] = new ParallaxLayer(new Texture("ParallaxCave4.png"), 7.4f, false, false);
+        layers[5] = new ParallaxLayer(new Texture("03.png"), 14f, true, false);
+        layers[6] = new ParallaxLayer(new Texture("05.png"), 0.1f, true, false);
+        layers[7] = new ParallaxLayer(new Texture("03.png"), 0.1f, true, false);
+        layers[8] = new ParallaxLayer(new Texture("02.png"), 0.1f, true, false);
 
-        for (int i = layers.length-1; i >= 0; i--) {
+        for (int i = layers.length - 1; i >= 0; i--) {
             layers[i].setCamera(backcam);
         }
 
@@ -138,12 +139,12 @@ public class PlayScreen implements Screen {
                     touchCount = 0;
                 }
             }
-            } else if (touch) {
+        } else if (touch) {
 
-                intervalTouch--;
-                if (intervalTouch == 0) {
-                    touch = false;
-                    intervalTouch =5;
+            intervalTouch--;
+            if (intervalTouch == 0) {
+                touch = false;
+                intervalTouch = 5;
 
             }
         }
@@ -205,10 +206,19 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(backcam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-        if (secretSetting) {
-            for (int i = 5; i >= 0; i--) {
+        for (int i = layers.length - 1; i >= 0; i--) {
+            if (i == 1) {
+                if (secretSetting) {
+                    layers[i].render(game.batch);
+                }
+            }else{
                 layers[i].render(game.batch);
+
             }
+
+        }
+        if (secretSetting) {
+
         }
         player.draw(game.batch);
         game.batch.end();

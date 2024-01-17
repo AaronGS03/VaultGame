@@ -12,6 +12,12 @@ public class Vault extends Game {
 	public static final float V_HEIGHT = 9216;
 	public static  final float PPM = 200;//pixeles que se mueve un objeto por metro en box2d
 
+	public static final short DEFAULT_BIT = 1;
+	public static final short MAGE_BIT = 2;
+	public static final short PLATAFORM_BIT = 4;
+	public static final short DOOR_BIT = 8;
+	public static final short BOTON_BIT = 16;
+
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public static SpriteBatch batch;
 	

@@ -27,6 +27,9 @@ public class Mage extends Sprite {
     public State currentState;
     public State previousState;
 
+
+
+
     public World world;
     public Body b2body;
     private TextureRegion mageStand;
@@ -224,6 +227,8 @@ public class Mage extends Sprite {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1f, 1.6f);
+        fdef.filter.categoryBits = Vault.MAGE_BIT;
+        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.BOTON_BIT | Vault.DOOR_BIT;
 
         fdef.shape = shape;
         fdef.friction = 0.3f;

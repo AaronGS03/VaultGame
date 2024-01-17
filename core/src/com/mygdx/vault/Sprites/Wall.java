@@ -29,13 +29,4 @@ public class Wall extends InteractiveTileObject{
         player.setTouchingWall(false);
     }
 
-    @Override
-    public void onSideRHit() {
-        player.setTouchingWall(true);
-    }
-
-    @Override
-    public void onSideRNotHit() {
-        player.setTouchingWall(false);
-    }
 }
