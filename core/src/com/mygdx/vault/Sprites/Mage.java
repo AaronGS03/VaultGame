@@ -1,5 +1,6 @@
 package com.mygdx.vault.Sprites;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -56,6 +57,16 @@ public class Mage extends Sprite {
 
     private boolean isTouchingWall = false;
 
+    public boolean isTouchingGrass() {
+        return isTouchingGrass;
+    }
+
+    public void setTouchingGrass(boolean touchingGrass) {
+        isTouchingGrass = touchingGrass;
+    }
+
+    private boolean isTouchingGrass = false;
+
     private float runframeduration = 0.1f;
 
     public State getCurrentState() {
@@ -68,14 +79,16 @@ public class Mage extends Sprite {
 
     private Controller controller;
 
+    private AssetManager manager;
 
-    public Mage(World world, PlayScreen screen, Controller controller, TextureAtlas atlas) {
+    public Mage(World world, PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
         this.world = world;
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
+        this.manager =manager;
 
         this.controller = controller;
         this.atlas = atlas;

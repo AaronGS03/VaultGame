@@ -21,6 +21,11 @@ public class Wall extends InteractiveTileObject{
     }
 
     @Override
+    public void onFeetHit() {
+        
+    }
+
+    @Override
     public void onSideLHit() {
         player.setTouchingWall(true);
     }

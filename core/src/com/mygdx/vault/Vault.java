@@ -2,6 +2,9 @@ package com.mygdx.vault;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,17 +23,25 @@ public class Vault extends Game {
 
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public static SpriteBatch batch;
+
+	public AssetManager manager;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		manager = new AssetManager();
+		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
+		manager.load("audio/sounds/Footsteps-in-grass-slow-A-www.fesliyanstudios.com.mp3", Sound.class);
+		manager.finishLoading();
+		setScreen(new PlayScreen(this,manager));
 	}
 
 	@Override
 	public void render () {
 		//Delega el método render al Playscreen en uso
 		super.render();
+		manager.update();
+
 	}
 
 }

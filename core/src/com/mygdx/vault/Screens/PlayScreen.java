@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,7 +55,9 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private ParallaxLayer[] layers;
+    private AssetManager manager;
 
+    private Music music;
     Controller controller;
 
     private Hud hud;
@@ -63,11 +67,13 @@ public class PlayScreen implements Screen {
         return secretSetting;
     }
 
-    public PlayScreen(Vault game) {
+    public PlayScreen(Vault game, AssetManager manager) {
+        this.manager= manager;
         atlas = new TextureAtlas("mage.atlas");
 
         this.game = game;
         intervalTouch = 500;
+
 
         gamecam = new OrthographicCamera();//camara que sigue al mapa
         backcam = new OrthographicCamera(Vault.V_WIDTH * 2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
@@ -85,7 +91,7 @@ public class PlayScreen implements Screen {
 
         controller = new Controller();
 
-        player = new Mage(world, this, controller, atlas);
+        player = new Mage(world, this, controller, atlas, manager);
         new B2WorldCreator(world, map, player);
 
 
@@ -105,6 +111,10 @@ public class PlayScreen implements Screen {
         }
 
         world.setContactListener(new WorldContactListener());
+
+        music = manager.get("audio/music/forgotten-cave-159880.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
     }
 
     public TextureAtlas getAtlas() {
@@ -154,6 +164,7 @@ public class PlayScreen implements Screen {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
 
             if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
+                if (pl)
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
