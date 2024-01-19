@@ -17,14 +17,15 @@ public class Plataform  extends InteractiveTileObject{
     }
     @Override
     public void onHeadHit() {
-
+        setCategoryFilter(Vault.PLATAFORMB_BIT);
+        //getCell().getTile().setOffsetY(getCell().getTile().getOffsetY()-512);
+        getCell().setTile(null);
     }
 
     @Override
     public void onFeetHit() {
         player.setTouchingGrass(true);
-        setCategoryFilter(Vault.PLATAFORMB_BIT);
-        getCell().getTile().setOffsetY(getCell().getTile().getOffsetY()-512);
+
 
     }
 
