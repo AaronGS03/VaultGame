@@ -18,6 +18,7 @@ public class Vault extends Game {
 	public static final short DEFAULT_BIT = 1;
 	public static final short MAGE_BIT = 2;
 	public static final short PLATAFORM_BIT = 4;
+	public static final short PLATAFORMB_BIT =64;
 	public static final short DOOR_BIT = 8;
 	public static final short BOTON_BIT = 16;
 	public static final short WALL_BIT = 32;

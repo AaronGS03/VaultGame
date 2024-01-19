@@ -24,6 +24,12 @@ public class WorldContactListener implements ContactListener {
             if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
                 ((InteractiveTileObject)object.getUserData()).onSideLHit();
             }
+        }if (fixA.getUserData() == "head" || fixB.getUserData() == "head") {
+            Fixture sideL = fixA.getUserData() == "head" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onHeadHit();
+            }
         }
         if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
             Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
@@ -65,7 +71,6 @@ public class WorldContactListener implements ContactListener {
             Fixture object = sideL == fixA ? fixB : fixA;
             if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
                 ((InteractiveTileObject)object.getUserData()).onFeetNotHit();
-                Gdx.app.log("Joe", "JoeBidome");
             }
         }
     }

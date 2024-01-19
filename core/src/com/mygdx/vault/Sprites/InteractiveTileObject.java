@@ -59,7 +59,7 @@ protected World world;
     }
 
     public TiledMapTileLayer.Cell getCell(){
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(2);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
         return layer.getCell((int) (body.getPosition().x * Vault.PPM/512), (int) (body.getPosition().y * Vault.PPM /512));
     }
 }
