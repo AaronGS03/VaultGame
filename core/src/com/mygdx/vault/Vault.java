@@ -20,6 +20,7 @@ public class Vault extends Game {
 	public static final short PLATAFORM_BIT = 4;
 	public static final short DOOR_BIT = 8;
 	public static final short BOTON_BIT = 16;
+	public static final short WALL_BIT = 32;
 
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public static SpriteBatch batch;
@@ -32,6 +33,7 @@ public class Vault extends Game {
 		manager = new AssetManager();
 		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
+		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
 		manager.finishLoading();
 		setScreen(new PlayScreen(this,manager));
 	}

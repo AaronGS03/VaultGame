@@ -1,5 +1,6 @@
 package com.mygdx.vault.tools;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -10,12 +11,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.vault.Sprites.Mage;
+import com.mygdx.vault.Sprites.Plataform;
 import com.mygdx.vault.Sprites.Wall;
 import com.mygdx.vault.Vault;
 
 public class B2WorldCreator {
+    AssetManager manager;
 
-    public B2WorldCreator(World world, TiledMap map, Mage player){
+    public B2WorldCreator(World world, TiledMap map, Mage player, AssetManager manager){
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -23,17 +26,14 @@ public class B2WorldCreator {
 
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Vault.PPM, (rect.getY() + rect.getHeight() / 2) / Vault.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / Vault.PPM, rect.getHeight() / 2 / Vault.PPM);
-            fdef.shape = shape;
-            fdef.friction=1;
-            body.createFixture(fdef);
 
             new Wall(world,map,rect,player);
+
+        }
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new Plataform(world,map,rect,player);
 
         }
     }

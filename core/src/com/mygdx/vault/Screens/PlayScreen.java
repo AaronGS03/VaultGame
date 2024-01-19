@@ -63,13 +63,18 @@ public class PlayScreen implements Screen {
 
     private Hud hud;
 
+    private float stepSoundTimer = 0;
+    private static float STEP_SOUND_INTERVAL = 0.4f; // Frecuencia deseada de los sonidos de pasos
+    private static float LAND_SOUND_INTERVAL = 0.22f; // Frecuencia deseada de los sonidos de pasos
+    private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
+
 
     public boolean isSecretSetting() {
         return secretSetting;
     }
 
     public PlayScreen(Vault game, AssetManager manager) {
-        this.manager= manager;
+        this.manager = manager;
         atlas = new TextureAtlas("mage.atlas");
 
         this.game = game;
@@ -93,7 +98,7 @@ public class PlayScreen implements Screen {
         controller = new Controller();
 
         player = new Mage(world, this, controller, atlas, manager);
-        new B2WorldCreator(world, map, player);
+        new B2WorldCreator(world, map, player, manager);
 
 
         layers = new ParallaxLayer[9];
@@ -165,9 +170,6 @@ public class PlayScreen implements Screen {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
 
             if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
-                if (player.isTouchingGrass()&& dt%0.002f==0f){
-                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play();
-                }
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
@@ -198,6 +200,39 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         handleInput(dt);
 
+        if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
+            if (stepSoundTimer <= 0) {
+                manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
+            }
+
+        }
+        if (player.currentState == Mage.State.JUMPING && player.isTouchingGrass()) {
+            if (stepSoundTimer <= -0.3) {
+                manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
+            }
+
+        }
+        if (player.currentState == Mage.State.WALLSLIDER || player.currentState == Mage.State.WALLSLIDEL && player.isTouchingGrass()) {
+            if (stepSoundTimer <= 0) {
+                manager.get("audio/sounds/rustling-grass.mp3", Sound.class).play(0.2f);
+                stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
+            }
+
+        }
+        if (player.isTouchingGrass() && player.b2body.getLinearVelocity().x != 0) {
+            // Verifica el temporizador antes de reproducir el sonido
+
+            if (stepSoundTimer <= 0) {
+                manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                stepSoundTimer = STEP_SOUND_INTERVAL; // Reinicia el temporizador
+            }
+        }
+
+        // Resta el tiempo delta al temporizador
+        stepSoundTimer -= dt;
+
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
@@ -225,7 +260,7 @@ public class PlayScreen implements Screen {
                 if (secretSetting) {
                     layers[i].render(game.batch);
                 }
-            }else{
+            } else {
                 layers[i].render(game.batch);
 
             }
@@ -240,7 +275,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         //render Lineas debug Box2d
-        //b2dr.render(world, gamecam.combined);
+        b2dr.render(world, gamecam.combined);
 
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

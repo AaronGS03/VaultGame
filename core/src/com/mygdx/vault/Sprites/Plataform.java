@@ -1,21 +1,19 @@
 package com.mygdx.vault.Sprites;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
-public class Wall extends InteractiveTileObject{
+public class Plataform  extends InteractiveTileObject{
     private Mage player;
 
-    public Wall(World world, TiledMap map, Rectangle bounds, Mage player){
+    public Plataform(World world, TiledMap map, Rectangle bounds, Mage player){
         super(world, map, bounds);
         this.player= player;
         fixture.setUserData(this);
-        setCategoryFilter(Vault.WALL_BIT);
+        setCategoryFilter(Vault.PLATAFORM_BIT);
     }
     @Override
     public void onHeadHit() {
@@ -25,6 +23,7 @@ public class Wall extends InteractiveTileObject{
     @Override
     public void onFeetHit() {
         player.setTouchingGrass(true);
+
     }
 
     @Override

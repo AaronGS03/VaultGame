@@ -67,7 +67,7 @@ public class Mage extends Sprite {
 
     private boolean isTouchingGrass = false;
 
-    private float runframeduration = 0.1f;
+    private float runframeduration = 0.05f;
 
     public State getCurrentState() {
         return currentState;
@@ -241,7 +241,7 @@ public class Mage extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1f, 1.6f);
         fdef.filter.categoryBits = Vault.MAGE_BIT;
-        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.BOTON_BIT | Vault.DOOR_BIT;
+        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.BOTON_BIT | Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
 
         fdef.shape = shape;
         fdef.friction = 0.3f;
@@ -254,7 +254,7 @@ public class Mage extends Sprite {
         b2body.createFixture(fdef).setUserData("head");
 
         EdgeShape feet = new EdgeShape();
-        feet.set(new Vector2(-200 / Vault.PPM, -360 / Vault.PPM), new Vector2(200 / Vault.PPM, -360 / Vault.PPM));
+        feet.set(new Vector2(-80 / Vault.PPM, -360 / Vault.PPM), new Vector2(80 / Vault.PPM, -360 / Vault.PPM));
         fdef.shape = feet;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("feet");

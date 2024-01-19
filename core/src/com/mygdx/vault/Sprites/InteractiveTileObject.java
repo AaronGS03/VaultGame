@@ -1,5 +1,6 @@
 package com.mygdx.vault.Sprites;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -14,13 +15,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.vault.Vault;
 
 
-public abstract class InteractiveTileObject {
+public abstract class   InteractiveTileObject {
 protected World world;
     protected TiledMap map;
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
+
+    protected AssetManager manager;
 
 
     public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
@@ -39,6 +42,7 @@ protected World world;
 
         shape.setAsBox(bounds.getWidth() / 2/ Vault.PPM, bounds.getHeight()/2/Vault.PPM);
         fdef.shape = shape;
+        fdef.friction=1;
         fixture= body.createFixture(fdef);
     }
 
@@ -55,7 +59,7 @@ protected World world;
     }
 
     public TiledMapTileLayer.Cell getCell(){
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(2);
         return layer.getCell((int) (body.getPosition().x * Vault.PPM/512), (int) (body.getPosition().y * Vault.PPM /512));
     }
 }
