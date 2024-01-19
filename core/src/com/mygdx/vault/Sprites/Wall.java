@@ -22,7 +22,13 @@ public class Wall extends InteractiveTileObject{
 
     @Override
     public void onFeetHit() {
-        
+        player.setTouchingGrass(true);
+    }
+
+    @Override
+    public void onFeetNotHit() {
+        player.setTouchingGrass(false);
+
     }
 
     @Override

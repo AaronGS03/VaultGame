@@ -31,7 +31,7 @@ public class Vault extends Game {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
-		manager.load("audio/sounds/Footsteps-in-grass-slow-A-www.fesliyanstudios.com.mp3", Sound.class);
+		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.finishLoading();
 		setScreen(new PlayScreen(this,manager));
 	}

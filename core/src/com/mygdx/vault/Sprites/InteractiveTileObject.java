@@ -44,6 +44,7 @@ protected World world;
 
     public abstract void onHeadHit();
     public abstract void onFeetHit();
+    public abstract void onFeetNotHit();
     public abstract void onSideLHit();
 
     public abstract void onSideLNotHit();

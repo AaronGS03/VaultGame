@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="34" height="18" tilewidth="512" tileheight="512" infinite="0" nextlayerid="5" nextobjectid="44">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="34" height="18" tilewidth="512" tileheight="512" infinite="0" nextlayerid="6" nextobjectid="49">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
  <layer id="1" name="background" width="34" height="18">
   <data encoding="base64" compression="zlib">
@@ -25,8 +25,6 @@
   <object id="19" x="448" y="3072" width="424" height="5624"/>
   <object id="20" x="12" y="2712" width="1652" height="228"/>
   <object id="23" x="8" y="2924" width="856" height="208"/>
-  <object id="25" x="6003.03" y="6293.94" width="1275.76" height="215.152"/>
-  <object id="26" x="7033.33" y="2724.24" width="1296.97" height="200"/>
   <object id="27" x="3742.42" y="3757.58" width="1739.39" height="669.697"/>
   <object id="28" x="3744" y="800" width="720" height="3000"/>
   <object id="29" x="-96" y="336" width="17136" height="544"/>
@@ -35,5 +33,9 @@
   <object id="34" x="15224" y="6300" width="2204" height="208"/>
   <object id="35" x="16804" y="5976" width="616" height="384"/>
   <object id="40" x="776" y="5268" width="1400" height="224"/>
+ </objectgroup>
+ <objectgroup id="5" name="plataform">
+  <object id="47" x="7044" y="2708" width="1304" height="212"/>
+  <object id="48" x="6000" y="6300" width="1316" height="204"/>
  </objectgroup>
 </map>

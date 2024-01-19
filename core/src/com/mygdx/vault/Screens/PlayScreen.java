@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -164,7 +165,9 @@ public class PlayScreen implements Screen {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
 
             if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
-                if (pl)
+                if (player.isTouchingGrass()&& dt%0.002f==0f){
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play();
+                }
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);

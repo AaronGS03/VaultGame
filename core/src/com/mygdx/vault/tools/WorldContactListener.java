@@ -27,6 +27,13 @@ public class WorldContactListener implements ContactListener {
                 ((InteractiveTileObject)object.getUserData()).onSideLHit();
             }
         }
+        if (fixA.getUserData() == "feet" || fixB.getUserData() == "feet") {
+            Fixture sideL = fixA.getUserData() == "feet" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onFeetHit();
+            }
+        }
     }
 
     @Override
@@ -46,6 +53,13 @@ public class WorldContactListener implements ContactListener {
             Fixture object = sideL == fixA ? fixB : fixA;
             if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
                 ((InteractiveTileObject)object.getUserData()).onSideLNotHit();
+            }
+        }
+        if (fixA.getUserData() == "feet" || fixB.getUserData() == "feet") {
+            Fixture sideL = fixA.getUserData() == "feet" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
+                ((InteractiveTileObject)object.getUserData()).onFeetNotHit();
             }
         }
     }
