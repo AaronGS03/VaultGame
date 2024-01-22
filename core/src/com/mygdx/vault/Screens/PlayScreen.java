@@ -1,6 +1,5 @@
 package com.mygdx.vault.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -11,20 +10,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Contols.Controller;
@@ -32,9 +26,8 @@ import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
+import com.mygdx.vault.tools.RoomTool;
 import com.mygdx.vault.tools.WorldContactListener;
-
-import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
     private Vault game;
@@ -68,6 +61,8 @@ public class PlayScreen implements Screen {
     private static float LAND_SOUND_INTERVAL = 0.22f; // Frecuencia deseada de los sonidos de pasos
     private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
 
+    public Array<RoomTool> habitaciones = new Array<RoomTool>();
+
 
     public boolean isSecretSetting() {
         return secretSetting;
@@ -88,7 +83,7 @@ public class PlayScreen implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gamecam.position.set(17408 / Vault.PPM / 2, 11264/ Vault.PPM + 9216 / Vault.PPM / 2, 0);
         backcam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -45), true);
@@ -98,7 +93,7 @@ public class PlayScreen implements Screen {
         controller = new Controller();
 
         player = new Mage(world, this, controller, atlas, manager);
-        new B2WorldCreator(world, map, player, manager);
+        new B2WorldCreator(world, map, player, manager,habitaciones,gamecam,backcam);
 
 
         layers = new ParallaxLayer[9];
