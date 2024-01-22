@@ -1,41 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="34" height="18" tilewidth="512" tileheight="512" infinite="0" nextlayerid="6" nextobjectid="49">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="102" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="9" nextobjectid="134">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
- <layer id="1" name="background" width="34" height="18">
+ <layer id="1" name="background" width="102" height="40">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20MH6AAAHgaCZAAAQ==
+   eJztwTEBAAAAwqD1T20IX6AAAAAAAAAAAAAAAAAAAACA1wA/wAAB
   </data>
  </layer>
- <layer id="2" name="graphics" width="34" height="18">
+ <layer id="2" name="graphics" width="102" height="40">
   <data encoding="base64" compression="zlib">
-   eJztlk0PwiAMhl9nXIYRPw5Tb3rz//9DSxixLqXgIOLBJs+JAg9NIRgA5gc4KvTEJpFTSj95aDEQ20ROaQx/D9GjI27EhbhmepynfGnOUg8T2UvzKAl+Bsc+02MHX7N1ZR++R8rjgNf9OjX0yI15rTl36LXkHiPq9Z20j3bOmvX4tseS+yp58HUe8P3Xuh4hanisEO/FEg+3bsfQ+t3lWvh3Rsr7xCO8VQGL97/BfDyWK+XZxPxA6/9P4Am98QrA
+   eJztmE1vgzAQRLepWjVR6cchbW7trf//HxYrRRi0GEMhnoT3pDmxsJFHG9uzN7O9gKDLW0KPtR5Gav6r0ANfpvFU63CBHvgyDXzRBF/Ksav1Veuz1qn3bMiXj796752p4ItPWJOhmVhjXmJPg14MXzzGfHm280zdr9SfefFJ+fJq7Xn2faX++OKT8iWX/n9TrG9Lzxq++IQ1Odpy+3ifsT0KX3yWmJcUub6oSIUpvsw5H3u+xN/5sbysZmt5UOl5udQ3cnrcmi93Nry348s8PF/COu8ipc5Tobay8z3Hq8OXeYTf0twdG1XW3Qv7z4dqvbpq5P1Y5EEtpc8/sciD9CAP0oQ8SBPyIE3IgzQpfb8lD/IhDyIPKvmNnB635gt50PKQB7U91HwhD9L0RUXkQXqQB2lCHqQJeZAm5EGalL7f4ouPSh4EXUrPC/hcQx60Ra4hD9oiKnkQdCmdATX6BTUeID4=
   </data>
  </layer>
  <objectgroup id="4" name="ground">
-  <object id="1" x="0" y="0" width="17408" height="512"/>
-  <object id="2" x="0" y="3072" width="512" height="6144"/>
-  <object id="3" x="400" y="8704" width="17008" height="516"/>
-  <object id="4" x="16896" y="512" width="512" height="5632"/>
   <object id="7" x="12424" y="4776" width="744" height="3952"/>
   <object id="8" x="9072" y="4776" width="3592" height="200"/>
   <object id="9" x="8848" y="7312" width="720" height="1472"/>
   <object id="10" x="8344" y="7816" width="1752" height="1272"/>
-  <object id="15" x="464" y="8320" width="16944" height="432"/>
+  <object id="15" x="464" y="8344" width="18616" height="176"/>
   <object id="16" x="2712" y="7824" width="2264" height="616"/>
-  <object id="19" x="448" y="3072" width="424" height="5624"/>
-  <object id="20" x="12" y="2712" width="1652" height="228"/>
-  <object id="23" x="8" y="2924" width="856" height="208"/>
+  <object id="19" x="448" y="2920" width="424" height="5776"/>
+  <object id="20" x="-756" y="2712" width="2420" height="228"/>
   <object id="27" x="3742.42" y="3757.58" width="1739.39" height="669.697"/>
   <object id="28" x="3744" y="800" width="720" height="3000"/>
-  <object id="29" x="-96" y="336" width="17136" height="544"/>
+  <object id="29" x="-720" y="336" width="17760" height="544"/>
   <object id="32" x="16520" y="792" width="392" height="5584"/>
   <object id="33" x="14700" y="3228" width="2048" height="216"/>
   <object id="34" x="15224" y="6300" width="2204" height="208"/>
-  <object id="35" x="16804" y="5976" width="616" height="384"/>
   <object id="40" x="776" y="5268" width="1400" height="224"/>
+  <object id="84" x="29834" y="10406" width="744" height="3952"/>
+  <object id="85" x="26482" y="10406" width="3592" height="200"/>
+  <object id="86" x="26258" y="12942" width="720" height="1472"/>
+  <object id="87" x="25754" y="13446" width="1752" height="1272"/>
+  <object id="88" x="17874" y="13950" width="18624" height="224"/>
+  <object id="89" x="20122" y="13454" width="2264" height="616"/>
+  <object id="90" x="17858" y="8474" width="424" height="5852"/>
+  <object id="93" x="21152.4" y="9387.58" width="1739.39" height="669.697"/>
+  <object id="94" x="21154" y="6430" width="720" height="3000"/>
+  <object id="95" x="17314" y="5966" width="17136" height="544"/>
+  <object id="96" x="33930" y="6422" width="392" height="5584"/>
+  <object id="97" x="32110" y="8858" width="2048" height="216"/>
+  <object id="98" x="32634" y="11930" width="2204" height="208"/>
+  <object id="100" x="18186" y="10898" width="1400" height="224"/>
+  <object id="101" x="24454" y="8338" width="1304" height="212"/>
+  <object id="102" x="23410" y="11930" width="1316" height="204"/>
+  <object id="117" x="47246" y="16032" width="744" height="3952"/>
+  <object id="118" x="43894" y="16032" width="3592" height="200"/>
+  <object id="119" x="43670" y="18568" width="720" height="1472"/>
+  <object id="120" x="43166" y="19072" width="1752" height="1272"/>
+  <object id="121" x="35286" y="19576" width="16944" height="432"/>
+  <object id="122" x="37534" y="19080" width="2264" height="616"/>
+  <object id="123" x="35270" y="14100" width="424" height="5852"/>
+  <object id="124" x="38564.4" y="15013.6" width="1739.39" height="669.697"/>
+  <object id="125" x="38566" y="12056" width="720" height="3000"/>
+  <object id="126" x="34726" y="11592" width="17136" height="544"/>
+  <object id="127" x="51342" y="12048" width="392" height="5584"/>
+  <object id="128" x="49522" y="14484" width="2048" height="216"/>
+  <object id="129" x="50046" y="17556" width="2204" height="208"/>
+  <object id="130" x="35598" y="16524" width="1400" height="224"/>
+  <object id="131" x="41866" y="13964" width="1304" height="212"/>
+  <object id="132" x="40822" y="17556" width="1316" height="204"/>
  </objectgroup>
  <objectgroup id="5" name="plataform">
   <object id="47" x="7044" y="2708" width="1304" height="212"/>
   <object id="48" x="6000" y="6300" width="1316" height="204"/>
+ </objectgroup>
+ <objectgroup id="7" name="puertas">
+  <object id="49" x="16896" y="6516" width="520" height="1824">
+   <properties>
+    <property name="tipo" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="50" x="-496" y="860" width="504" height="1884">
+   <properties>
+    <property name="tipo" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="103" x="34300" y="12160" width="520" height="1824">
+   <properties>
+    <property name="tipo" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="133" x="52156" y="17744" width="520" height="1824">
+   <properties>
+    <property name="tipo" type="int" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="room">
+  <object id="107" x="0" y="0" width="17408" height="9216">
+   <properties>
+    <property name="level" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="113" x="17408" y="5632" width="17408" height="9216">
+   <properties>
+    <property name="level" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="116" x="34816" y="11232" width="17408" height="9216">
+   <properties>
+    <property name="level" type="int" value="2"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

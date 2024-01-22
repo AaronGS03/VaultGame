@@ -19,9 +19,9 @@ public class ParallaxLayer {
         this.wrapHorizontally = wrapHorizontally;
         this.wrapVertically = wrapVertically;
         this.texture.setWrap(
-                Texture.TextureWrap.MirroredRepeat,
-                Texture.TextureWrap.ClampToEdge
+                Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat
         );
+
     }
 
     void setCamera(Camera camera) {
@@ -31,13 +31,13 @@ public class ParallaxLayer {
 
     void render(SpriteBatch batch) {
         int xOffset = (int) (camera.position.x * factor);
-        int yOffset = (int) (camera.position.y);
+        int yOffset = (int) (camera.position.y+camera.viewportHeight/Vault.PPM/2);
         TextureRegion region = new TextureRegion(texture);
         region.setRegionX(xOffset % texture.getWidth());
         region.setRegionY(yOffset % texture.getHeight());
         region.setRegionWidth((int)texture.getWidth());
         region.setRegionHeight(wrapVertically ? (int) camera.viewportHeight : texture.getHeight());
-        batch.draw(region, camera.position.x - camera.viewportWidth / 2, camera.position.y - camera.viewportHeight / 2,camera.viewportWidth, camera.viewportHeight);
+        batch.draw(region, camera.position.x - camera.viewportWidth / 2, camera.position.y - camera.viewportHeight/2,camera.viewportWidth, camera.viewportHeight);
 
     }
 }

@@ -233,7 +233,7 @@ public class Mage extends Sprite {
 
     public void defineMage() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(6200 / Vault.PPM, 4400 / Vault.PPM);
+        bdef.position.set(6200 / Vault.PPM, 18400 / Vault.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 

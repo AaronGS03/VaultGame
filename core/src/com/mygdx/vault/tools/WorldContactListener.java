@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.vault.Sprites.InteractiveTileObject;
+import com.mygdx.vault.Sprites.Room;
 
 import java.io.Console;
 
@@ -36,6 +37,13 @@ public class WorldContactListener implements ContactListener {
             Fixture object = sideL == fixA ? fixB : fixA;
             if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
                 ((InteractiveTileObject)object.getUserData()).onSideLHit();
+            }
+        }
+        if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
+            Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
+            Fixture object = sideL == fixA ? fixB : fixA;
+            if (object.getUserData() != null && Room.class.isAssignableFrom(object.getUserData().getClass())){
+                ((Room)object.getUserData()).onRoomHit();
             }
         }
         if (fixA.getUserData() == "feet" || fixB.getUserData() == "feet") {
