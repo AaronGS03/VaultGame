@@ -12,8 +12,8 @@
   </data>
  </layer>
  <objectgroup id="4" name="ground">
-  <object id="7" x="12424" y="4776" width="744" height="3952"/>
-  <object id="8" x="9072" y="4776" width="3592" height="200"/>
+  <object id="7" x="12424" y="4944" width="744" height="3784"/>
+  <object id="8" x="9072" y="4776" width="4096" height="200"/>
   <object id="9" x="8848" y="7312" width="720" height="1472"/>
   <object id="10" x="8344" y="7816" width="1752" height="1272"/>
   <object id="15" x="464" y="8344" width="18616" height="176"/>
@@ -27,8 +27,8 @@
   <object id="33" x="14700" y="3228" width="2048" height="216"/>
   <object id="34" x="15224" y="6300" width="2204" height="208"/>
   <object id="40" x="776" y="5268" width="1400" height="224"/>
-  <object id="84" x="29834" y="10406" width="744" height="3952"/>
-  <object id="85" x="26482" y="10406" width="3592" height="200"/>
+  <object id="84" x="29834" y="10566" width="744" height="3792"/>
+  <object id="85" x="26482" y="10406" width="4096" height="200"/>
   <object id="86" x="26258" y="12942" width="720" height="1472"/>
   <object id="87" x="25754" y="13446" width="1752" height="1272"/>
   <object id="88" x="17874" y="13950" width="18624" height="224"/>
@@ -43,8 +43,8 @@
   <object id="100" x="18186" y="10898" width="1400" height="224"/>
   <object id="101" x="24454" y="8338" width="1304" height="212"/>
   <object id="102" x="23410" y="11930" width="1316" height="204"/>
-  <object id="117" x="47246" y="16032" width="744" height="3952"/>
-  <object id="118" x="43894" y="16032" width="3592" height="200"/>
+  <object id="117" x="47246" y="16072" width="744" height="3912"/>
+  <object id="118" x="43894" y="16032" width="4104" height="200"/>
   <object id="119" x="43670" y="18568" width="720" height="1472"/>
   <object id="120" x="43166" y="19072" width="1752" height="1272"/>
   <object id="121" x="35286" y="19576" width="16944" height="432"/>
@@ -86,7 +86,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="8" name="room">
+ <objectgroup id="8" name="room" visible="0">
   <object id="107" x="0" y="0" width="17408" height="9216">
    <properties>
     <property name="level" type="int" value="0"/>
