@@ -20,6 +20,7 @@ public class ParallaxLayer {
         this.wrapVertically = wrapVertically;
         this.texture.setWrap(
                 Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat
+
         );
 
     }
