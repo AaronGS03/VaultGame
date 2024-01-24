@@ -92,8 +92,8 @@ public class PlayScreen implements Screen {
 
         controller = new Controller();
 
-        player = new Mage(world, this, controller, atlas, manager);
-        new B2WorldCreator(world, map, player, manager,habitaciones,gamecam,backcam);
+        player = new Mage( this, controller, atlas, manager);
+        new B2WorldCreator(this, player, manager,habitaciones,gamecam,backcam);
 
 
         layers = new ParallaxLayer[9];
@@ -285,6 +285,12 @@ public class PlayScreen implements Screen {
         controller.resize(width, height);
     }
 
+    public TiledMap getMap(){
+        return map;
+    }
+    public World getWorld(){
+        return world;
+    }
     @Override
     public void pause() {
 

@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Sprites.Door;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Plataform;
@@ -20,8 +21,11 @@ import com.mygdx.vault.Sprites.Wall;
 
 public class B2WorldCreator {
     AssetManager manager;
+    //private Array<Spikes> spikes;
 
-    public B2WorldCreator(World world, TiledMap map, Mage player, AssetManager manager, Array<RoomTool> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
+    public B2WorldCreator(PlayScreen screen, Mage player, AssetManager manager, Array<RoomTool> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
+        World world =screen.getWorld();
+        TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -30,29 +34,36 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            new Wall(world, map, rect, player);
+            new Wall(screen, rect, player);
 
         }
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Plataform(world, map, rect, player);
+            new Plataform(screen, rect, player);
 
 
         }
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Door(world, map, rect, player);
+            new Door(screen, rect, player);
 
 
         }
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Room(world, map, rect, player, gamecam,backcam);
+            new Room(screen, rect, player, gamecam,backcam);
             habitaciones.add(new RoomTool(rect,Integer.parseInt(object.getProperties().get("level")+"")));
 
+        }
+        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
 
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            new Room(screen, rect, player, gamecam,backcam);
+            habitaciones.add(new RoomTool(rect,Integer.parseInt(object.getProperties().get("level")+"")));
 
         }
+
+
     }
 }

@@ -11,8 +11,8 @@ import com.mygdx.vault.Vault;
 public class Wall extends InteractiveTileObject{
     private Mage player;
 
-    public Wall(World world, TiledMap map, Rectangle bounds, Mage player){
-        super(world, map, bounds);
+    public Wall(PlayScreen screen, Rectangle bounds, Mage player){
+        super(screen, bounds);
         this.player= player;
         fixture.setUserData(this);
         setCategoryFilter(Vault.WALL_BIT);

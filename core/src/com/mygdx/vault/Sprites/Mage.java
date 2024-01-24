@@ -81,9 +81,9 @@ public class Mage extends Sprite {
 
     private AssetManager manager;
 
-    public Mage(World world, PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager) {
+    public Mage(PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;

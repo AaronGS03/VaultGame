@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.RoomTool;
 
@@ -15,8 +16,8 @@ public class Room extends InteractiveTileObject {
     private OrthographicCamera gamecam;
     private OrthographicCamera backcam;
 
-    public Room(World world, TiledMap map, Rectangle bounds, Mage player, OrthographicCamera gamecam, OrthographicCamera backcam) {
-        super(world, map, bounds);
+    public Room(PlayScreen screen, Rectangle bounds, Mage player, OrthographicCamera gamecam, OrthographicCamera backcam) {
+        super(screen, bounds);
         this.player = player;
         this.gamecam = gamecam;
         this.backcam = backcam;
