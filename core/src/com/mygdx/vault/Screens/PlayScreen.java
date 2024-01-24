@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Contols.Controller;
 import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Mage;
+import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
 import com.mygdx.vault.tools.RoomTool;
@@ -48,6 +49,7 @@ public class PlayScreen implements Screen {
     //Variables de Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
     private ParallaxLayer[] layers;
     private AssetManager manager;
 
@@ -93,7 +95,7 @@ public class PlayScreen implements Screen {
         controller = new Controller();
 
         player = new Mage( this, controller, atlas, manager);
-        new B2WorldCreator(this, player, manager,habitaciones,gamecam,backcam);
+        creator= new B2WorldCreator(this, player, manager,habitaciones,gamecam,backcam);
 
 
         layers = new ParallaxLayer[9];
@@ -116,6 +118,7 @@ public class PlayScreen implements Screen {
         music = manager.get("audio/music/forgotten-cave-159880.mp3", Music.class);
         music.setLooping(true);
         music.play();
+
     }
 
     public TextureAtlas getAtlas() {
@@ -225,12 +228,18 @@ public class PlayScreen implements Screen {
             }
         }
 
+
+
         // Resta el tiempo delta al temporizador
         stepSoundTimer -= dt;
 
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
+
+        for (Spike spike : creator.getSpikes()){
+            spike.update(dt);
+        }
 
         backcam.position.x = player.b2body.getPosition().x;
 
@@ -265,6 +274,9 @@ public class PlayScreen implements Screen {
 
         }
         player.draw(game.batch);
+        for (Spike spike : creator.getSpikes()){
+            spike.draw(game.batch);
+        }
         game.batch.end();
         //mostrar pantalla
         renderer.render();

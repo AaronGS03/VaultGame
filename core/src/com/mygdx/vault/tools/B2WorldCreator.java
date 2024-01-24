@@ -17,11 +17,17 @@ import com.mygdx.vault.Sprites.Door;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Plataform;
 import com.mygdx.vault.Sprites.Room;
+import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Sprites.Wall;
+import com.mygdx.vault.Vault;
 
 public class B2WorldCreator {
     AssetManager manager;
-    //private Array<Spikes> spikes;
+    private Array<Spike> spikes;
+
+    public Array<Spike> getSpikes() {
+        return spikes;
+    }
 
     public B2WorldCreator(PlayScreen screen, Mage player, AssetManager manager, Array<RoomTool> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
         World world =screen.getWorld();
@@ -56,11 +62,12 @@ public class B2WorldCreator {
             habitaciones.add(new RoomTool(rect,Integer.parseInt(object.getProperties().get("level")+"")));
 
         }
+
+        spikes= new Array<>();
         for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Room(screen, rect, player, gamecam,backcam);
-            habitaciones.add(new RoomTool(rect,Integer.parseInt(object.getProperties().get("level")+"")));
+            spikes.add(new Spike(screen, rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM ));
 
         }
 

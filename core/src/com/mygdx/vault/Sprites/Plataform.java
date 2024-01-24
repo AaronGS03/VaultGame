@@ -14,37 +14,27 @@ public class Plataform  extends InteractiveTileObject{
         super(screen, bounds);
         this.player= player;
         fixture.setUserData(this);
-        setCategoryFilter(Vault.PLATAFORM_BIT);
+        setCategoryFilter(Vault.SPIKE_BIT);
     }
     @Override
     public void onHeadHit() {
-        setCategoryFilter(Vault.PLATAFORMB_BIT);
-        //getCell().getTile().setOffsetY(getCell().getTile().getOffsetY()-512);
-        getCell().setTile(null);
-
-
     }
 
     @Override
     public void onFeetHit() {
-        player.setTouchingGrass(true);
-
-
     }
 
     @Override
     public void onFeetNotHit() {
-        player.setTouchingGrass(false);
-
     }
 
     @Override
     public void onSideLHit() {
-        player.setTouchingWall(true);
+
     }
     @Override
     public void onSideLNotHit() {
-        player.setTouchingWall(false);
+
     }
 
 }

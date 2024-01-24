@@ -241,7 +241,7 @@ public class Mage extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1f, 1.6f);
         fdef.filter.categoryBits = Vault.MAGE_BIT;
-        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.BOTON_BIT | Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
 
         fdef.shape = shape;
         fdef.friction = 0.3f;

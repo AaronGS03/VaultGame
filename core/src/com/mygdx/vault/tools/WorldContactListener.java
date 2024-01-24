@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.vault.Sprites.InteractiveTileObject;
 import com.mygdx.vault.Sprites.Room;
+import com.mygdx.vault.Sprites.Spike;
+import com.mygdx.vault.Vault;
 
 import java.io.Console;
 
@@ -18,6 +20,8 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
@@ -52,6 +56,16 @@ public class WorldContactListener implements ContactListener {
             if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
                 ((InteractiveTileObject)object.getUserData()).onFeetHit();
             }
+        }
+        switch (cDef){
+            case Vault.SPIKE_BIT | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits==Vault.SPIKE_BIT) {
+//                    ((Spike) fixA.getUserData()).hit();
+                }else{
+//                    ((Spike) fixB.getUserData()).hit();
+
+                }
+                break;
         }
     }
 

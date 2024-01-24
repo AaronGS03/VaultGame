@@ -20,8 +20,8 @@
   <object id="16" x="2712" y="7824" width="2264" height="616"/>
   <object id="19" x="448" y="2920" width="424" height="5776"/>
   <object id="20" x="-756" y="2712" width="2420" height="228"/>
-  <object id="27" x="3742.42" y="3757.58" width="1739.39" height="669.697"/>
-  <object id="28" x="3744" y="800" width="720" height="3000"/>
+  <object id="27" x="4430.42" y="3757.58" width="1051.39" height="669.697"/>
+  <object id="28" x="3744" y="800" width="720" height="3624"/>
   <object id="29" x="-720" y="336" width="17760" height="544"/>
   <object id="32" x="16520" y="792" width="392" height="5584"/>
   <object id="33" x="14700" y="3228" width="2048" height="216"/>
@@ -34,8 +34,8 @@
   <object id="88" x="17874" y="13950" width="18624" height="224"/>
   <object id="89" x="20122" y="13454" width="2264" height="616"/>
   <object id="90" x="17858" y="8474" width="424" height="5852"/>
-  <object id="93" x="21152.4" y="9387.58" width="1739.39" height="669.697"/>
-  <object id="94" x="21154" y="6430" width="720" height="3000"/>
+  <object id="93" x="21836.4" y="9387.58" width="1055.39" height="669.697"/>
+  <object id="94" x="21154" y="6430" width="720" height="3628"/>
   <object id="95" x="17314" y="5966" width="17136" height="544"/>
   <object id="96" x="33930" y="6422" width="392" height="5584"/>
   <object id="97" x="32110" y="8858" width="2048" height="216"/>
@@ -50,8 +50,8 @@
   <object id="121" x="35286" y="19576" width="16944" height="432"/>
   <object id="122" x="37534" y="19080" width="2264" height="616"/>
   <object id="123" x="35270" y="14100" width="424" height="5852"/>
-  <object id="124" x="38564.4" y="15013.6" width="1739.39" height="669.697"/>
-  <object id="125" x="38566" y="12056" width="720" height="3000"/>
+  <object id="124" x="39252.4" y="15013.6" width="1051.39" height="669.697"/>
+  <object id="125" x="38566" y="12056" width="720" height="3629.82"/>
   <object id="126" x="34726" y="11592" width="17136" height="544"/>
   <object id="127" x="51342" y="12048" width="392" height="5584"/>
   <object id="128" x="49522" y="14484" width="2048" height="216"/>

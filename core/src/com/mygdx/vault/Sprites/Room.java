@@ -46,12 +46,10 @@ public class Room extends InteractiveTileObject {
     }
 
     public void onRoomHit() {
-        float centerY = bounds.y / Vault.PPM + bounds.getHeight() / Vault.PPM / 2;
-        float playerCenterY = player.b2body.getPosition().y;
-
         // Centra la cámara verticalmente tomando en cuenta la posición del jugador
         gamecam.position.set((bounds.x / Vault.PPM) + bounds.getWidth() / Vault.PPM / 2, bounds.y / Vault.PPM + bounds.getHeight() / Vault.PPM / 2, 0);
         backcam.position.set((bounds.x / Vault.PPM) + bounds.getWidth() / Vault.PPM / 2,bounds.y / Vault.PPM + bounds.getHeight() / Vault.PPM / 2, 0);
+
 
     }
 
