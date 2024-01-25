@@ -18,18 +18,24 @@ public class Spike extends Sprite {
     protected World world;
     protected PlayScreen screen;
     public Body b2body;
-    float x;
-    float y;
+    public float x;
+    public float y;
+    public int position;
 
     private TextureRegion texture;
-    public Spike(PlayScreen screen, float x, float y){
+    public Spike(PlayScreen screen, float x, float y, int position){
         this.world = screen.getWorld();
         this.screen= screen;
+        this.position=position;
         this.x= x;
         this.y= y;
         texture = new TextureRegion(new Texture(("Spike.png")));
+
         defineSpike();
         setRegion(texture);
+        if (position==1){
+            texture.flip(false,true);
+        }
         setBounds(x,y, texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
 
     }
@@ -43,9 +49,18 @@ public class Spike extends Sprite {
          FixtureDef fdef = new FixtureDef();
          PolygonShape shape = new PolygonShape();
          Vector2[] vertices=new Vector2[3];
-         vertices[0]= new Vector2(-1.2f, -1.3f);
-         vertices[1]= new Vector2(1.2f, -1.3f);
-         vertices[2]= new Vector2(0.0f, 0.8f);
+
+         if (position==1){
+             vertices[0]= new Vector2(-1.2f, 1.3f);
+             vertices[1]= new Vector2(1.2f, 1.3f);
+             vertices[2]= new Vector2(0.0f, -0.8f);
+
+         }else{
+             vertices[0]= new Vector2(-1.2f, -1.3f);
+             vertices[1]= new Vector2(1.2f, -1.3f);
+             vertices[2]= new Vector2(0.0f, 0.8f);
+
+         }
          shape.set(vertices);
 
          fdef.filter.categoryBits = Vault.SPIKE_BIT;

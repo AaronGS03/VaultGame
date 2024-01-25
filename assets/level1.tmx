@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="102" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="10" nextobjectid="161">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="102" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="10" nextobjectid="183">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
  <layer id="1" name="background" width="102" height="40">
   <data encoding="base64" compression="zlib">
@@ -43,7 +43,7 @@
   <object id="100" x="18186" y="10898" width="1400" height="224"/>
   <object id="101" x="24454" y="8338" width="1304" height="212"/>
   <object id="102" x="23410" y="11930" width="1316" height="204"/>
-  <object id="117" x="47246" y="16072" width="744" height="3912"/>
+  <object id="117" x="47246" y="16192" width="744" height="3792"/>
   <object id="118" x="43894" y="16032" width="4104" height="200"/>
   <object id="119" x="43670" y="18568" width="720" height="1472"/>
   <object id="120" x="43166" y="19072" width="1752" height="1272"/>
@@ -104,19 +104,100 @@
   </object>
  </objectgroup>
  <objectgroup id="9" name="spikes">
-  <object id="146" x="18312" y="8536" width="624" height="240"/>
-  <object id="147" x="18288" y="12296" width="272" height="1632"/>
-  <object id="148" x="18288" y="11136" width="1168" height="208"/>
-  <object id="150" x="19768.2" y="13543.2" width="352" height="400"/>
-  <object id="151" x="22392" y="13547.2" width="360" height="400"/>
-  <object id="152" x="21160" y="10072" width="400" height="376"/>
-  <object id="153" x="22496" y="10068" width="400" height="376"/>
-  <object id="154" x="23560" y="12144" width="1024" height="208"/>
-  <object id="155" x="24584" y="8552" width="1016" height="256"/>
-  <object id="156" x="24576" y="6512" width="1016" height="240"/>
-  <object id="157" x="28664" y="10616" width="1168" height="272"/>
-  <object id="158" x="27728" y="10024" width="376" height="368"/>
-  <object id="159" x="33660" y="7224" width="272" height="1632"/>
-  <object id="160" x="33008" y="9080" width="912" height="296"/>
+  <object id="147" x="18288" y="12296" width="272" height="1632">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="148" x="18288" y="11136" width="1168" height="208">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="150" x="19768.2" y="13543.2" width="352" height="400">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="151" x="22392" y="13547.2" width="360" height="400">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="152" x="21160" y="10072" width="400" height="376">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="153" x="22496" y="10068" width="400" height="376">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="154" x="23560" y="12144" width="1024" height="208">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="155" x="24584" y="8552" width="1016" height="256">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="156" x="24576" y="6512" width="1016" height="240">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="157" x="28664" y="10616" width="1168" height="272">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="158" x="27728" y="10024" width="376" height="368">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="159" x="33660" y="7224" width="272" height="1632">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="160" x="33008" y="9080" width="912" height="296">
+   <properties>
+    <property name="position" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="163" x="18256" y="8490.67" width="260" height="304">
+   <properties>
+    <property name="position" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="165" x="18518" y="8489.33" width="260" height="304">
+   <properties>
+    <property name="position" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="166" x="18779.3" y="8488" width="260" height="304">
+   <properties>
+    <property name="position" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="180" x="848.35" y="2913.34" width="260" height="304">
+   <properties>
+    <property name="position" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="181" x="1110.35" y="2912" width="260" height="304">
+   <properties>
+    <property name="position" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="182" x="1371.65" y="2910.67" width="260" height="304">
+   <properties>
+    <property name="position" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
