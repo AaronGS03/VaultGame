@@ -96,10 +96,11 @@ public class Controller implements Disposable {
 
         //posicion en las tablas de los botones
         tableL.row().pad(2,2,2,2);
+        tableL.padLeft(2);
         tableL.add(leftImage).size(leftImage.getWidth(), leftImage.getHeight());
         tableL.add();
         tableL.add(rightImage).size(rightImage.getWidth(), rightImage.getHeight());
-
+        tableL.getCell(rightImage).padLeft(-1);
         tableR.row().pad(2, cam.viewportWidth*2-20, 2,2);
         tableR.add(upImage).size(upImage.getWidth(), upImage.getHeight());
 

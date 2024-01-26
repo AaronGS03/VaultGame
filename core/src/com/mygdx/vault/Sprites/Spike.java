@@ -29,20 +29,29 @@ public class Spike extends Sprite {
         this.position=position;
         this.x= x;
         this.y= y;
-        texture = new TextureRegion(new Texture(("Spike.png")));
-
-        defineSpike();
-        setRegion(texture);
         if (position==1){
-            texture.flip(false,true);
+            texture = new TextureRegion(new Texture(("SpikeUP.png")));
+        }else if (position==2) {
+            texture = new TextureRegion(new Texture(("SpikeLEFT.png")));
+
+        }else if (position==3) {
+            texture = new TextureRegion(new Texture(("SpikeRIGHT.png")));
+
+        }else {
+                texture = new TextureRegion(new Texture(("Spike.png")));
+
         }
-        setBounds(x,y, texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
+
+
+        setRegion(texture);
+        defineSpike();
+        setBounds(x-0.4f,y-0.5f, texture.getRegionWidth()/1.2f / Vault.PPM, texture.getRegionHeight()/1.2f / Vault.PPM);
 
     }
 
      protected void defineSpike(){
          BodyDef bdef = new BodyDef();
-         bdef.position.set(x+texture.getRegionWidth()/2/Vault.PPM,y+texture.getRegionHeight()/2/Vault.PPM);
+         bdef.position.set(x-0.6f+texture.getRegionWidth()/2/Vault.PPM,y-0.6f+texture.getRegionHeight()/2/Vault.PPM);
          bdef.type = BodyDef.BodyType.StaticBody;
          b2body = world.createBody(bdef);
 
@@ -51,14 +60,24 @@ public class Spike extends Sprite {
          Vector2[] vertices=new Vector2[3];
 
          if (position==1){
-             vertices[0]= new Vector2(-1.2f, 1.3f);
-             vertices[1]= new Vector2(1.2f, 1.3f);
-             vertices[2]= new Vector2(0.0f, -0.8f);
+             vertices[0]= new Vector2(-1.1f, 0.9f);
+             vertices[1]= new Vector2(1f, 0.9f);
+             vertices[2]= new Vector2(0.0f, -1f);
+
+         }else if (position==2){
+             vertices[0]= new Vector2(-1.1f, -1.2f);
+             vertices[1]= new Vector2(1.1f, -0.1f);
+             vertices[2]= new Vector2(-1.1f, 0.9f);
+
+         }else if (position==3){
+             vertices[0]= new Vector2(1.1f, -1.2f);
+             vertices[1]= new Vector2(-1.1f, -0.1f);
+             vertices[2]= new Vector2(1.1f, 0.9f);
 
          }else{
-             vertices[0]= new Vector2(-1.2f, -1.3f);
-             vertices[1]= new Vector2(1.2f, -1.3f);
-             vertices[2]= new Vector2(0.0f, 0.8f);
+             vertices[0]= new Vector2(-1.1f, -1.2f);
+             vertices[1]= new Vector2(1.1f, -1.2f);
+             vertices[2]= new Vector2(0.0f, 0.9f);
 
          }
          shape.set(vertices);
