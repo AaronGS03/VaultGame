@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Contols.Controller;
 import com.mygdx.vault.Scenes.Hud;
+import com.mygdx.vault.Sprites.Key;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
@@ -72,7 +73,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Vault game, AssetManager manager) {
         this.manager = manager;
-        atlas = new TextureAtlas("mage.atlas");
+        atlas = new TextureAtlas("Sprites.atlas");
 
         this.game = game;
         intervalTouch = 500;
@@ -237,8 +238,13 @@ public class PlayScreen implements Screen {
 
         player.update(dt);
 
+
+        //en caso de mover spikes
         for (Spike spike : creator.getSpikes()){
             spike.update(dt);
+        }
+        for (Key key : creator.getKeys()){
+            key.update(dt);
         }
 
         backcam.position.x = player.b2body.getPosition().x;
@@ -276,6 +282,9 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
         for (Spike spike : creator.getSpikes()){
             spike.draw(game.batch);
+        }
+        for (Key key : creator.getKeys()){
+            key.draw(game.batch);
         }
         game.batch.end();
         //mostrar pantalla

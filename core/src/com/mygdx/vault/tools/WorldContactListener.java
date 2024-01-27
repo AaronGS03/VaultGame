@@ -1,19 +1,15 @@
 package com.mygdx.vault.tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.vault.Sprites.InteractiveTileObject;
+import com.mygdx.vault.Sprites.Item;
+import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Room;
-import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
-
-import java.io.Console;
-
-import sun.security.util.Debug;
 
 public class WorldContactListener implements ContactListener {
     @Override
@@ -22,7 +18,24 @@ public class WorldContactListener implements ContactListener {
         Fixture fixB = contact.getFixtureB();
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        switch (cDef){
+            case Vault.SPIKE_BIT | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits==Vault.SPIKE_BIT) {
+//                    ((Spike) fixA.getUserData()).hit();
+                }else{
+//                    ((Spike) fixB.getUserData()).hit();
 
+                }
+                break;
+            case Vault.ITEM | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits==Vault.ITEM) {
+                    ((Item)fixA.getUserData()).take((Mage)fixB.getUserData());
+                }else{
+                    ((Item)fixB.getUserData()).take((Mage)fixA.getUserData());
+
+                }
+                break;
+        }
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
@@ -57,16 +70,7 @@ public class WorldContactListener implements ContactListener {
                 ((InteractiveTileObject)object.getUserData()).onFeetHit();
             }
         }
-        switch (cDef){
-            case Vault.SPIKE_BIT | Vault.MAGE_BIT:
-                if (fixA.getFilterData().categoryBits==Vault.SPIKE_BIT) {
-//                    ((Spike) fixA.getUserData()).hit();
-                }else{
-//                    ((Spike) fixB.getUserData()).hit();
 
-                }
-                break;
-        }
     }
 
     @Override

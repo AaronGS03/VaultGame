@@ -1,0 +1,15 @@
+Sprites.png
+size:2048,512
+repeat:none
+idle sheet-Sheet
+bounds:2,150,1440,80
+itch hurt 2 sheet-Sheet
+bounds:2,68,560,80
+itch jump sheet-Sheet
+bounds:2,232,1520,80
+itch run-Sheet sheet
+bounds:2,314,1920,80
+key-white
+bounds:1524,280,384,32
+wall slide-Sheet
+bounds:2,2,320,64

@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -33,6 +34,7 @@ public class Mage extends Sprite {
 
     public World world;
     public Body b2body;
+    public Fixture fixture;
     private TextureRegion mageStand;
     private Animation<TextureRegion> mageIdle;
     private Animation<TextureRegion> mageRun;
@@ -144,6 +146,7 @@ public class Mage extends Sprite {
         TextureRegion[][] temp= atlasRegion.split(atlasRegion.getRegionWidth()/4,atlasRegion.getRegionHeight());
         mageWallSlideL = new Animation(0.1f, temp[0]);
 
+
         //stand
         mageStand = new TextureRegion(getTexture(), 0, 152, 64, 64);
 
@@ -241,11 +244,12 @@ public class Mage extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1f, 1.6f);
         fdef.filter.categoryBits = Vault.MAGE_BIT;
-        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.ITEM | Vault.DOOR_BIT | Vault.WALL_BIT;
 
         fdef.shape = shape;
         fdef.friction = 0.3f;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
+
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-160 / Vault.PPM, 360 / Vault.PPM), new Vector2(160 / Vault.PPM, 360 / Vault.PPM));
@@ -269,5 +273,11 @@ public class Mage extends Sprite {
         fdef.shape = sideR;
         fdef.isSensor = true;
         b2body.createFixture(fdef).setUserData("sideR");
+
+        shape.dispose();
+        head.dispose();
+        feet.dispose();
+        sideL.dispose();
+        sideR.dispose();
     }
 }

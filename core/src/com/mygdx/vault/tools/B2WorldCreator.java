@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Sprites.Door;
+import com.mygdx.vault.Sprites.Key;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Plataform;
 import com.mygdx.vault.Sprites.Room;
@@ -24,9 +25,13 @@ import com.mygdx.vault.Vault;
 public class B2WorldCreator {
     AssetManager manager;
     private Array<Spike> spikes;
+    private Array<Key> keys;
 
     public Array<Spike> getSpikes() {
         return spikes;
+    }
+    public Array<Key> getKeys() {
+        return keys;
     }
 
     public B2WorldCreator(PlayScreen screen, Mage player, AssetManager manager, Array<RoomTool> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
@@ -68,6 +73,14 @@ public class B2WorldCreator {
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 spikes.add(new Spike(screen, rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM, Integer.parseInt(object.getProperties().get("position")+"") ));
+
+
+        }
+        keys= new Array<>();
+        for (MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
+
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                keys.add(new Key(screen,rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM));
 
 
         }
