@@ -83,11 +83,12 @@ public class Spike extends Sprite {
          shape.set(vertices);
 
          fdef.filter.categoryBits = Vault.SPIKE_BIT;
-         fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.MAGE_BIT | Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+         fdef.filter.maskBits =  Vault.MAGE_BIT | Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+
 
          fdef.shape = shape;
          fdef.friction = 0.3f;
-         b2body.createFixture(fdef);
+         b2body.createFixture(fdef).setUserData(this);
 
          shape.dispose();
 

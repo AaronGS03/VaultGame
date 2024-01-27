@@ -9,32 +9,38 @@ import com.mygdx.vault.Sprites.InteractiveTileObject;
 import com.mygdx.vault.Sprites.Item;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Room;
+import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
 
 public class WorldContactListener implements ContactListener {
+
+    private boolean itemMageContactHandled = false;
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
-        switch (cDef){
-            case Vault.SPIKE_BIT | Vault.MAGE_BIT:
-                if (fixA.getFilterData().categoryBits==Vault.SPIKE_BIT) {
-//                    ((Spike) fixA.getUserData()).hit();
-                }else{
-//                    ((Spike) fixB.getUserData()).hit();
+        if (!itemMageContactHandled) {
+            switch (cDef) {
+                case Vault.SPIKE_BIT | Vault.MAGE_BIT:
+                    if (fixA.getFilterData().categoryBits == Vault.SPIKE_BIT) {
+                        // ((Spike) fixA.getUserData()).hit();
+                    } else {
+                        //((Spike) fixB.getUserData()).hit();
 
-                }
-                break;
-            case Vault.ITEM | Vault.MAGE_BIT:
-                if (fixA.getFilterData().categoryBits==Vault.ITEM) {
-                    ((Item)fixA.getUserData()).take((Mage)fixB.getUserData());
-                }else{
-                    ((Item)fixB.getUserData()).take((Mage)fixA.getUserData());
+                    }
+                    break;
+                case Vault.ITEM | Vault.MAGE_BIT:
+                    if (fixA.getFilterData().categoryBits == Vault.ITEM) {
+                        ((Item) fixA.getUserData()).take((Mage) fixB.getUserData());
+                    } else {
+                        ((Item) fixB.getUserData()).take((Mage) fixA.getUserData());
 
-                }
-                break;
+                    }
+                    itemMageContactHandled = true;
+                    break;
+            }
         }
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;

@@ -18,6 +18,7 @@ public class Key extends Item{
     public float width;
     public float height;
     public boolean collected=false;
+    public BodyDef bdef;
     Mage player;
     public Key(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -34,7 +35,7 @@ public class Key extends Item{
 
     @Override
     public void defineItem() {
-        BodyDef bdef = new BodyDef();
+        bdef = new BodyDef();
         bdef.position.set(x+width/2/Vault.PPM,y+height/2/Vault.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bdef);
@@ -71,7 +72,13 @@ public class Key extends Item{
         super.update(dt);
         statetime+=dt;
         if (collected){
-            setPosition(player.getX() + getWidth() / 2-1, player.getY() + getHeight() / 2);
+            float newX = player.getX() + getWidth() / 2 - 1;
+            float newY = player.getY() + 0.2f + getHeight() / 2;
+
+            setPosition(newX, newY);
+
+            // Actualiza la posición del cuerpo de la llave
+            body.setTransform(newX, newY, body.getAngle());
         }else{
             setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
         }
