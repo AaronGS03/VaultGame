@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.vault.Sprites.InteractiveTileObject;
 import com.mygdx.vault.Sprites.Item;
 import com.mygdx.vault.Sprites.Mage;
+import com.mygdx.vault.Sprites.Plataform;
 import com.mygdx.vault.Sprites.Room;
 import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
@@ -15,65 +16,66 @@ import com.mygdx.vault.Vault;
 public class WorldContactListener implements ContactListener {
 
     private boolean itemMageContactHandled = false;
+
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
-        if (!itemMageContactHandled) {
-            switch (cDef) {
-                case Vault.SPIKE_BIT | Vault.MAGE_BIT:
-                    if (fixA.getFilterData().categoryBits == Vault.SPIKE_BIT) {
-                        // ((Spike) fixA.getUserData()).hit();
-                    } else {
-                        //((Spike) fixB.getUserData()).hit();
-
-                    }
-                    break;
-                case Vault.ITEM | Vault.MAGE_BIT:
-                    if (fixA.getFilterData().categoryBits == Vault.ITEM) {
+        switch (cDef) {
+            case Vault.ITEM | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits == Vault.ITEM) {
+                    if (fixB.getUserData() != "sideL" && fixB.getUserData() != "sideR" && fixB.getUserData() != "head" && fixB.getUserData() != "feet") {
                         ((Item) fixA.getUserData()).take((Mage) fixB.getUserData());
-                    } else {
-                        ((Item) fixB.getUserData()).take((Mage) fixA.getUserData());
-
                     }
-                    itemMageContactHandled = true;
-                    break;
-            }
+                } else {
+                    if (fixA.getUserData() != "sideL" && fixA.getUserData() != "sideR" && fixA.getUserData() != "head" && fixA.getUserData() != "feet") {
+                        ((Item) fixB.getUserData()).take((Mage) fixA.getUserData());
+                    }
+                }
+                break;
+            case Vault.SPIKE_BIT | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits == Vault.SPIKE_BIT) {
+                    ((Spike) fixA.getUserData()).hit();
+                } else {
+                    ((Spike) fixB.getUserData()).hit();
+                }
+                break;
         }
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onSideLHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onSideLHit();
             }
-        }if (fixA.getUserData() == "head" || fixB.getUserData() == "head") {
+        }
+        if (fixA.getUserData() == "head" || fixB.getUserData() == "head") {
             Fixture sideL = fixA.getUserData() == "head" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onHeadHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onHeadHit();
             }
         }
         if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
             Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onSideLHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onSideLHit();
             }
         }
         if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
             Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && Room.class.isAssignableFrom(object.getUserData().getClass())){
-                ((Room)object.getUserData()).onRoomHit();
+            if (object.getUserData() != null && Room.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((Room) object.getUserData()).onRoomHit();
             }
         }
         if (fixA.getUserData() == "feet" || fixB.getUserData() == "feet") {
             Fixture sideL = fixA.getUserData() == "feet" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onFeetHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onFeetHit();
             }
         }
 
@@ -87,22 +89,22 @@ public class WorldContactListener implements ContactListener {
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onSideLNotHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onSideLNotHit();
             }
         }
         if (fixA.getUserData() == "sideR" || fixB.getUserData() == "sideR") {
             Fixture sideL = fixA.getUserData() == "sideR" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onSideLNotHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onSideLNotHit();
             }
         }
         if (fixA.getUserData() == "feet" || fixB.getUserData() == "feet") {
             Fixture sideL = fixA.getUserData() == "feet" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())){
-                ((InteractiveTileObject)object.getUserData()).onFeetNotHit();
+            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+                ((InteractiveTileObject) object.getUserData()).onFeetNotHit();
             }
         }
     }

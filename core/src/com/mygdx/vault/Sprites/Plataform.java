@@ -14,7 +14,7 @@ public class Plataform  extends InteractiveTileObject{
         super(screen, bounds);
         this.player= player;
         fixture.setUserData(this);
-        setCategoryFilter(Vault.SPIKE_BIT);
+        setCategoryFilter(Vault.PLATAFORM_BIT);
     }
     @Override
     public void onHeadHit() {

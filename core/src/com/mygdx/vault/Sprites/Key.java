@@ -73,7 +73,7 @@ public class Key extends Item{
         statetime+=dt;
         if (collected){
             float newX = player.getX() + getWidth() / 2 - 1;
-            float newY = player.getY() + 0.2f + getHeight() / 2;
+            float newY = player.getY() + 0.4f + getHeight() / 2;
 
             setPosition(newX, newY);
 
