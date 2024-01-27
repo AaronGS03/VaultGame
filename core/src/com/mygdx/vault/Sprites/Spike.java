@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,12 +23,14 @@ public class Spike extends Sprite {
     public float x;
     public float y;
     public int position;
+    public Mage player;
 
     private TextureRegion texture;
-    public Spike(PlayScreen screen, float x, float y, int position){
+    public Spike(PlayScreen screen, float x, float y, int position, Mage player){
         this.world = screen.getWorld();
         this.screen= screen;
         this.position=position;
+        this.player=player;
         this.x= x;
         this.y= y;
         if (position==1){
@@ -99,7 +103,12 @@ public class Spike extends Sprite {
      }
 
      public void hit(){
-
+        player.setDead(true);
+         Filter filter= new Filter();
+         filter.maskBits = Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+         for(Fixture fixture: b2body.getFixtureList()){
+             fixture.setFilterData(filter);
+         }
          Gdx.app.log("V","toque");
      }
 }

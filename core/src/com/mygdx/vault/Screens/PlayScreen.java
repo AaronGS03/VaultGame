@@ -135,65 +135,68 @@ public class PlayScreen implements Screen {
     public void handleInput(float dt) {
         //Funcion secreta tocar personaje
         // Manejar toques en el sprite del personaje
-        if (Gdx.input.isTouched() && !touch) {
-            float touchX = Gdx.input.getX();
-            float touchY = Gdx.input.getY();
-            Vector3 touchPoint = new Vector3(touchX, touchY, 0);
-            gamecam.unproject(touchPoint); // devuelve el punto tocado
+        if (!player.isDead()) {
+        }
+            if (Gdx.input.isTouched() && !touch) {
+                float touchX = Gdx.input.getX();
+                float touchY = Gdx.input.getY();
+                Vector3 touchPoint = new Vector3(touchX, touchY, 0);
+                gamecam.unproject(touchPoint); // devuelve el punto tocado
 
-            Rectangle playerBounds = player.getBoundingRectangle();
+                Rectangle playerBounds = player.getBoundingRectangle();
 
-            // Verificar si el toque está dentro del rectángulo del sprite del personaje
-            if (playerBounds.contains(touchPoint.x, touchPoint.y)) {
-                touchCount++;
+                // Verificar si el toque está dentro del rectángulo del sprite del personaje
+                if (playerBounds.contains(touchPoint.x, touchPoint.y)) {
+                    touchCount++;
 
-                // Realizar la acción después de 3 toques
-                if (touchCount == 3) {
-                    secretSetting = !secretSetting;
-                    touch = true;
-                    touchCount = 0;
+                    // Realizar la acción después de 3 toques
+                    if (touchCount == 3) {
+                        secretSetting = !secretSetting;
+                        touch = true;
+                        touchCount = 0;
+                    }
+                }
+            } else if (touch) {
+
+                intervalTouch--;
+                if (intervalTouch == 0) {
+                    touch = false;
+                    intervalTouch = 5;
+
                 }
             }
-        } else if (touch) {
 
-            intervalTouch--;
-            if (intervalTouch == 0) {
-                touch = false;
-                intervalTouch = 5;
+            //Moviento del personaje movil
 
+            if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
+
+                if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
+                    player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
+                } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
+                    player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
+
+                }
+                if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+                    player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
+                    controller.setUpPressed(false);
+                }
+            } else {
+
+                player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
             }
-        }
 
-        //Moviento del personaje movil
-
-        if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
-
-            if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
-                player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
-            } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
-                player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
-
-            }
-            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+            //Movimiento personaje teclado
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
                 player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
-                controller.setUpPressed(false);
             }
-        } else {
-
-            player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x >= -20) {
+                player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) &&player.b2body.getLinearVelocity().x <= 20) {
+                player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
+            }
         }
 
-        //Movimiento personaje teclado
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x >= -20) {
-            player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) &&player.b2body.getLinearVelocity().x <= 20) {
-            player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
-        }
-    }
 
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {

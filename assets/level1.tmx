@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="102" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="11" nextobjectid="304">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="102" height="40" tilewidth="512" tileheight="512" infinite="0" nextlayerid="11" nextobjectid="314">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
  <layer id="1" name="background" width="102" height="40">
   <data encoding="base64" compression="zlib">
@@ -159,17 +159,17 @@
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="195" x="11352.4" y="4969.34" width="260" height="304">
+  <object id="195" x="10996.4" y="4989.34" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="196" x="11614.4" y="4967.99" width="260" height="304">
+  <object id="196" x="11258.4" y="4987.99" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="197" x="11875.6" y="4966.66" width="260" height="304">
+  <object id="197" x="11519.6" y="4986.66" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
@@ -227,16 +227,6 @@
   <object id="214" x="10742" y="4408" width="260" height="304">
    <properties>
     <property name="position" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="215" x="948.939" y="7810" width="304" height="260">
-   <properties>
-    <property name="position" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="216" x="949.333" y="7547.94" width="304" height="260">
-   <properties>
-    <property name="position" type="int" value="2"/>
    </properties>
   </object>
   <object id="217" x="949.333" y="7287.33" width="304" height="260">
@@ -324,17 +314,17 @@
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="238" x="28756.4" y="10590" width="260" height="304">
+  <object id="238" x="28404.4" y="10606" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="239" x="29018.4" y="10588.7" width="260" height="304">
+  <object id="239" x="28666.4" y="10604.7" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="240" x="29279.6" y="10587.3" width="260" height="304">
+  <object id="240" x="28927.6" y="10603.3" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
@@ -394,24 +384,24 @@
     <property name="position" type="int" value="0"/>
    </properties>
   </object>
-  <object id="252" x="18352.9" y="13430.7" width="304" height="260">
+  <object id="252" x="29534.8" y="13576.6" width="304" height="260">
    <properties>
-    <property name="position" type="int" value="2"/>
+    <property name="position" type="int" value="3"/>
    </properties>
   </object>
-  <object id="253" x="18353.3" y="13168.6" width="304" height="260">
+  <object id="253" x="29535.2" y="13314.5" width="304" height="260">
    <properties>
-    <property name="position" type="int" value="2"/>
+    <property name="position" type="int" value="3"/>
    </properties>
   </object>
-  <object id="254" x="18353.3" y="12908" width="304" height="260">
+  <object id="254" x="29535.2" y="13053.9" width="304" height="260">
    <properties>
-    <property name="position" type="int" value="2"/>
+    <property name="position" type="int" value="3"/>
    </properties>
   </object>
-  <object id="255" x="18353.3" y="12646.7" width="304" height="260">
+  <object id="255" x="29535.2" y="12792.6" width="304" height="260">
    <properties>
-    <property name="position" type="int" value="2"/>
+    <property name="position" type="int" value="3"/>
    </properties>
   </object>
   <object id="256" x="33569.5" y="8369.46" width="304" height="260">
@@ -489,17 +479,17 @@
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="271" x="46168.4" y="16214" width="260" height="304">
+  <object id="271" x="45808.4" y="16238" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="272" x="46430.4" y="16212.7" width="260" height="304">
+  <object id="272" x="46070.4" y="16236.7" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
   </object>
-  <object id="273" x="46691.6" y="16211.3" width="260" height="304">
+  <object id="273" x="46331.6" y="16235.3" width="260" height="304">
    <properties>
     <property name="position" type="int" value="1"/>
    </properties>
@@ -559,16 +549,6 @@
     <property name="position" type="int" value="0"/>
    </properties>
   </object>
-  <object id="285" x="35764.9" y="19054.7" width="304" height="260">
-   <properties>
-    <property name="position" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="286" x="35765.3" y="18792.6" width="304" height="260">
-   <properties>
-    <property name="position" type="int" value="2"/>
-   </properties>
-  </object>
   <object id="287" x="35765.3" y="18532" width="304" height="260">
    <properties>
     <property name="position" type="int" value="2"/>
@@ -595,6 +575,56 @@
    </properties>
   </object>
   <object id="292" x="50981.9" y="13209.4" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="304" x="18368" y="12784.6" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="305" x="18368" y="12523.4" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="306" x="12116" y="7937.76" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="307" x="12116.4" y="7675.66" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="308" x="12116.4" y="7415.06" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="309" x="12116.4" y="7153.76" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="310" x="46949.9" y="19204.9" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="311" x="46950.3" y="18942.8" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="312" x="46950.3" y="18682.2" width="304" height="260">
+   <properties>
+    <property name="position" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="313" x="46950.3" y="18420.9" width="304" height="260">
    <properties>
     <property name="position" type="int" value="3"/>
    </properties>

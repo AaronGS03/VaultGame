@@ -23,13 +23,11 @@ import java.util.HashMap;
 
 public class Mage extends Sprite {
 
-    public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING, WALLSLIDEL, WALLSLIDER}
+    public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING, WALLSLIDEL, WALLSLIDER, DYING, DEAD}
 
     ;
     public State currentState;
     public State previousState;
-
-
 
 
     public World world;
@@ -42,11 +40,22 @@ public class Mage extends Sprite {
     private Animation<TextureRegion> mageJumpTF;
     private Animation<TextureRegion> mageFalling;
     private Animation<TextureRegion> mageLanding;
-    private Animation<TextureRegion> mageWallSlideR;
+    private TextureRegion mageDead;
+    private Animation<TextureRegion> mageDying;
     private Animation<TextureRegion> mageWallSlideL;
     private float stateTimer;
     private TextureAtlas atlas;
     private boolean runningRight;
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    private boolean dead=false;
     private Array<TextureRegion> frames;
 
     public boolean isTouchingWall() {
@@ -90,7 +99,7 @@ public class Mage extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
         runningRight = true;
-        this.manager =manager;
+        this.manager = manager;
 
         this.controller = controller;
         this.atlas = atlas;
@@ -142,9 +151,19 @@ public class Mage extends Sprite {
         //wallslideL
 
 
-        TextureAtlas.AtlasRegion atlasRegion= atlas.findRegion("wall slide-Sheet");
-        TextureRegion[][] temp= atlasRegion.split(atlasRegion.getRegionWidth()/4,atlasRegion.getRegionHeight());
+        TextureAtlas.AtlasRegion atlasRegion = atlas.findRegion("wall slide-Sheet");
+        TextureRegion[][] temp = atlasRegion.split(atlasRegion.getRegionWidth() / 4, atlasRegion.getRegionHeight());
         mageWallSlideL = new Animation(0.1f, temp[0]);
+
+        //death
+        atlasRegion = atlas.findRegion("itch hurt 2 sheet-Sheet");
+        temp = atlasRegion.split(atlasRegion.getRegionWidth() / 7, atlasRegion.getRegionHeight());
+        for (int i = 0; i < 5; i++) {
+            frames.add(temp[0][i]);
+        }
+        mageDead = new TextureRegion(frames.get(4));
+        mageDying = new Animation(0.1f, frames);
+        frames.clear();
 
 
         //stand
@@ -157,11 +176,14 @@ public class Mage extends Sprite {
     }
 
     public void update(float dt) {
-        if (currentState==State.WALLSLIDEL||currentState==State.WALLSLIDER){
-            setPosition(b2body.getPosition().x  - getWidth() / 2, b2body.getPosition().y  - getHeight() / 2);
-        } else{
-            setPosition(b2body.getPosition().x  - getWidth() / 2, b2body.getPosition().y +1f - getHeight() / 2);
+        if (currentState == State.WALLSLIDEL || currentState == State.WALLSLIDER) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        } else {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y + 1f - getHeight() / 2);
 
+        }
+        if (dead){
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y+0.6f - getHeight() / 2);
         }
 
         setRegion(getFrame(dt));
@@ -193,6 +215,13 @@ public class Mage extends Sprite {
             case LANDING:
                 region = mageLanding.getKeyFrame(stateTimer);
                 break;
+            case DYING:
+                region = mageDying.getKeyFrame(stateTimer);
+                break;
+            case DEAD:
+                region = mageDead;
+
+                break;
             case STANDING:
             default:
                 region = mageIdle.getKeyFrame(stateTimer, true);
@@ -212,7 +241,11 @@ public class Mage extends Sprite {
     }
 
     public State getState() {
-        if (b2body.getLinearVelocity().y > 0) {
+        if (dead) {
+            return State.DYING;
+        } else if (previousState == State.DYING && stateTimer < 0.5f) {
+            return State.DEAD;
+        } else if (b2body.getLinearVelocity().y > 0) {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().y < 0 && (previousState == State.WALLSLIDER || previousState == State.WALLSLIDEL || previousState == State.JUMPING || previousState == State.AIRTRANSITION || previousState == State.FALLING) && isTouchingWall && controller.isRightPressed()) {
             return State.WALLSLIDER;
