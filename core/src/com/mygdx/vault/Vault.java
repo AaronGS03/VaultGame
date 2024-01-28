@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.vault.Screens.LoadingScreen;
 import com.mygdx.vault.Screens.PlayScreen;
 
 public class Vault extends Game {
@@ -35,9 +36,14 @@ public class Vault extends Game {
 		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
+
+		// Aquí puedes cargar otros recursos necesarios para el menú principal
+
+		manager.load("loadingScreenImage.png", Texture.class); // Por ejemplo, una imagen de carga
+
 		manager.finishLoading();
 
-		setScreen(new PlayScreen(this,manager));
+		setScreen(new LoadingScreen(this));
 
 	}
 
