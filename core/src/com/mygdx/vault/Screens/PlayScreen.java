@@ -154,7 +154,7 @@ public class PlayScreen implements Screen {
 
                     // Realizar la acción después de 3 toques
                     if (touchCount == 3) {
-                        secretSetting = !secretSetting;
+                       secretSetting = !secretSetting;
                         touch = true;
                         touchCount = 0;
                     }
@@ -222,7 +222,7 @@ public class PlayScreen implements Screen {
             }
 
         }
-        if (player.currentState == Mage.State.WALLSLIDER || player.currentState == Mage.State.WALLSLIDEL && player.isTouchingGrass()) {
+        if (player.currentState == Mage.State.WALLSLIDER || player.currentState == Mage.State.WALLSLIDEL ) {
             if (stepSoundTimer <= 0) {
                 manager.get("audio/sounds/rustling-grass.mp3", Sound.class).play(0.2f);
                 stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador

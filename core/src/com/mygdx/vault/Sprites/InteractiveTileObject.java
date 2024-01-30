@@ -45,6 +45,7 @@ protected World world;
         fdef.shape = shape;
         fdef.friction=1;
         fixture= body.createFixture(fdef);
+        shape.dispose();
     }
 
     public abstract void onHeadHit();
