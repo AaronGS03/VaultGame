@@ -104,11 +104,7 @@ public class Spike extends Sprite {
 
      public void hit(){
         player.setDead(true);
-         Filter filter= new Filter();
-         filter.maskBits = Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
-         for(Fixture fixture: b2body.getFixtureList()){
-             fixture.setFilterData(filter);
-         }
+
          Gdx.app.log("V","toque");
      }
 }

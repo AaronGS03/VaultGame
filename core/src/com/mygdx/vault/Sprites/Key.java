@@ -3,6 +3,7 @@ package com.mygdx.vault.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -17,10 +18,13 @@ public class Key extends Item{
     public float y;
     public float width;
     public float height;
+    public float originx;
+    public float originy;
+    public int level;
     public boolean collected=false;
     public BodyDef bdef;
     Mage player;
-    public Key(PlayScreen screen, float x, float y) {
+    public Key(PlayScreen screen, float x, float y, int level) {
         super(screen, x, y);
         this.x= x;
         this.y= y;
@@ -31,13 +35,16 @@ public class Key extends Item{
         this.width=atlasRegion.getRegionWidth();
         this.height=atlasRegion.getRegionHeight();
         defineItem();
+        this.level=level;
     }
 
     @Override
     public void defineItem() {
         bdef = new BodyDef();
         bdef.position.set(x+width/2/Vault.PPM,y+height/2/Vault.PPM);
-        bdef.type = BodyDef.BodyType.DynamicBody;
+
+
+        bdef.type = BodyDef.BodyType.KinematicBody;
         body = world.createBody(bdef);
 
 
@@ -60,6 +67,7 @@ public class Key extends Item{
     public void take(Mage players) {
         collected=true;
         player=players;
+        players.keys=this;
     }
 
     @Override
@@ -81,7 +89,11 @@ public class Key extends Item{
             body.setTransform(newX, newY, body.getAngle());
         }else{
             setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
+            originx=x+getWidth()/2/Vault.PPM;
+            originy=y+getHeight()/2/Vault.PPM;
+            body.setTransform(originx,originy,body.getAngle());
         }
+
         setRegion(((TextureRegion)idle.getKeyFrame(statetime,true)));
     }
 }

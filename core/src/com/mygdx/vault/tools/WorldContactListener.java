@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.mygdx.vault.Sprites.Door;
 import com.mygdx.vault.Sprites.InteractiveTileObject;
 import com.mygdx.vault.Sprites.Item;
 import com.mygdx.vault.Sprites.Mage;
@@ -40,6 +41,13 @@ public class WorldContactListener implements ContactListener {
                     ((Spike) fixA.getUserData()).hit();
                 } else {
                     ((Spike) fixB.getUserData()).hit();
+                }
+                break;
+            case Vault.DOOR_BIT | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits == Vault.DOOR_BIT) {
+                    ((Door) fixA.getUserData()).open();
+                } else {
+                    ((Door) fixB.getUserData()).open();
                 }
                 break;
         }

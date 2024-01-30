@@ -8,13 +8,13 @@ import com.mygdx.vault.Vault;
 
 public class Door extends InteractiveTileObject{
 
-
+    private int level;
     private Mage player;
 
-    public Door(PlayScreen screen, Rectangle bounds, Mage player){
+    public Door(PlayScreen screen, Rectangle bounds, Mage player, int level){
         super(screen, bounds);
         this.player= player;
-        fixture.setSensor(true);
+        this.level=level;
         fixture.setUserData(this);
         setCategoryFilter(Vault.DOOR_BIT);
     }
@@ -37,6 +37,17 @@ public class Door extends InteractiveTileObject{
     @Override
     public void onSideLHit() {
 
+    }
+
+    public void open(){
+        if (player.keys!=null){
+
+            if (player.getCurrentLevel()==level&&player.keys.collected){
+                this.fixture.setSensor(true);
+            }else{
+                this.fixture.setSensor(false);
+            }
+        }
     }
 
     @Override

@@ -20,7 +20,6 @@ public class LoadingScreen implements Screen {
 
         // Cargar recursos para la pantalla de carga
         manager.load("loadingScreenImage.png", Texture.class);
-        // Otros recursos para la pantalla de carga si es necesario
 
         // Cargar recursos para el juego
         manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
@@ -42,7 +41,7 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         if (assetsLoaded) {
             // Cambia a la pantalla principal del juego cuando los recursos estén cargados
-            game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new PlayScreen(game, manager));
         } else {
             game.batch.begin();
             game.batch.draw(loadingImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

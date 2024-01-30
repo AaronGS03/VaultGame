@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.vault.Screens.LoadingScreen;
+import com.mygdx.vault.Screens.MainMenuScreen;
 import com.mygdx.vault.Screens.PlayScreen;
 
 public class Vault extends Game {
@@ -37,13 +38,12 @@ public class Vault extends Game {
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
 
-		// Aquí puedes cargar otros recursos necesarios para el menú principal
-
-		manager.load("loadingScreenImage.png", Texture.class); // Por ejemplo, una imagen de carga
+		manager.load("loadingScreenImage.png", Texture.class);
 
 		manager.finishLoading();
 
-		setScreen(new LoadingScreen(this));
+		this.setScreen(new PlayScreen(this, manager));
+
 
 	}
 

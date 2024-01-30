@@ -25,6 +25,7 @@ import com.mygdx.vault.Contols.Controller;
 import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Key;
 import com.mygdx.vault.Sprites.Mage;
+import com.mygdx.vault.Sprites.Room;
 import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
@@ -42,7 +43,8 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader; //carga el mapa
     private TiledMap map; //este es el mapa
     private OrthogonalTiledMapRenderer renderer;
-    private Mage player;
+    public Mage player;
+    private Mage player2;
     private boolean secretSetting = false;
     private boolean touch = true;
     private int touchCount;
@@ -64,7 +66,7 @@ public class PlayScreen implements Screen {
     private static float LAND_SOUND_INTERVAL = 0.22f; // Frecuencia deseada de los sonidos de pasos
     private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
 
-    public Array<RoomTool> habitaciones = new Array<RoomTool>();
+    public Array<Room> habitaciones = new Array<Room>();
 
 
     public boolean isSecretSetting() {
@@ -95,7 +97,7 @@ public class PlayScreen implements Screen {
 
         controller = new Controller();
 
-        player = new Mage( this, controller, atlas, manager);
+        player = new Mage( this, controller, atlas, manager, habitaciones);
         creator= new B2WorldCreator(this, player, manager,habitaciones,gamecam,backcam);
 
 
@@ -136,6 +138,7 @@ public class PlayScreen implements Screen {
         //Funcion secreta tocar personaje
         // Manejar toques en el sprite del personaje
         if (!player.isDead()) {
+
         }
             if (Gdx.input.isTouched() && !touch) {
                 float touchX = Gdx.input.getX();
@@ -200,7 +203,10 @@ public class PlayScreen implements Screen {
 
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
-        handleInput(dt);
+        if (!player.isDead()){
+            handleInput(dt);
+
+        }
 
         if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
             if (stepSoundTimer <= 0) {
@@ -248,6 +254,16 @@ public class PlayScreen implements Screen {
         }
         for (Key key : creator.getKeys()){
             key.update(dt);
+        }
+
+        if (player.isDead()&& stepSoundTimer <= -1.5){
+            player.b2body.setTransform(habitaciones.get(player.getCurrentLevel()).getSpawnPoint().x/Vault.PPM,habitaciones.get(player.getCurrentLevel()).getSpawnPoint().y/Vault.PPM,0);
+            player.setDead(false);
+            if (player.keys!=null){
+                player.keys.collected=false;
+
+            }
+
         }
 
         backcam.position.x = player.b2body.getPosition().x;

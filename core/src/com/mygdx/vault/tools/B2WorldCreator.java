@@ -34,7 +34,7 @@ public class B2WorldCreator {
         return keys;
     }
 
-    public B2WorldCreator(PlayScreen screen, Mage player, AssetManager manager, Array<RoomTool> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
+    public B2WorldCreator(PlayScreen screen, Mage player, AssetManager manager, Array<Room> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
         World world =screen.getWorld();
         TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
@@ -55,16 +55,24 @@ public class B2WorldCreator {
 
         }
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Door(screen, rect, player);
+            if (object.getProperties().containsKey("level")) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                new Door(screen, rect, player,Integer.parseInt(object.getProperties().get("level")+""));
+
+            }
 
 
         }
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
 
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Room(screen, rect, player, gamecam,backcam);
-            habitaciones.add(new RoomTool(rect,Integer.parseInt(object.getProperties().get("level")+"")));
+            if (object.getProperties().containsKey("spawnPoint")) {
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                habitaciones.get( Integer.parseInt(object.getProperties().get("spawnPoint")+"")).setSpawnPoint(rect);
+            }else{
+                Rectangle rect = ((RectangleMapObject) object).getRectangle();
+                habitaciones.add(new Room(screen, rect, player, gamecam, Integer.parseInt(object.getProperties().get("level")+""), backcam));
+
+            }
 
         }
 
@@ -80,7 +88,7 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                keys.add(new Key(screen,rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM));
+                keys.add(new Key(screen,rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM,Integer.parseInt(object.getProperties().get("level")+"")));
 
 
         }

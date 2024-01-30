@@ -1,5 +1,6 @@
 package com.mygdx.vault.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -19,9 +21,18 @@ import com.mygdx.vault.Contols.Controller;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Mage extends Sprite {
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
 
     public enum State {FALLING, AIRTRANSITION, LANDING, JUMPING, STANDING, RUNNING, WALLSLIDEL, WALLSLIDER, DYING, DEAD}
 
@@ -55,7 +66,9 @@ public class Mage extends Sprite {
         this.dead = dead;
     }
 
-    private boolean dead=false;
+    private int currentLevel;
+
+    private boolean dead = false;
     private Array<TextureRegion> frames;
 
     public boolean isTouchingWall() {
@@ -91,8 +104,10 @@ public class Mage extends Sprite {
     private Controller controller;
 
     private AssetManager manager;
+    private Array<Room> habitaciones;
+    public Key keys;
 
-    public Mage(PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager) {
+    public Mage(PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager, Array<Room> habitaciones) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
         this.world = screen.getWorld();
         currentState = State.STANDING;
@@ -100,7 +115,7 @@ public class Mage extends Sprite {
         stateTimer = 0;
         runningRight = true;
         this.manager = manager;
-
+        this.habitaciones = habitaciones;
         this.controller = controller;
         this.atlas = atlas;
 
@@ -182,8 +197,11 @@ public class Mage extends Sprite {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y + 1f - getHeight() / 2);
 
         }
-        if (dead){
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y+0.6f - getHeight() / 2);
+
+
+        if (dead) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y + 0.6f - getHeight() / 2);
+
         }
 
         setRegion(getFrame(dt));
@@ -267,17 +285,25 @@ public class Mage extends Sprite {
 
     }
 
+
     public void defineMage() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(6200 / Vault.PPM, 18400 / Vault.PPM);
+
+        bdef.position.set(20 / Vault.PPM, 18000 / Vault.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1f, 1.6f);
-        fdef.filter.categoryBits = Vault.MAGE_BIT;
-        fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.ITEM | Vault.DOOR_BIT | Vault.WALL_BIT;
+        if (!dead){
+            fdef.filter.categoryBits = Vault.MAGE_BIT;
+            fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.ITEM | Vault.DOOR_BIT | Vault.WALL_BIT;
+        }else{
+            fdef.filter.maskBits = Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+
+        }
+
 
         fdef.shape = shape;
         fdef.friction = 0.3f;
