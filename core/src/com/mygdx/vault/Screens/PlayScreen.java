@@ -286,17 +286,17 @@ public class PlayScreen implements Screen {
         game.batch.begin();
         for (int i = layers.length - 1; i >= 0; i--) {
             if (i == 1) {
-                if (secretSetting) {
-                    layers[i].render(game.batch);
-                }
+//                if (secretSetting) {
+//                    layers[i].render(game.batch);
+//                }
             } else {
                 layers[i].render(game.batch);
 
             }
 
         }
-        if (secretSetting) {
-
+        if (secretSetting){
+            player.setCurrentLevel(2);
         }
         player.draw(game.batch);
         for (Spike spike : creator.getSpikes()){
