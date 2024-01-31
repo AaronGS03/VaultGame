@@ -106,10 +106,12 @@ public class Mage extends Sprite {
     private AssetManager manager;
     private Array<Room> habitaciones;
     public Key keys;
+    private PlayScreen screen;
 
     public Mage(PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager, Array<Room> habitaciones) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
         this.world = screen.getWorld();
+        this.screen=screen;
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -203,6 +205,11 @@ public class Mage extends Sprite {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y + 0.6f - getHeight() / 2);
 
         }
+        if (screen.levelSpawn!=-1){
+            setPosition(screen.habitaciones.get(screen.levelSpawn-1).getSpawnPoint().x / Vault.PPM, screen.habitaciones.get(screen.levelSpawn-1).getSpawnPoint().y / Vault.PPM);
+            b2body.setTransform(screen.habitaciones.get(screen.levelSpawn-1).getSpawnPoint().x / Vault.PPM, screen.habitaciones.get(screen.levelSpawn-1).getSpawnPoint().y / Vault.PPM,b2body.getAngle());
+            screen.levelSpawn=-1;
+        }
 
         setRegion(getFrame(dt));
     }
@@ -289,7 +296,8 @@ public class Mage extends Sprite {
     public void defineMage() {
         BodyDef bdef = new BodyDef();
 
-        bdef.position.set(20 / Vault.PPM, 24616 / Vault.PPM);
+            bdef.position.set(20 / Vault.PPM, 24616 / Vault.PPM);
+
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 

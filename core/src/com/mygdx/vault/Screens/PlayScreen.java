@@ -68,18 +68,20 @@ public class PlayScreen implements Screen {
 
     public Array<Room> habitaciones = new Array<Room>();
 
+    public int levelSpawn=1;
 
     public boolean isSecretSetting() {
         return secretSetting;
     }
 
-    public PlayScreen(Vault game, AssetManager manager) {
+    public PlayScreen(Vault game, AssetManager manager, int levelSpawn) {
         this.manager = manager;
         atlas = new TextureAtlas("Sprites.atlas");
 
         this.game = game;
         intervalTouch = 500;
 
+        this.levelSpawn=levelSpawn;
 
         gamecam = new OrthographicCamera();//camara que sigue al mapa
         backcam = new OrthographicCamera(Vault.V_WIDTH * 2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje

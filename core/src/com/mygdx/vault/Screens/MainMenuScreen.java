@@ -100,15 +100,14 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen(game, game.manager));
+                game.setScreen(new PlayScreen(game, game.manager,0));
             }
         });
 
         levelsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Acción al hacer clic en el botón de niveles
-                // Implementa la lógica correspondiente
+                game.setScreen(new LevelSelectScreen(game));
             }
         });
 
