@@ -21,7 +21,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.vault.Contols.Controller;
+import com.mygdx.vault.Controls.Controller;
 import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Sprites.Key;
 import com.mygdx.vault.Sprites.Mage;
@@ -29,7 +29,6 @@ import com.mygdx.vault.Sprites.Room;
 import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
-import com.mygdx.vault.tools.RoomTool;
 import com.mygdx.vault.tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
@@ -86,7 +85,7 @@ public class PlayScreen implements Screen {
         gamecam = new OrthographicCamera();//camara que sigue al mapa
         backcam = new OrthographicCamera(Vault.V_WIDTH * 2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
-        hud = new Hud(game.batch);
+        hud = new Hud();
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
@@ -156,7 +155,7 @@ public class PlayScreen implements Screen {
 
                     // Realizar la acción después de 3 toques
                     if (touchCount == 3) {
-                       secretSetting = !secretSetting;
+//                       secretSetting = !secretSetting;
                         touch = true;
                         touchCount = 0;
                     }
@@ -297,6 +296,9 @@ public class PlayScreen implements Screen {
             }
 
         }
+        if (hud.isPause()){
+            layers[1].render(game.batch);
+        }
         if (secretSetting){
             player.setCurrentLevel(2);
         }
@@ -315,8 +317,7 @@ public class PlayScreen implements Screen {
         //b2dr.render(world, gamecam.combined);
 
 
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        hud.draw();
 
         controller.draw();
     }
@@ -325,6 +326,7 @@ public class PlayScreen implements Screen {
     public void resize(int width, int height) {
         gamePort.update(width, height);//ajusta el tamaño de la pantalla en resizes
         controller.resize(width, height);
+        hud.resize(width,height);
     }
 
     public TiledMap getMap(){

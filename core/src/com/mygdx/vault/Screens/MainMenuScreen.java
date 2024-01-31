@@ -100,7 +100,7 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen(game, game.manager,0));
+                game.setScreen(new PlayScreen(game, game.manager,1));
             }
         });
 
@@ -144,6 +144,7 @@ public class MainMenuScreen implements Screen {
         table.add(levelsButton).padBottom(20).left();
         table.add(creditsButton).padLeft(stage.getWidth()/2).row();
         table.row();
+
     }
     private BitmapFont generateFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("cityburn.ttf"));

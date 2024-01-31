@@ -30,8 +30,17 @@ public class LevelSelectScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
+        Table table2 = new Table();
+        Table table3 = new Table();
+        Table table4 = new Table();
         table.setFillParent(true);
+        table2.left().top().setFillParent(true);
+        table3.right().setFillParent(true);
+        table4.left().setFillParent(true);
         stage.addActor(table);
+        stage.addActor(table2);
+        stage.addActor(table3);
+        stage.addActor(table4);
 
         BitmapFont font = generateFont();
 
@@ -57,7 +66,7 @@ public class LevelSelectScreen implements Screen {
         TextButton backButton = createButton("<", buttonStyle);
         TextButton nextButton = createButton(">", buttonStyle);
 
-        TextButton backButtonToMenu = createButton("Volver al Menú", buttonStyle);
+        TextButton backButtonToMenu = createButton("Volver", buttonStyle);
         float menuButtonWidth = Gdx.graphics.getWidth() * 2f;
 
         backButton.addListener(new ClickListener() {
@@ -84,12 +93,8 @@ public class LevelSelectScreen implements Screen {
         float buttonHeight = Gdx.graphics.getHeight() * 0.1f;
 
 
-
-// Agregar botones a la tabla
-        table.add(backButtonToMenu).padTop(20).padRight(20).colspan(2).row();
-        table.add(backButton).padRight(20).padTop(20);
-
-        table.row().padTop(10);
+        table2.add(backButtonToMenu).padTop(20).row();
+        table4.add(backButton);
 
         int buttonsPerRow = 3;
         int level=0;
@@ -117,7 +122,7 @@ public class LevelSelectScreen implements Screen {
             }
         }
 
-        table.add(nextButton).padTop(20).row();
+        table3.add(nextButton).row();
 
         backButtonToMenu.setWidth(menuButtonWidth);  // Ajusta el ancho del botón de menú
         backButton.setWidth(buttonWidth);
@@ -125,9 +130,6 @@ public class LevelSelectScreen implements Screen {
         nextButton.setWidth(buttonWidth);
         nextButton.setHeight(buttonHeight);
 
-        table.add(backButtonToMenu).padTop(20).padRight(20).colspan(2).row();
-        table.add(backButton).padRight(20).padTop(20);
-        table.add(nextButton).padTop(20).row();
     }
 
     private BitmapFont generateFont() {

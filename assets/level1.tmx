@@ -98,7 +98,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="8" name="room" visible="0">
+ <objectgroup id="8" name="room">
   <object id="107" x="0" y="0" width="17408" height="9216">
    <properties>
     <property name="level" type="int" value="0"/>
@@ -114,7 +114,7 @@
     <property name="level" type="int" value="2"/>
    </properties>
   </object>
-  <object id="315" x="-208" y="1496" width="512" height="512">
+  <object id="315" x="256" y="1552" width="512" height="512">
    <properties>
     <property name="spawnPoint" type="int" value="0"/>
    </properties>

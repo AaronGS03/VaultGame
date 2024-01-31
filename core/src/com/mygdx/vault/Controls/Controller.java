@@ -1,4 +1,4 @@
-package com.mygdx.vault.Contols;
+package com.mygdx.vault.Controls;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
