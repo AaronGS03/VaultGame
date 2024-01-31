@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.vault.Screens.LoadingScreen;
@@ -42,7 +43,7 @@ public class Vault extends Game {
 
 		manager.finishLoading();
 
-		this.setScreen(new PlayScreen(this, manager));
+		this.setScreen(new LoadingScreen(this));
 
 
 	}

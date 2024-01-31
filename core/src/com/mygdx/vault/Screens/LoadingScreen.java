@@ -8,6 +8,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.vault.Vault;
 
+import java.awt.Font;
+
 public class LoadingScreen implements Screen {
     private Vault game;
     private AssetManager manager;
@@ -41,12 +43,12 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         if (assetsLoaded) {
             // Cambia a la pantalla principal del juego cuando los recursos estén cargados
-            game.setScreen(new PlayScreen(game, manager));
-        } else {
+            game.setScreen(new MainMenuScreen(game));
+        }
             game.batch.begin();
             game.batch.draw(loadingImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             game.batch.end();
-        }
+
     }
 
     @Override
