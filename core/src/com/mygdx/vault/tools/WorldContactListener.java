@@ -1,5 +1,6 @@
 package com.mygdx.vault.tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -28,10 +29,12 @@ public class WorldContactListener implements ContactListener {
             case Vault.ITEM | Vault.MAGE_BIT:
                 if (fixA.getFilterData().categoryBits == Vault.ITEM) {
                     if (fixB.getUserData() != "sideL" && fixB.getUserData() != "sideR" && fixB.getUserData() != "head" && fixB.getUserData() != "feet") {
+                        Gdx.input.vibrate(200);
                         ((Item) fixA.getUserData()).take((Mage) fixB.getUserData());
                     }
                 } else {
                     if (fixA.getUserData() != "sideL" && fixA.getUserData() != "sideR" && fixA.getUserData() != "head" && fixA.getUserData() != "feet") {
+                        Gdx.input.vibrate(200);
                         ((Item) fixB.getUserData()).take((Mage) fixA.getUserData());
                     }
                 }

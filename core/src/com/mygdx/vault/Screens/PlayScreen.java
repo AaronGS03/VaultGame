@@ -85,7 +85,7 @@ public class PlayScreen implements Screen {
         gamecam = new OrthographicCamera();//camara que sigue al mapa
         backcam = new OrthographicCamera(Vault.V_WIDTH * 2 / Vault.PPM, Vault.V_HEIGHT / Vault.PPM);//camara que sigue al personaje
         gamePort = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, gamecam);//Muestra el mapa de forma que pone barras en los margenes
-        hud = new Hud();
+
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
@@ -95,7 +95,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
 
-
+        hud = new Hud();
         controller = new Controller();
 
         player = new Mage( this, controller, atlas, manager, habitaciones);
@@ -134,10 +134,7 @@ public class PlayScreen implements Screen {
 
     }
 
-    //maneja tocar pantalla
     public void handleInput(float dt) {
-        //Funcion secreta tocar personaje
-        // Manejar toques en el sprite del personaje
         if (!player.isDead()) {
 
         }
