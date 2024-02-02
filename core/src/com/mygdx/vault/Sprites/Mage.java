@@ -260,10 +260,12 @@ public class Mage extends Sprite {
     }
 
     public State getState() {
-        if (dead) {
+        if (dead){
             return State.DYING;
-        } else if (previousState == State.DYING && stateTimer < 0.5f) {
+        }else if (previousState == State.DYING && stateTimer < 0.5f) {
             return State.DEAD;
+        }else if (currentLevel==3 && screen.isDragging) {
+            return State.AIRTRANSITION;
         } else if (b2body.getLinearVelocity().y > 0) {
             return State.JUMPING;
         } else if (b2body.getLinearVelocity().y < 0 && (previousState == State.WALLSLIDER || previousState == State.WALLSLIDEL || previousState == State.JUMPING || previousState == State.AIRTRANSITION || previousState == State.FALLING) && isTouchingWall && controller.isRightPressed()) {
@@ -284,13 +286,15 @@ public class Mage extends Sprite {
             return State.STANDING;
         }
 
+
     }
 
 
     public void defineMage() {
         BodyDef bdef = new BodyDef();
 
-            bdef.position.set(20 / Vault.PPM, 24616 / Vault.PPM);
+        //y+5120 por cada nivel
+            bdef.position.set(20 / Vault.PPM, 29736 / Vault.PPM);
 
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);

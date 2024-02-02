@@ -104,7 +104,7 @@ public class Spike extends Sprite {
 
      public void hit(){
         player.setDead(true);
-
+        screen.reset=true;
          Gdx.app.log("V","toque");
      }
 }
