@@ -42,7 +42,7 @@ public class Controller implements Disposable {
 
         Image upImage = new Image(new Texture("up.png"));
 
-        upImage.setSize(7, 7);
+        upImage.setSize(8, 8);
         upImage.addListener(new InputListener() {
 
             @Override
@@ -60,7 +60,7 @@ public class Controller implements Disposable {
 
 
         leftImage = new Image(new Texture("left.png"));
-        leftImage.setSize(7, 7);
+        leftImage.setSize(8, 8);
         leftImage.addListener(new InputListener() {
 
             @Override
@@ -78,7 +78,7 @@ public class Controller implements Disposable {
 
 
         Image rightImage = new Image(new Texture("right.png"));
-        rightImage.setSize(7, 7);
+        rightImage.setSize(8, 8);
         rightImage.addListener(new InputListener() {
 
             @Override
@@ -95,12 +95,11 @@ public class Controller implements Disposable {
         });
 
         //posicion en las tablas de los botones
-        tableL.row().pad(2,2,2,2);
-        tableL.padLeft(2);
+        tableL.row().pad(2,4,2,2);
         tableL.add(leftImage).size(leftImage.getWidth(), leftImage.getHeight());
         tableL.add();
         tableL.add(rightImage).size(rightImage.getWidth(), rightImage.getHeight());
-        tableL.getCell(rightImage).padLeft(-1);
+        tableL.getCell(rightImage).padLeft(-0);
         tableR.row().pad(2, cam.viewportWidth*2-20, 2,2);
         tableR.add(upImage).size(upImage.getWidth(), upImage.getHeight());
 

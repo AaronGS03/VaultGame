@@ -59,6 +59,7 @@ public class PlayScreen implements Screen {
     Controller controller;
 
     private Hud hud;
+    private boolean pause = false;
    private boolean isRespawning;
     private float respawnTimer;
     private float stepSoundTimer = 0;
@@ -96,8 +97,8 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -45), true);
         b2dr = new Box2DDebugRenderer();
 
-        hud = new Hud();
         controller = new Controller();
+        hud = new Hud(controller.leftImage.getStage());
 
         player = new Mage(this, controller, atlas, manager, habitaciones);
         creator = new B2WorldCreator(this, player, manager, habitaciones, gamecam, backcam);
@@ -230,82 +231,87 @@ public class PlayScreen implements Screen {
 
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
-        if (!player.isDead()) {
-            handleInput(dt);
+        if (hud.isPause()) {
 
-        }
+        }else {
 
-        if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
-            if (stepSoundTimer <= 0) {
-                manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
-                stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
+            if (!player.isDead()) {
+                handleInput(dt);
+
             }
 
-        }
-        if (player.currentState == Mage.State.JUMPING && player.isTouchingGrass()) {
-            if (stepSoundTimer <= -0.3) {
-                manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
-                stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
-            }
-
-        }
-        if (player.currentState == Mage.State.WALLSLIDER || player.currentState == Mage.State.WALLSLIDEL) {
-            if (stepSoundTimer <= 0) {
-                manager.get("audio/sounds/rustling-grass.mp3", Sound.class).play(0.2f);
-                stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
-            }
-
-        }
-        if (player.isTouchingGrass() && player.b2body.getLinearVelocity().x != 0) {
-            // Verifica el temporizador antes de reproducir el sonido
-
-            if (stepSoundTimer <= 0) {
-                manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
-                stepSoundTimer = STEP_SOUND_INTERVAL; // Reinicia el temporizador
-            }
-        }
-
-
-        // Resta el tiempo delta al temporizador
-        stepSoundTimer -= dt;
-
-        world.step(1 / 60f, 6, 2);
-
-        player.update(dt);
-
-
-        //en caso de mover spikes
-        for (Spike spike : creator.getSpikes()) {
-            spike.update(dt);
-        }
-        for (Key key : creator.getKeys()) {
-            key.update(dt);
-        }
-
-        if (player.isDead() && stepSoundTimer <= -1.5) {
-
-            if (!isRespawning) {
-                respawnTimer -= dt;
-                if (respawnTimer <= 0) {
-                    // Permitir que el jugador se mueva después de esperar el tiempo de respawn
-                    isRespawning = true;
-                    respawnTimer = 0.5f; // Reiniciar el temporizador para futuras reapariciones
-                }
-            } else {
-                // Mover el personaje solo si no está en proceso de respawn
-                player.b2body.setTransform(habitaciones.get(player.getCurrentLevel()).getSpawnPoint().x / Vault.PPM, habitaciones.get(player.getCurrentLevel()).getSpawnPoint().y / Vault.PPM, 0);
-                player.setDead(false);
-
-                if (player.keys != null) {
-                    player.keys.collected = false;
+            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
+                if (stepSoundTimer <= 0) {
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                    stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
                 }
 
-                isRespawning = false; // Marcar que el jugador ha terminado de respawnear
             }
-        }
+            if (player.currentState == Mage.State.JUMPING && player.isTouchingGrass()) {
+                if (stepSoundTimer <= -0.3) {
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                    stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
+                }
 
+            }
+            if (player.currentState == Mage.State.WALLSLIDER || player.currentState == Mage.State.WALLSLIDEL) {
+                if (stepSoundTimer <= 0) {
+                    manager.get("audio/sounds/rustling-grass.mp3", Sound.class).play(0.2f);
+                    stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
+                }
+
+            }
+            if (player.isTouchingGrass() && player.b2body.getLinearVelocity().x != 0) {
+                // Verifica el temporizador antes de reproducir el sonido
+
+                if (stepSoundTimer <= 0) {
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                    stepSoundTimer = STEP_SOUND_INTERVAL; // Reinicia el temporizador
+                }
+            }
+
+
+            // Resta el tiempo delta al temporizador
+            stepSoundTimer -= dt;
+
+            world.step(1 / 60f, 6, 2);
+
+            player.update(dt);
+
+
+            //en caso de mover spikes
+            for (Spike spike : creator.getSpikes()) {
+                spike.update(dt);
+            }
+            for (Key key : creator.getKeys()) {
+                key.update(dt);
+            }
+
+            if (player.isDead() && stepSoundTimer <= -1.5) {
+
+                if (!isRespawning) {
+                    respawnTimer -= dt;
+                    if (respawnTimer <= 0) {
+                        // Permitir que el jugador se mueva después de esperar el tiempo de respawn
+                        isRespawning = true;
+                        respawnTimer = 0.5f; // Reiniciar el temporizador para futuras reapariciones
+                    }
+                } else {
+                    // Mover el personaje solo si no está en proceso de respawn
+                    player.b2body.setTransform(habitaciones.get(player.getCurrentLevel()).getSpawnPoint().x / Vault.PPM, habitaciones.get(player.getCurrentLevel()).getSpawnPoint().y / Vault.PPM, 0);
+                    player.setDead(false);
+
+                    if (player.keys != null) {
+                        player.keys.collected = false;
+                    }
+
+                    isRespawning = false; // Marcar que el jugador ha terminado de respawnear
+                }
+            }
+
+
+        }
         backcam.position.x = player.b2body.getPosition().x;
-
         backcam.update();
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
@@ -333,8 +339,8 @@ public class PlayScreen implements Screen {
             }
 
         }
-        if (hud.isPause()) {
-            layers[1].render(game.batch);
+        if (pause) {
+
         }
         if (secretSetting) {
             player.setCurrentLevel(2);

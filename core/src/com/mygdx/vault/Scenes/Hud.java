@@ -26,29 +26,38 @@ public class Hud implements Disposable {
     }
 
     private boolean pause;
+    public Image pauseImage;
     private OrthographicCamera cam;
 
-    public Hud() {
+    public Hud(Stage stageC) {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
-        stage = new Stage(viewport, Vault.batch);
+        this.stage=stageC;
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
         table.top().right().padTop(6).padRight(6).setFillParent(true);
-        stage.addActor(table);
 
-        Image pauseImage = new Image(new Texture("pauseButton.png"));
+        pauseImage = new Image(new Texture("pauseButton.png"));
         pauseImage.setSize(5, 5);
         pauseImage.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                pause=true;
-                return true;
-            }
-        });
+                                   @Override
+                                   public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                                       pause = true;
+                                       return true;
+                                   }
+
+                                   @Override
+                                   public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                                       pause=false;
+
+                                   }
+                               }
+
+        );
 
         table.add(pauseImage).size(pauseImage.getWidth(), pauseImage.getHeight());
+        stage.addActor(table);
     }
 
     public void draw() {
