@@ -28,6 +28,8 @@ public class LoadingScreen implements Screen {
         manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
         manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
 
+
+
         // Cargar otros recursos del juego si es necesario
         loadingImage = manager.get("loadingScreenImage.png", Texture.class);
         manager.finishLoading(); // Espera a que todos los recursos se carguen antes de continuar
@@ -44,6 +46,7 @@ public class LoadingScreen implements Screen {
         if (assetsLoaded) {
             // Cambia a la pantalla principal del juego cuando los recursos estén cargados
             game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
             game.batch.begin();
             game.batch.draw(loadingImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

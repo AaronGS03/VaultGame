@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Controls.Controller;
 import com.mygdx.vault.Scenes.Hud;
+import com.mygdx.vault.Scenes.SubMenu;
 import com.mygdx.vault.Sprites.Key;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Room;
@@ -59,6 +60,7 @@ public class PlayScreen implements Screen {
     Controller controller;
 
     private Hud hud;
+    private SubMenu submenu;
     private boolean pause = false;
    private boolean isRespawning;
     private float respawnTimer;
@@ -99,6 +101,7 @@ public class PlayScreen implements Screen {
 
         controller = new Controller();
         hud = new Hud(controller.leftImage.getStage());
+        submenu = new SubMenu(controller.leftImage.getStage(),hud,game);
 
         player = new Mage(this, controller, atlas, manager, habitaciones);
         creator = new B2WorldCreator(this, player, manager, habitaciones, gamecam, backcam);
@@ -339,9 +342,6 @@ public class PlayScreen implements Screen {
             }
 
         }
-        if (pause) {
-
-        }
         if (secretSetting) {
             player.setCurrentLevel(2);
         }
@@ -361,6 +361,7 @@ public class PlayScreen implements Screen {
 
 
         hud.draw();
+            submenu.draw();
 
         controller.draw();
     }
@@ -370,6 +371,7 @@ public class PlayScreen implements Screen {
         gamePort.update(width, height);//ajusta el tamaño de la pantalla en resizes
         controller.resize(width, height);
         hud.resize(width, height);
+        submenu.resize(width,height);
     }
 
     public TiledMap getMap() {
@@ -398,10 +400,13 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
+        atlas.dispose();
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
         hud.dispose();
+        submenu.dispose();
         controller.dispose();
+
     }
 }

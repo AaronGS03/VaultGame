@@ -109,6 +109,7 @@ public class LevelSelectScreen implements Screen {
                 public void clicked(InputEvent event, float x, float y) {
                     // Implementa la lógica para avanzar entre niveles
                     game.setScreen(new PlayScreen(game,game.manager, finalLevel));
+                    dispose();
                 }
             });
             levelButton.setWidth(buttonWidth);
