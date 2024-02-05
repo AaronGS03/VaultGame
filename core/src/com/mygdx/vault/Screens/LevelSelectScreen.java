@@ -3,6 +3,7 @@ package com.mygdx.vault.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,6 +24,10 @@ import com.mygdx.vault.Vault;
 public class LevelSelectScreen implements Screen {
     private Vault game;
     private Stage stage;
+    Texture buttonTexture;
+    Texture buttonTexturedown;
+    BitmapFont font;
+
 
     public LevelSelectScreen(Vault game) {
         this.game = game;
@@ -42,15 +47,15 @@ public class LevelSelectScreen implements Screen {
         stage.addActor(table3);
         stage.addActor(table4);
 
-        BitmapFont font = generateFont();
+        font = generateFont();
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
         buttonStyle.fontColor = Color.BLACK;
 
         // Configura el fondo con la textura
-        Texture buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
-        Texture buttonTexturedown = new Texture("button_backgroundDown.png"); // Asegúrate de tener esta textura
+        buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
+        buttonTexturedown = new Texture("button_backgroundDown.png"); // Asegúrate de tener esta textura
         TextureRegionDrawable buttonBackground = new TextureRegionDrawable(new TextureRegion(buttonTexture));
         buttonStyle.downFontColor = Color.WHITE;
         TextureRegionDrawable buttonBackgrounddown = new TextureRegionDrawable(new TextureRegion(buttonTexturedown));
@@ -72,6 +77,8 @@ public class LevelSelectScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+
                 // Implementa la lógica para retroceder entre niveles
             }
         });
@@ -79,12 +86,16 @@ public class LevelSelectScreen implements Screen {
         nextButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+
                 // Implementa la lógica para avanzar entre niveles
             }
         });
         backButtonToMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -97,18 +108,20 @@ public class LevelSelectScreen implements Screen {
         table4.add(backButton);
 
         int buttonsPerRow = 3;
-        int level=0;
+        int level = 0;
 
         for (int i = 1; i <= 12; i++) {
             TextButton levelButton = createButton(Integer.toString(i), buttonStyle);
-            level=i;
+            level = i;
             int finalLevel = level;
             levelButton.addListener(new ClickListener() {
 
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Implementa la lógica para avanzar entre niveles
-                    game.setScreen(new PlayScreen(game,game.manager, finalLevel));
+                    //game.setScreen(new PlayScreen(game,game.manager, finalLevel));
+                    game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+                    game.setScreen(new LoadingScreen(game, finalLevel));
                     dispose();
                 }
             });
@@ -170,6 +183,9 @@ public class LevelSelectScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        buttonTexture.dispose();
+        buttonTexturedown.dispose();
+        font.dispose();
     }
 
     @Override

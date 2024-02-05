@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -48,6 +49,16 @@ public class PlayScreen implements Screen {
     private boolean secretSetting = false;
     private boolean touch = true;
     private int touchCount;
+
+    public boolean isSound() {
+        return sound;
+    }
+
+    public void setSound(boolean sound) {
+        this.sound = sound;
+    }
+
+    private boolean sound = true;
     private int intervalTouch;
     //Variables de Box2d
     private World world;
@@ -62,7 +73,7 @@ public class PlayScreen implements Screen {
     private Hud hud;
     private SubMenu submenu;
     private boolean pause = false;
-   private boolean isRespawning;
+    private boolean isRespawning;
     private float respawnTimer;
     private float stepSoundTimer = 0;
     private static float STEP_SOUND_INTERVAL = 0.4f; // Frecuencia deseada de los sonidos de pasos
@@ -72,6 +83,17 @@ public class PlayScreen implements Screen {
     public Array<Room> habitaciones = new Array<Room>();
 
     public int levelSpawn = 1;
+    public float volume = 0.2f;
+
+    public boolean isEffects() {
+        return effects;
+    }
+
+    public void setEffects(boolean effects) {
+        this.effects = effects;
+    }
+
+    private boolean effects = true;
 
     public boolean isSecretSetting() {
         return secretSetting;
@@ -101,9 +123,11 @@ public class PlayScreen implements Screen {
 
         controller = new Controller();
         hud = new Hud(controller.leftImage.getStage());
-        submenu = new SubMenu(controller.leftImage.getStage(),hud,game);
 
         player = new Mage(this, controller, atlas, manager, habitaciones);
+
+        submenu = new SubMenu(controller.leftImage.getStage(), hud, game, player, this);
+
         creator = new B2WorldCreator(this, player, manager, habitaciones, gamecam, backcam);
 
 
@@ -128,6 +152,7 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
+
     }
 
     public TextureAtlas getAtlas() {
@@ -147,8 +172,8 @@ public class PlayScreen implements Screen {
 
                 if (!isRespawning) {
                     handleDragInput();
-                }else {
-                    isDragging=false;
+                } else {
+                    isDragging = false;
                 }
             } else {
                 regularMovement();
@@ -166,6 +191,7 @@ public class PlayScreen implements Screen {
 
     private void handleDragInput() {
         Vector3 initialTouch = new Vector3();
+
         if (Gdx.input.isTouched()) {
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
@@ -189,11 +215,11 @@ public class PlayScreen implements Screen {
             } else {
                 // Si ya se está arrastrando, actualiza la posición del personaje
 
-                    player.b2body.setTransform(touchPoint.x, touchPoint.y, player.b2body.getAngle());
-                    player.setTouchingGrass(false);
-                    stopdraggin = true;
+                player.b2body.setTransform(touchPoint.x, touchPoint.y, player.b2body.getAngle());
+                player.setTouchingGrass(false);
+                stopdraggin = true;
 
-                }
+            }
 
         } else {
             // Reinicia el estado cuando se levanta el dedo
@@ -234,9 +260,24 @@ public class PlayScreen implements Screen {
 
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
-        if (hud.isPause()) {
+        if (!sound) {
+            music.setVolume(0);
+        } else {
+            music.setVolume(1f);
+        }
+        game.volume = volume;
 
-        }else {
+        if (!effects) {
+            volume = 0;
+        } else {
+            volume = 0.2f;
+
+        }
+        if (submenu.touch) {
+            manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(volume);
+            submenu.touch = false;
+        }
+        if (!hud.isPause()) {
 
             if (!player.isDead()) {
                 handleInput(dt);
@@ -245,21 +286,21 @@ public class PlayScreen implements Screen {
 
             if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
                 if (stepSoundTimer <= 0) {
-                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
                 }
 
             }
             if (player.currentState == Mage.State.JUMPING && player.isTouchingGrass()) {
                 if (stepSoundTimer <= -0.3) {
-                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
                 }
 
             }
             if (player.currentState == Mage.State.WALLSLIDER || player.currentState == Mage.State.WALLSLIDEL) {
                 if (stepSoundTimer <= 0) {
-                    manager.get("audio/sounds/rustling-grass.mp3", Sound.class).play(0.2f);
+                    manager.get("audio/sounds/rustling-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
                 }
 
@@ -268,10 +309,11 @@ public class PlayScreen implements Screen {
                 // Verifica el temporizador antes de reproducir el sonido
 
                 if (stepSoundTimer <= 0) {
-                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(0.2f);
+                    manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = STEP_SOUND_INTERVAL; // Reinicia el temporizador
                 }
             }
+
 
 
             // Resta el tiempo delta al temporizador
@@ -360,8 +402,18 @@ public class PlayScreen implements Screen {
         //b2dr.render(world, gamecam.combined);
 
 
+        if (hud.isPause()) {
+            controller.leftImage.getStage().addActor(submenu.table);
+
+        } else {
+            if (controller.leftImage.getStage().getActors().size == 4) {
+                controller.leftImage.getStage().getActors().get(3).remove();
+
+            }
+
+        }
         hud.draw();
-            submenu.draw();
+        submenu.draw();
 
         controller.draw();
     }
@@ -371,7 +423,7 @@ public class PlayScreen implements Screen {
         gamePort.update(width, height);//ajusta el tamaño de la pantalla en resizes
         controller.resize(width, height);
         hud.resize(width, height);
-        submenu.resize(width,height);
+        submenu.resize(width, height);
     }
 
     public TiledMap getMap() {

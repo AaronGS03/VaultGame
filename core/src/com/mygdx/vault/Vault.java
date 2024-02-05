@@ -30,6 +30,7 @@ public class Vault extends Game {
 	public static SpriteBatch batch;
 
 	public AssetManager manager;
+	public float volume=0.2f;
 	
 	@Override
 	public void create () {
@@ -38,12 +39,13 @@ public class Vault extends Game {
 		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
+		manager.load("audio/sounds/clickbutton.mp3", Sound.class);
 
 		manager.load("loadingScreenImage.png", Texture.class);
 
 		manager.finishLoading();
 
-		this.setScreen(new LoadingScreen(this));
+		this.setScreen(new MainMenuScreen(this));
 
 
 	}

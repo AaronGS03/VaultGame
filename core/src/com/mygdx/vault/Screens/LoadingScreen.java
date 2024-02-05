@@ -15,10 +15,12 @@ public class LoadingScreen implements Screen {
     private AssetManager manager;
     private boolean assetsLoaded = false;
     private Texture loadingImage;
+    public int level = 1;
 
-    public LoadingScreen(Vault game) {
+    public LoadingScreen(Vault game, int level) {
         this.game = game;
         this.manager = game.manager;
+        this.level = level;
 
         // Cargar recursos para la pantalla de carga
         manager.load("loadingScreenImage.png", Texture.class);
@@ -27,13 +29,18 @@ public class LoadingScreen implements Screen {
         manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
         manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
         manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
+        manager.load("audio/sounds/clickbutton.mp3", Sound.class);
 
-
-
-        // Cargar otros recursos del juego si es necesario
-        loadingImage = manager.get("loadingScreenImage.png", Texture.class);
-        manager.finishLoading(); // Espera a que todos los recursos se carguen antes de continuar
-        assetsLoaded = true;
+        try {
+            // Cargar otros recursos del juego si es necesario
+            loadingImage = manager.get("loadingScreenImage.png", Texture.class);
+            manager.finishLoading(); // Espera a que todos los recursos se carguen antes de continuar
+            assetsLoaded = true;
+        } catch (Exception e) {
+            // Manejo de excepciones, por ejemplo, mostrar un mensaje de error o cambiar de pantalla a una pantalla de error.
+            Gdx.app.error("LoadingScreen", "Error loading assets: " + e.getMessage());
+            assetsLoaded = false;
+        }
     }
 
     @Override
@@ -45,12 +52,9 @@ public class LoadingScreen implements Screen {
     public void render(float delta) {
         if (assetsLoaded) {
             // Cambia a la pantalla principal del juego cuando los recursos estén cargados
-            game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new PlayScreen(game, game.manager, level));
             dispose();
         }
-            game.batch.begin();
-            game.batch.draw(loadingImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            game.batch.end();
 
     }
 
@@ -76,6 +80,6 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }
+

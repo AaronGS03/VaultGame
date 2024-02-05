@@ -3,6 +3,7 @@ package com.mygdx.vault.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,13 +26,18 @@ import com.mygdx.vault.Vault;
 public class MainMenuScreen implements Screen {
     private Vault game;
     private Stage stage;
+    Texture buttonTexture;
+    Texture buttonTexturedown;
+    Texture titleTexture;
+    Texture mageTexture;
+    Texture keyTexture;
     public MainMenuScreen(Vault game) {
         this.game = game;
         this.stage = new Stage(new FitViewport(1920,1080));
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
-        table.setFillParent(true);
+        table.bottom().setFillParent(true);
         stage.addActor(table);
 
         BitmapFont font= generateFont();
@@ -41,8 +47,8 @@ public class MainMenuScreen implements Screen {
         buttonStyle.fontColor = Color.BLACK;
 
         // Configura el fondo con la textura
-        Texture buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
-        Texture buttonTexturedown = new Texture("button_backgroundDown.png"); // Asegúrate de tener esta textura
+        buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
+        buttonTexturedown = new Texture("button_backgroundDown.png"); // Asegúrate de tener esta textura
         TextureRegionDrawable buttonBackground = new TextureRegionDrawable(new TextureRegion(buttonTexture));
         buttonStyle.downFontColor = Color.WHITE;
         TextureRegionDrawable buttonBackgrounddown = new TextureRegionDrawable(new TextureRegion(buttonTexturedown));
@@ -61,7 +67,7 @@ public class MainMenuScreen implements Screen {
         TextButton creditsButton = createButton("Créditos", buttonStyle);
 
         // Agrega un Image con el título del juego
-        Texture titleTexture = new Texture("loadingScreenImage.png"); // Asegúrate de tener esta imagen
+        titleTexture = new Texture("loadingScreenImage.png"); // Asegúrate de tener esta imagen
         Image titleImage = new Image(new TextureRegionDrawable(new TextureRegion(titleTexture)));
 
         // Ajusta la escala y posición del título según sea necesario
@@ -73,24 +79,24 @@ public class MainMenuScreen implements Screen {
         stage.addActor(titleImage);
 
         // Agrega un Image con el título del juego
-        Texture mageTexture = new Texture("mageImage.png"); // Asegúrate de tener esta imagen
+        mageTexture = new Texture("mageImage.png"); // Asegúrate de tener esta imagen
         Image mageImage = new Image(new TextureRegionDrawable(new TextureRegion(mageTexture)));
 
         // Ajusta la escala y posición del título según sea necesario
         mageImage.setScale(5f);  // Ajusta según tus necesidades
-        mageImage.setPosition((stage.getWidth()-600 - mageImage.getWidth() * mageImage.getScaleX()) / 2,
+        mageImage.setPosition((stage.getWidth()-400 - mageImage.getWidth() * mageImage.getScaleX()) / 2,
                 stage.getHeight() - mageImage.getHeight() * mageImage.getScaleY() - 620); // Ajusta según tus necesidades
 
         // Añade el título al escenario
         stage.addActor(mageImage);
 
         // Agrega un Image con el título del juego
-        Texture keyTexture = new Texture("keyImage.png"); // Asegúrate de tener esta imagen
+        keyTexture = new Texture("keyImage.png"); // Asegúrate de tener esta imagen
         Image keyImage = new Image(new TextureRegionDrawable(new TextureRegion(keyTexture)));
 
         // Ajusta la escala y posición del título según sea necesario
         keyImage.setScale(4f);  // Ajusta según tus necesidades
-        keyImage.setPosition((stage.getWidth()+640 - keyImage.getWidth() * keyImage.getScaleX()) / 2,
+        keyImage.setPosition((stage.getWidth()+440 - keyImage.getWidth() * keyImage.getScaleX()) / 2,
                 stage.getHeight() - keyImage.getHeight() * keyImage.getScaleY() - 700); // Ajusta según tus necesidades
 
         // Añade el título al escenario
@@ -100,20 +106,26 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new PlayScreen(game, game.manager,1));
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+                game.setScreen(new LoadingScreen(game,1));
+              dispose();
             }
         });
 
         levelsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
                 game.setScreen(new LevelSelectScreen(game));
+                dispose();
             }
         });
 
         optionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+
                 // Acción al hacer clic en el botón de opciones
                 // Implementa la lógica correspondiente
             }
@@ -122,6 +134,8 @@ public class MainMenuScreen implements Screen {
         creditsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+
                 // Acción al hacer clic en el botón de créditos
                 // Implementa la lógica correspondiente
             }
@@ -139,11 +153,11 @@ public class MainMenuScreen implements Screen {
         creditsButton.setWidth(buttonWidth);
         creditsButton.setHeight(buttonHeight);
 
-        table.add(playButton).padBottom(20).padTop(500).left();
-        table.add(optionsButton).padLeft(stage.getWidth()/2).padTop(500).row();
-        table.add(levelsButton).padBottom(20).left();
-        table.add(creditsButton).padLeft(stage.getWidth()/2).row();
+        table.add(playButton).padRight((stage.getWidth()/2)-350);
+        table.add(optionsButton);
         table.row();
+        table.add(levelsButton).padBottom(100).padRight((stage.getWidth()/2)-350);
+        table.add(creditsButton).padBottom(100);
 
     }
     private BitmapFont generateFont() {
@@ -183,6 +197,11 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        buttonTexture.dispose(); // Dispose de la textura del botón
+        buttonTexturedown.dispose(); // Dispose de la textura del botón
+        titleTexture.dispose(); // Dispose de la textura del título
+        mageTexture.dispose(); // Dispose de la textura del mago
+        keyTexture.dispose(); // Dispose de la textura de la llave
     }
 
     @Override
