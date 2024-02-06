@@ -137,7 +137,7 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
 
         controller = new Controller();
-        hud = new Hud(controller.leftImage.getStage());
+        hud = new Hud(controller.leftImage.getStage(), game);
 
         player = new Mage(this, controller, atlas, manager, habitaciones);
 
@@ -167,6 +167,12 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
+        // Habilitar el giroscopio
+        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope)) {
+//            Gdx.input.gyroAzimuth;
+//            Gdx.input.gyroPitch;
+//            Gdx.input.gyroRoll;
+        }
 
     }
 
@@ -190,16 +196,33 @@ public class PlayScreen implements Screen {
                 } else {
                     isDragging = false;
                 }
+            }else if (player.getCurrentLevel() == 4) {
+                gravityMovement();
+            }else if (player.getCurrentLevel() == 5) {
+                scrambleMovement();
+            }else if (player.getCurrentLevel() == 6) {
+                float roll = Gdx.input.getRoll();
+                float pitch = Gdx.input.getPitch();
+
+                float forceX = roll * 5; // someCoefficient es un factor de ajuste para la sensibilidad
+                float forceY = pitch * 5; // someCoefficient es un factor de ajuste para la sensibilidad
+
+                // Aplicar las fuerzas al cuerpo del personaje
+                player.b2body.applyForceToCenter(forceX, forceY, true);
             } else {
+                world.setGravity(new Vector2(world.getGravity().x, -45));
                 regularMovement();
 
             }
 
+        } else {
+            world.setGravity(new Vector2(world.getGravity().x, -45));
+
         }
-
-        //Moviento del personaje movil
-
     }
+
+    //Moviento del personaje movil
+
 
     public boolean isDragging = false;
     public boolean stopdraggin = false;
@@ -256,11 +279,60 @@ public class PlayScreen implements Screen {
                 controller.setUpPressed(false);
             }
         } else {
-
             player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
+
         }
 
         //Movimiento personaje teclado
+        keyboardMovement();
+    }
+    private void scrambleMovement() {
+        if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
+
+            if (controller.isUpPressed() && player.b2body.getLinearVelocity().x >= -20) {
+                player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
+            } else if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x <= 20) {
+                player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
+
+            }
+            if (controller.isRightPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+                player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
+                controller.setUpPressed(false);
+            }
+        } else {
+            player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
+
+        }
+
+        //Movimiento personaje teclado
+        keyboardMovement();
+    }
+
+    private void gravityMovement() {
+        if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
+
+            if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
+                player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
+            } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
+                player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
+
+            }
+            if (controller.isUpPressed()) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+                world.setGravity(new Vector2(world.getGravity().x, -world.getGravity().y));
+
+                controller.setUpPressed(false);
+
+            }
+        } else {
+            player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
+
+        }
+
+        //Movimiento personaje teclado
+        keyboardMovement();
+    }
+
+    private void keyboardMovement() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
         }
@@ -329,7 +401,7 @@ public class PlayScreen implements Screen {
                 }
             }
             if (openDoor) {
-                if (openDoor && player.keys != null) {
+                if (openDoor && player.keys != null && hitdoorlevel != -1) {
                     if (player.keys.collected && hitdoorlevel == player.getCurrentLevel()) {
                         doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("Spike.png"))));
                         doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
@@ -339,6 +411,7 @@ public class PlayScreen implements Screen {
                     } else {
                         doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("right.png"))));
                         doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
+                        manager.get("audio/sounds/lockedDoor.mp3", Sound.class).play(volume);
 
                         doors.get(hitdoorlevel).getFixture().setSensor(false);
 

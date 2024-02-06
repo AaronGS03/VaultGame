@@ -1,6 +1,7 @@
 package com.mygdx.vault.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
 public class Hud implements Disposable {
@@ -28,11 +30,13 @@ public class Hud implements Disposable {
     private boolean pause;
     public Image pauseImage;
     private OrthographicCamera cam;
+    private Vault game;
 
-    public Hud(Stage stageC) {
+    public Hud(Stage stageC, Vault game) {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
         this.stage=stageC;
+        this.game=game;
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -44,6 +48,8 @@ public class Hud implements Disposable {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                                        pause = true;
+                                       game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+
                                        return true;
                                    }
 

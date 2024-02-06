@@ -50,7 +50,9 @@ public class Mage extends Sprite {
     private Animation<TextureRegion> mageWallSlideL;
     private float stateTimer;
     private TextureAtlas atlas;
+    public TextureRegion region;
     private boolean runningRight;
+
 
     public boolean isDead() {
         return dead;
@@ -59,11 +61,11 @@ public class Mage extends Sprite {
     public void setDead(boolean dead) {
         this.dead = dead;
     }
-
     private int currentLevel;
 
     private boolean dead = false;
     private Array<TextureRegion> frames;
+
 
     public boolean isTouchingWall() {
         return isTouchingWall;
@@ -72,8 +74,8 @@ public class Mage extends Sprite {
     public void setTouchingWall(boolean touchingWall) {
         isTouchingWall = touchingWall;
     }
-
     private boolean isTouchingWall = false;
+
 
     public boolean isTouchingGrass() {
         return isTouchingGrass;
@@ -82,10 +84,10 @@ public class Mage extends Sprite {
     public void setTouchingGrass(boolean touchingGrass) {
         isTouchingGrass = touchingGrass;
     }
-
     private boolean isTouchingGrass = false;
 
     private float runframeduration = 0.05f;
+
 
     public State getCurrentState() {
         return currentState;
@@ -94,13 +96,13 @@ public class Mage extends Sprite {
     public State getPreviousState() {
         return previousState;
     }
-
     private Controller controller;
 
     private AssetManager manager;
     private Array<Room> habitaciones;
     public Key keys;
     private PlayScreen screen;
+
 
     public Mage(PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager, Array<Room> habitaciones) {
         super(screen.getAtlas().findRegion("idle sheet-Sheet"));
@@ -185,7 +187,6 @@ public class Mage extends Sprite {
         setRegion(mageStand);
 
     }
-
     public void update(float dt) {
         if (currentState == State.WALLSLIDEL || currentState == State.WALLSLIDER) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
@@ -207,10 +208,9 @@ public class Mage extends Sprite {
 
         setRegion(getFrame(dt));
     }
-
     public TextureRegion getFrame(float dt) {
+
         currentState = getState();
-        TextureRegion region;
         switch (currentState) {
             case JUMPING:
                 region = mageJump.getKeyFrame(stateTimer);

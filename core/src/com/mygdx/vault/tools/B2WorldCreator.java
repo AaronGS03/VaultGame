@@ -57,7 +57,11 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             if (object.getProperties().containsKey("level")) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                doors.add(new Door(screen, rect, player,Integer.parseInt(object.getProperties().get("level")+"")));
+                if (Integer.parseInt(object.getProperties().get("level")+"")!=-1){
+                    doors.add(new Door(screen, rect, player,Integer.parseInt(object.getProperties().get("level")+"")));
+                }else {
+                    new Door(screen, rect, player,Integer.parseInt(object.getProperties().get("level")+""));
+                }
 
             }
 
