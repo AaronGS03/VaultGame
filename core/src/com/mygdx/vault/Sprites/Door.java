@@ -17,12 +17,22 @@ import com.mygdx.vault.Vault;
 
 public class Door extends Sprite {
 
-    private int level;
+    public int level;
     private Mage player;
+
+    public void setTexture(TextureRegion texture) {
+        this.texture = texture;
+    }
+
     private TextureRegion texture;
     protected World world;
     protected PlayScreen screen;
     public Body body;
+
+    public Fixture getFixture() {
+        return fixture;
+    }
+
     protected Fixture fixture;
     protected Rectangle bounds;
 
@@ -31,9 +41,10 @@ public class Door extends Sprite {
         this.bounds = bounds;
         this.player = player;
         this.level = level;
+        this.screen=screen;
 
-        texture = new TextureRegion(new Texture(("badlogic.jpg")));
-        setRegion(texture);
+        texture = new TextureRegion(new Texture(("right.png")));
+        setRegion(texture.getTexture());
         defineDoor();
         setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
         Filter filter = new Filter();
@@ -60,16 +71,8 @@ public class Door extends Sprite {
     }
 
     public void open() {
-        if (player.keys != null) {
-
-            if (player.getCurrentLevel() == level && player.keys.collected) {
-                this.fixture.setSensor(true);
-                texture = new TextureRegion(new Texture(("Spike.png")));
-            } else {
-                this.fixture.setSensor(false);
-                texture = new TextureRegion(new Texture(("badlogic.jpg")));
-            }
-        }
+        screen.setOpenDoor(true);
+        screen.hitdoorlevel=level;
     }
 
 

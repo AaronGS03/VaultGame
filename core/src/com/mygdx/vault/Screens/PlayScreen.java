@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Controls.Controller;
 import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Scenes.SubMenu;
+import com.mygdx.vault.Sprites.Door;
 import com.mygdx.vault.Sprites.Key;
 import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Sprites.Room;
@@ -81,6 +83,7 @@ public class PlayScreen implements Screen {
     private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
 
     public Array<Room> habitaciones = new Array<Room>();
+    public Array<Door> doors = new Array<Door>();
 
     public int levelSpawn = 1;
     public float volume = 0.2f;
@@ -95,9 +98,21 @@ public class PlayScreen implements Screen {
 
     private boolean effects = true;
 
+    public boolean isOpenDoor() {
+        return openDoor;
+    }
+
+    public void setOpenDoor(boolean openDoor) {
+        this.openDoor = openDoor;
+    }
+
+    private boolean openDoor = false;
+
     public boolean isSecretSetting() {
         return secretSetting;
     }
+
+    public int hitdoorlevel = 0;
 
     public PlayScreen(Vault game, AssetManager manager, int levelSpawn) {
         this.manager = manager;
@@ -128,7 +143,7 @@ public class PlayScreen implements Screen {
 
         submenu = new SubMenu(controller.leftImage.getStage(), hud, game, player, this);
 
-        creator = new B2WorldCreator(this, player, manager, habitaciones, gamecam, backcam);
+        creator = new B2WorldCreator(this, player, habitaciones, doors, gamecam, backcam);
 
 
         layers = new ParallaxLayer[9];
@@ -313,7 +328,24 @@ public class PlayScreen implements Screen {
                     stepSoundTimer = STEP_SOUND_INTERVAL; // Reinicia el temporizador
                 }
             }
+            if (openDoor) {
+                if (openDoor && player.keys != null) {
+                    if (player.keys.collected && hitdoorlevel == player.getCurrentLevel()) {
+                        doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("Spike.png"))));
+                        doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
+                        doors.get(hitdoorlevel).getFixture().setSensor(true);
+                        manager.get("audio/sounds/doorKey.mp3", Sound.class).play(volume);
 
+                    } else {
+                        doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("right.png"))));
+                        doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
+
+                        doors.get(hitdoorlevel).getFixture().setSensor(false);
+
+                    }
+                }
+                openDoor = false;
+            }
 
 
             // Resta el tiempo delta al temporizador

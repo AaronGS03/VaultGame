@@ -34,7 +34,7 @@ public class B2WorldCreator {
         return keys;
     }
 
-    public B2WorldCreator(PlayScreen screen, Mage player, AssetManager manager, Array<Room> habitaciones, OrthographicCamera gamecam, OrthographicCamera backcam) {
+    public B2WorldCreator(PlayScreen screen, Mage player, Array<Room> habitaciones, Array<Door> doors, OrthographicCamera gamecam, OrthographicCamera backcam) {
         World world =screen.getWorld();
         TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
@@ -57,7 +57,7 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             if (object.getProperties().containsKey("level")) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                new Door(screen, rect, player,Integer.parseInt(object.getProperties().get("level")+""));
+                doors.add(new Door(screen, rect, player,Integer.parseInt(object.getProperties().get("level")+"")));
 
             }
 

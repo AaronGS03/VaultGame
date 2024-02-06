@@ -40,6 +40,7 @@ public class Vault extends Game {
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
 		manager.load("audio/sounds/clickbutton.mp3", Sound.class);
+		manager.load("audio/sounds/doorKey.mp3", Sound.class);
 
 		manager.load("loadingScreenImage.png", Texture.class);
 
