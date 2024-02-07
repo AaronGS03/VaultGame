@@ -46,6 +46,7 @@ public class Vault extends Game {
 		manager.load("audio/sounds/lockedDoor.mp3", Sound.class);
 
 
+
 		manager.load("loadingScreenImage.png", Texture.class);
 
 		manager.finishLoading();

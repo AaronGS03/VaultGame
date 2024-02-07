@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="278" height="98" tilewidth="512" tileheight="512" infinite="0" nextlayerid="13" nextobjectid="2223">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="278" height="98" tilewidth="512" tileheight="512" infinite="0" nextlayerid="14" nextobjectid="2235">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
  <layer id="1" name="background" width="278" height="98">
   <data encoding="base64" compression="zlib">
@@ -307,7 +307,7 @@
     <property name="level" type="int" value="8"/>
    </properties>
   </object>
-  <object id="1427" x="34308" y="21368" width="520" height="1824">
+  <object id="1427" x="34328" y="21364" width="784" height="1824">
    <properties>
     <property name="level" type="int" value="9"/>
    </properties>
@@ -323,7 +323,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="8" name="room">
+ <objectgroup id="8" name="room" visible="0">
   <object id="107" x="0" y="0" width="17408" height="9216">
    <properties>
     <property name="level" type="int" value="0"/>
@@ -3023,7 +3023,7 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="sensor">
-  <object id="1172" x="31808" y="21168" width="2688" height="2080">
+  <object id="1172" x="32216" y="21180" width="2688" height="2080">
    <properties>
     <property name="level" value="10"/>
    </properties>

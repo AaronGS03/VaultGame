@@ -2,12 +2,16 @@ package com.mygdx.vault.Scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -30,6 +34,7 @@ public class Hud implements Disposable {
     private boolean pause;
     public Image pauseImage;
     private OrthographicCamera cam;
+    private Label titleLabel;
     private Vault game;
 
     public Hud(Stage stageC, Vault game) {
@@ -38,9 +43,18 @@ public class Hud implements Disposable {
         this.stage=stageC;
         this.game=game;
         Gdx.input.setInputProcessor(stage);
+        BitmapFont font= generateFont();
 
         Table table = new Table();
         table.top().right().padTop(6).padRight(6).setFillParent(true);
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+
+        titleLabel = new Label("1. Plain and Simple", labelStyle);
+        titleLabel.setSize(5,5);
+        titleLabel.setColor(Color.WHITE);
+
+
 
         pauseImage = new Image(new Texture("pauseButton.png"));
         pauseImage.setSize(5, 5);
@@ -62,7 +76,10 @@ public class Hud implements Disposable {
 
         );
 
-        table.add(pauseImage).size(pauseImage.getWidth(), pauseImage.getHeight());
+        table.add(pauseImage).right().size(pauseImage.getWidth(), pauseImage.getHeight());
+        table.row();
+        table.add(titleLabel).expandX().top().right().padRight(15);
+
         stage.addActor(table);
     }
 
@@ -75,6 +92,22 @@ public class Hud implements Disposable {
         viewport.update(width, height);
     }
 
+    private BitmapFont generateFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("cityburn.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        // Establecer el tamaño de la fuente
+        float fontSize = stage.getHeight()*0.05f;
+        parameter.size = (int) fontSize;
+
+        // Generar la fuente con los parámetros
+        BitmapFont font = generator.generateFont(parameter);
+
+        // Liberar los recursos del generador
+        generator.dispose();
+
+        return font;
+    }
     @Override
     public void dispose() {
         stage.dispose();

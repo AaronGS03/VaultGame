@@ -1,9 +1,13 @@
 package com.mygdx.vault.tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,7 +15,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Sprites.Door;
 import com.mygdx.vault.Sprites.Key;
@@ -36,7 +43,7 @@ public class B2WorldCreator {
 
     private Array<Spike> fakespikes;
     private Array<Key> keys;
-
+private Stage stage;
     public Array<Sensor> getSensors() {
         return sensors;
     }
@@ -54,13 +61,10 @@ public class B2WorldCreator {
         return keys;
     }
 
+
     public B2WorldCreator(PlayScreen screen, Mage player, Array<Room> habitaciones, Array<Door> doors, OrthographicCamera gamecam, OrthographicCamera backcam) {
-        World world =screen.getWorld();
+
         TiledMap map = screen.getMap();
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
 
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -140,5 +144,12 @@ public class B2WorldCreator {
         }
 
 
+
+
+
+
+
+
     }
+
 }

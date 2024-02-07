@@ -9,8 +9,11 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -193,6 +196,8 @@ public class PlayScreen implements Screen {
         submenu = new SubMenu(controller.leftImage.getStage(), hud, game, player, this);
 
         creator = new B2WorldCreator(this, player, habitaciones, doors, gamecam, backcam);
+
+
 
 
         layers = new ParallaxLayer[9];
@@ -440,7 +445,7 @@ public class PlayScreen implements Screen {
             if (!player.isDead()) {
                 handleInput(dt);
                 if (player.getCurrentLevel() == 9){
-                    player.b2body.applyForce(new Vector2(-30f, 0), player.b2body.getWorldCenter(), true);
+                    player.b2body.applyForce(new Vector2(-20f, 0), player.b2body.getWorldCenter(), true);
                 }
 
             }
@@ -567,7 +572,6 @@ public class PlayScreen implements Screen {
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
     }
-
     @Override
     public void render(float delta) {
         update(delta);
@@ -575,7 +579,6 @@ public class PlayScreen implements Screen {
         //limpiar pantalla
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         game.batch.setProjectionMatrix(backcam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -609,6 +612,7 @@ public class PlayScreen implements Screen {
         }
         game.batch.end();
         //mostrar pantalla
+
         renderer.render();
 
         //render Lineas debug Box2d
@@ -625,9 +629,9 @@ public class PlayScreen implements Screen {
             }
 
         }
-        hud.draw();
-        submenu.draw();
 
+        submenu.draw();
+        hud.draw();
         controller.draw();
     }
 
