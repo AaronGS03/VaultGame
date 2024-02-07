@@ -19,7 +19,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -114,6 +113,56 @@ public class PlayScreen implements Screen {
 
     public int hitdoorlevel = 0;
 
+    public boolean isLevel10gimmick() {
+        return level10gimmick;
+    }
+
+    public void setLevel10gimmick(boolean level10gimmick) {
+        this.level10gimmick = level10gimmick;
+    }
+
+    private boolean level10gimmick = false;
+
+    public boolean isLevel69gimmick() {
+        return level69gimmick;
+    }
+
+    public void setLevel69gimmick(boolean level69gimmick) {
+        this.level69gimmick = level69gimmick;
+    }
+
+    private boolean level69gimmick = false;
+
+    public boolean isLevel7gimmick() {
+        return level7gimmick;
+    }
+
+    public void setLevel7gimmick(boolean level7gimmick) {
+        this.level7gimmick = level7gimmick;
+    }
+
+    private boolean level7gimmick = false;
+
+    public boolean isLevel3gimmick() {
+        return level3gimmick;
+    }
+
+    public void setLevel3gimmick(boolean level3gimmick) {
+        this.level3gimmick = level3gimmick;
+    }
+
+    private boolean level3gimmick = false;
+
+    public boolean isLevel8gimmick() {
+        return level8gimmick;
+    }
+
+    public void setLevel8gimmick(boolean level8gimmick) {
+        this.level8gimmick = level8gimmick;
+    }
+
+    private boolean level8gimmick = false;
+
     public PlayScreen(Vault game, AssetManager manager, int levelSpawn) {
         this.manager = manager;
         atlas = new TextureAtlas("Sprites.atlas");
@@ -167,12 +216,6 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        // Habilitar el giroscopio
-        if (Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope)) {
-//            Gdx.input.gyroAzimuth;
-//            Gdx.input.gyroPitch;
-//            Gdx.input.gyroRoll;
-        }
 
     }
 
@@ -189,36 +232,41 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt) {
         if (!player.isDead()) {
-            if (player.getCurrentLevel() == 3) {
+            if (player.getCurrentLevel() == 5) {
 
                 if (!isRespawning) {
                     handleDragInput();
                 } else {
                     isDragging = false;
                 }
-            }else if (player.getCurrentLevel() == 4) {
+            } else if (player.getCurrentLevel() == 4) {
                 gravityMovement();
-            }else if (player.getCurrentLevel() == 5) {
+            } else if (player.getCurrentLevel() == 3 && level3gimmick) {
+                inversedMovement();
+            } else if (player.getCurrentLevel() == 6) {
+                gyroscopeMovement();
+            } else if (player.getCurrentLevel() == 7) {
                 scrambleMovement();
-            }else if (player.getCurrentLevel() == 6) {
-                float roll = Gdx.input.getRoll();
-                float pitch = Gdx.input.getPitch();
-
-                float forceX = roll * 5; // someCoefficient es un factor de ajuste para la sensibilidad
-                float forceY = pitch * 5; // someCoefficient es un factor de ajuste para la sensibilidad
-
-                // Aplicar las fuerzas al cuerpo del personaje
-                player.b2body.applyForceToCenter(forceX, forceY, true);
             } else {
                 world.setGravity(new Vector2(world.getGravity().x, -45));
                 regularMovement();
 
             }
 
-        } else {
-            world.setGravity(new Vector2(world.getGravity().x, -45));
-
         }
+    }
+
+    private void gyroscopeMovement() {
+        world.setGravity(new Vector2(world.getGravity().x, 0));
+
+        float roll = Gdx.input.getRoll();
+        float pitch = Gdx.input.getPitch();
+
+        float forceX = pitch * -2;
+        float forceY = roll * 2;
+
+        // Aplicar las fuerzas al cuerpo del personaje
+        player.b2body.applyForceToCenter(forceX, forceY, true);
     }
 
     //Moviento del personaje movil
@@ -286,6 +334,29 @@ public class PlayScreen implements Screen {
         //Movimiento personaje teclado
         keyboardMovement();
     }
+
+    private void inversedMovement() {
+        if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
+
+            if (controller.isRightPressed() && player.b2body.getLinearVelocity().x >= -20) {
+                player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
+            } else if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x <= 20) {
+                player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
+
+            }
+            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+                player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
+                controller.setUpPressed(false);
+            }
+        } else {
+            player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
+
+        }
+
+        //Movimiento personaje teclado
+        keyboardMovement();
+    }
+
     private void scrambleMovement() {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
 
@@ -368,10 +439,35 @@ public class PlayScreen implements Screen {
 
             if (!player.isDead()) {
                 handleInput(dt);
+                if (player.getCurrentLevel() == 9){
+                    player.b2body.applyForce(new Vector2(-20f, 0), player.b2body.getWorldCenter(), true);
+                }
 
             }
+            if (level10gimmick && level69gimmick) {
+                player.setCurrentLevel(11);
+                player.setDead(true);
+                level69gimmick=false;
+            }else {
+                level10gimmick=false;
+            }
+            if (level7gimmick) {
+                player.setCurrentLevel(8);
+                player.setDead(true);
+            }
 
-            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
+            if (level8gimmick && player.getCurrentLevel() == 8) {
+                for (Spike s :
+                        creator.getFakespikes()) {
+                    s.fake();
+                }
+                creator.getSensors().get(3).getFixture().setSensor(true);
+                creator.getSensors().get(2).body.destroyFixture(creator.getSensors().get(2).getFixture());
+
+                level8gimmick = false;
+            }
+
+            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass() ) {
                 if (stepSoundTimer <= 0) {
                     manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
@@ -392,7 +488,7 @@ public class PlayScreen implements Screen {
                 }
 
             }
-            if (player.isTouchingGrass() && player.b2body.getLinearVelocity().x != 0) {
+            if (player.isTouchingGrass() && player.b2body.getLinearVelocity().x != 0 && (controller.isRightPressed() || controller.isLeftPressed())) {
                 // Verifica el temporizador antes de reproducir el sonido
 
                 if (stepSoundTimer <= 0) {
@@ -401,8 +497,8 @@ public class PlayScreen implements Screen {
                 }
             }
             if (openDoor) {
-                if (openDoor && player.keys != null && hitdoorlevel != -1) {
-                    if (player.keys.collected && hitdoorlevel == player.getCurrentLevel()) {
+                if (player.keys != null && hitdoorlevel != -1) {
+                    if (player.keys.collected && (hitdoorlevel == player.getCurrentLevel() || (player.getCurrentLevel() == 10 && hitdoorlevel == 9)) && hitdoorlevel != 10) {
                         doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("Spike.png"))));
                         doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
                         doors.get(hitdoorlevel).getFixture().setSensor(true);
@@ -429,10 +525,6 @@ public class PlayScreen implements Screen {
             player.update(dt);
 
 
-            //en caso de mover spikes
-            for (Spike spike : creator.getSpikes()) {
-                spike.update(dt);
-            }
             for (Key key : creator.getKeys()) {
                 key.update(dt);
             }
@@ -448,13 +540,21 @@ public class PlayScreen implements Screen {
                     }
                 } else {
                     // Mover el personaje solo si no está en proceso de respawn
+                    if (level7gimmick) {
+                        player.setCurrentLevel(8);
+                    }
+                    if (level10gimmick) {
+                        player.setCurrentLevel(11);
+                    }
                     player.b2body.setTransform(habitaciones.get(player.getCurrentLevel()).getSpawnPoint().x / Vault.PPM, habitaciones.get(player.getCurrentLevel()).getSpawnPoint().y / Vault.PPM, 0);
                     player.setDead(false);
 
                     if (player.keys != null) {
                         player.keys.collected = false;
                     }
-
+                    world.setGravity(new Vector2(world.getGravity().x, -45));
+                    level10gimmick = false;
+                    level7gimmick = false;
                     isRespawning = false; // Marcar que el jugador ha terminado de respawnear
                 }
             }
@@ -496,8 +596,15 @@ public class PlayScreen implements Screen {
         for (Spike spike : creator.getSpikes()) {
             spike.draw(game.batch);
         }
+        for (Spike spike : creator.getFakespikes()) {
+            spike.draw(game.batch);
+        }
         for (Key key : creator.getKeys()) {
             key.draw(game.batch);
+        }
+        for (Door door :
+                doors) {
+            door.draw(game.batch);
         }
         game.batch.end();
         //mostrar pantalla

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.vault.Controls.Controller;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
+import com.mygdx.vault.tools.Sensor;
 
 public class Mage extends Sprite {
 
@@ -247,8 +248,15 @@ public class Mage extends Sprite {
                 break;
         }
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
-            region.flip(true, false);
-            runningRight = false;
+            if (currentLevel==9 && controller.isLeftPressed()){
+                region.flip(true, false);
+                runningRight = false;
+
+            }else{
+                region.flip(true, false);
+                runningRight = false;
+
+            }
 
         } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
             region.flip(true, false);
@@ -280,7 +288,7 @@ public class Mage extends Sprite {
             return State.LANDING;
         } else if (b2body.getLinearVelocity().y == 0 && previousState == State.LANDING && stateTimer < 0.2f) {
             return State.LANDING;
-        } else if (b2body.getLinearVelocity().x != 0 && b2body.getLinearVelocity().y == 0 && previousState != State.LANDING) {
+        } else if (b2body.getLinearVelocity().x != 0 && b2body.getLinearVelocity().y == 0 && previousState != State.LANDING && (controller.isLeftPressed()||controller.isRightPressed())) {
             return State.RUNNING;
         } else {
             return State.STANDING;
@@ -304,9 +312,9 @@ public class Mage extends Sprite {
         shape.setAsBox(1f, 1.6f);
         if (!dead){
             fdef.filter.categoryBits = Vault.MAGE_BIT;
-            fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.ITEM | Vault.DOOR_BIT | Vault.WALL_BIT;
+            fdef.filter.maskBits = Vault.DEFAULT_BIT | Vault.SPIKE_BIT | Vault.PLATAFORM_BIT | Vault.ITEM | Vault.DOOR_BIT | Vault.WALL_BIT | Vault.SENSOR_BIT;
         }else{
-            fdef.filter.maskBits = Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT;
+            fdef.filter.maskBits = Vault.PLATAFORM_BIT | Vault.DOOR_BIT | Vault.WALL_BIT | Vault.SENSOR_BIT;
 
         }
 

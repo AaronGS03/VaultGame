@@ -8,15 +8,20 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
-public class Wall extends InteractiveTileObject{
+public class Wall extends InteractiveTileObject {
     private Mage player;
 
-    public Wall(PlayScreen screen, Rectangle bounds, Mage player){
+
+    public Wall(PlayScreen screen, Rectangle bounds, Mage player, boolean slide) {
         super(screen, bounds);
-        this.player= player;
+        this.player = player;
+        if (slide) {
+            fdef.friction=0.5f;
+        }
         fixture.setUserData(this);
         setCategoryFilter(Vault.WALL_BIT);
     }
+
     @Override
     public void onHeadHit() {
 
@@ -37,6 +42,7 @@ public class Wall extends InteractiveTileObject{
     public void onSideLHit() {
         player.setTouchingWall(true);
     }
+
     @Override
     public void onSideLNotHit() {
         player.setTouchingWall(false);

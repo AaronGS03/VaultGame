@@ -25,7 +25,27 @@ import com.mygdx.vault.Vault;
 public class B2WorldCreator {
     AssetManager manager;
     private Array<Spike> spikes;
+
+    public Array<Spike> getFakespikes() {
+        return fakespikes;
+    }
+
+    public void setFakespikes(Array<Spike> fakespikes) {
+        this.fakespikes = fakespikes;
+    }
+
+    private Array<Spike> fakespikes;
     private Array<Key> keys;
+
+    public Array<Sensor> getSensors() {
+        return sensors;
+    }
+
+    public void setSensors(Array<Sensor> sensors) {
+        this.sensors = sensors;
+    }
+
+    private Array<Sensor> sensors;
 
     public Array<Spike> getSpikes() {
         return spikes;
@@ -45,7 +65,13 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            new Wall(screen, rect, player);
+            if (object.getProperties().containsKey("slide")){
+                new Wall(screen, rect, player,((boolean) object.getProperties().get("slide")));
+
+            }else {
+                new Wall(screen, rect, player,false);
+
+            }
 
         }
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
@@ -54,6 +80,7 @@ public class B2WorldCreator {
 
 
         }
+
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             if (object.getProperties().containsKey("level")) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -81,10 +108,16 @@ public class B2WorldCreator {
         }
 
         spikes= new Array<>();
+        fakespikes= new Array<>();
         for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            if (object.getProperties().containsKey("fake")) {
+                fakespikes.add(new Spike(screen, rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM, Integer.parseInt(object.getProperties().get("position")+""),player ));
+
+            }else{
                 spikes.add(new Spike(screen, rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM, Integer.parseInt(object.getProperties().get("position")+""),player ));
+            }
 
 
         }
@@ -93,6 +126,15 @@ public class B2WorldCreator {
 
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 keys.add(new Key(screen,rect.getX()/ Vault.PPM, rect.getY()/ Vault.PPM,Integer.parseInt(object.getProperties().get("level")+"")));
+
+
+        }
+        sensors= new Array<>();
+
+        for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
+
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            sensors.add(new Sensor(screen,rect,Integer.parseInt(object.getProperties().get("level")+"")));
 
 
         }

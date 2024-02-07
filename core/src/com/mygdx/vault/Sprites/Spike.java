@@ -2,6 +2,7 @@ package com.mygdx.vault.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +25,8 @@ public class Spike extends Sprite {
     public float y;
     public int position;
     public Mage player;
+private boolean fake=false;
+    Fixture fixture;
 
     private TextureRegion texture;
     public Spike(PlayScreen screen, float x, float y, int position, Mage player){
@@ -92,14 +95,33 @@ public class Spike extends Sprite {
 
          fdef.shape = shape;
          fdef.friction = 0.3f;
-         b2body.createFixture(fdef).setUserData(this);
+         fixture= b2body.createFixture(fdef);
+         fixture.setUserData(this);
 
          shape.dispose();
 
      }
 
      public void update(float dt){
-        //setPosition(b2body.getPosition().x  - getWidth() / 2, b2body.getPosition().y  - getHeight() / 2);
+
+     }
+
+     public void fake(){
+        if (b2body!=null){
+
+            // Desactivar la colisión de la fixture del pincho
+            Filter filter = new Filter();
+            filter.categoryBits = Vault.NOTHING_BIT; // Categoría de bits que no colisiona con nada
+            fixture.setFilterData(filter);
+            fake=true;
+        }
+
+     }
+
+     public void draw(Batch batch){
+        if (!fake){
+            super.draw(batch);
+        }
      }
 
      public void hit(){

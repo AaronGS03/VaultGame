@@ -47,6 +47,13 @@ public class WorldContactListener implements ContactListener {
                     ((Spike) fixB.getUserData()).hit();
                 }
                 break;
+            case Vault.SENSOR_BIT | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits == Vault.SENSOR_BIT) {
+                    ((Sensor) fixA.getUserData()).active();
+                } else {
+                    ((Sensor) fixB.getUserData()).active();
+                }
+                break;
             case Vault.DOOR_BIT | Vault.MAGE_BIT:
                 if (fixA.getFilterData().categoryBits == Vault.DOOR_BIT) {
                     ((Door) fixA.getUserData()).open();

@@ -25,6 +25,7 @@ protected World world;
     protected Fixture fixture;
 
     protected AssetManager manager;
+    FixtureDef fdef;
 
 
     public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
@@ -33,7 +34,7 @@ protected World world;
         this.bounds = bounds;
 
         BodyDef bdef= new BodyDef();
-        FixtureDef fdef = new FixtureDef();
+         fdef = new FixtureDef();
         PolygonShape shape= new PolygonShape();
 
         bdef.type =BodyDef.BodyType.StaticBody;
@@ -43,7 +44,7 @@ protected World world;
 
         shape.setAsBox(bounds.getWidth() / 2/ Vault.PPM, bounds.getHeight()/2/Vault.PPM);
         fdef.shape = shape;
-        fdef.friction=1;
+        fdef.friction=1f;
         fixture= body.createFixture(fdef);
         shape.dispose();
     }
