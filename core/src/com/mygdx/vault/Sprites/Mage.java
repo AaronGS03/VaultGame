@@ -103,6 +103,7 @@ public class Mage extends Sprite {
     private Array<Room> habitaciones;
     public Key keys;
     private PlayScreen screen;
+    public FixtureDef fdef;
 
 
     public Mage(PlayScreen screen, Controller controller, TextureAtlas atlas, AssetManager manager, Array<Room> habitaciones) {
@@ -207,6 +208,9 @@ public class Mage extends Sprite {
             screen.levelSpawn=-1;
         }
 
+
+
+
         setRegion(getFrame(dt));
     }
     public TextureRegion getFrame(float dt) {
@@ -247,16 +251,10 @@ public class Mage extends Sprite {
                 region = mageIdle.getKeyFrame(stateTimer, true);
                 break;
         }
+
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
-            if (currentLevel==9 && controller.isLeftPressed()){
-                region.flip(true, false);
-                runningRight = false;
-
-            }else{
-                region.flip(true, false);
-                runningRight = false;
-
-            }
+            region.flip(true, false);
+            runningRight = false;
 
         } else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
             region.flip(true, false);
@@ -307,7 +305,7 @@ public class Mage extends Sprite {
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
-        FixtureDef fdef = new FixtureDef();
+         fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1f, 1.6f);
         if (!dead){
@@ -321,6 +319,7 @@ public class Mage extends Sprite {
 
         fdef.shape = shape;
         fdef.friction = 0.3f;
+
         b2body.createFixture(fdef).setUserData(this);
 
 

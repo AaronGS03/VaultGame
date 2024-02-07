@@ -368,7 +368,7 @@ public class PlayScreen implements Screen {
             }
             if (controller.isRightPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
                 player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
-                controller.setUpPressed(false);
+                controller.setRightPressed(false);
             }
         } else {
             player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
@@ -440,7 +440,7 @@ public class PlayScreen implements Screen {
             if (!player.isDead()) {
                 handleInput(dt);
                 if (player.getCurrentLevel() == 9){
-                    player.b2body.applyForce(new Vector2(-20f, 0), player.b2body.getWorldCenter(), true);
+                    player.b2body.applyForce(new Vector2(-30f, 0), player.b2body.getWorldCenter(), true);
                 }
 
             }
@@ -462,6 +462,7 @@ public class PlayScreen implements Screen {
                     s.fake();
                 }
                 creator.getSensors().get(3).getFixture().setSensor(true);
+                creator.getSensors().get(6).getFixture().setSensor(false);
                 creator.getSensors().get(2).body.destroyFixture(creator.getSensors().get(2).getFixture());
 
                 level8gimmick = false;

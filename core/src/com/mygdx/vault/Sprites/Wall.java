@@ -16,7 +16,7 @@ public class Wall extends InteractiveTileObject {
         super(screen, bounds);
         this.player = player;
         if (slide) {
-            fdef.friction=0.5f;
+            this.fdef.friction=0.1f;
         }
         fixture.setUserData(this);
         setCategoryFilter(Vault.WALL_BIT);
