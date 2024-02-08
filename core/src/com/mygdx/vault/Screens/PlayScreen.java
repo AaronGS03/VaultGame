@@ -622,6 +622,7 @@ public class PlayScreen implements Screen {
         if (hud.isPause()) {
             controller.leftImage.getStage().addActor(submenu.table);
 
+
         } else {
             if (controller.leftImage.getStage().getActors().size == 4) {
                 controller.leftImage.getStage().getActors().get(3).remove();
@@ -629,6 +630,7 @@ public class PlayScreen implements Screen {
             }
 
         }
+
 
         submenu.draw();
         hud.draw();

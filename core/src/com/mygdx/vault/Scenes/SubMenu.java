@@ -42,10 +42,10 @@ public class SubMenu implements Disposable {
         this.screen= screen;
 
         table = new Table();
-        table.top().padTop(6).setFillParent(true);
+        table.top().padTop(60).setFillParent(true);
         this.player=player;
         continueImage = new Image(new Texture("continueImage.png"));
-        continueImage.setSize(7, 7);
+        continueImage.setSize(150, 150);
         continueImage.addListener(new InputListener() {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -63,7 +63,7 @@ public class SubMenu implements Disposable {
 
         );
         menuScreenImage = new Image(new Texture("menuImage.png"));
-        menuScreenImage.setSize(7, 7);
+        menuScreenImage.setSize(150, 150);
         menuScreenImage.addListener(new InputListener() {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -83,7 +83,7 @@ public class SubMenu implements Disposable {
 
         );
         respawnImage = new Image(new Texture("respawnImage.png"));
-        respawnImage.setSize(7, 7);
+        respawnImage.setSize(150, 150);
         respawnImage.addListener(new InputListener() {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -103,7 +103,7 @@ public class SubMenu implements Disposable {
         );
 
         volumeImage = new Image(new Texture("volumeImage.png"));
-        volumeImage.setSize(7, 7);
+        volumeImage.setSize(150, 150);
         volumeImage.addListener(new InputListener() {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -123,7 +123,7 @@ public class SubMenu implements Disposable {
         );
 
         effectsSoundImage = new Image(new Texture("effectsSoundsImage.png"));
-        effectsSoundImage.setSize(7, 7);
+        effectsSoundImage.setSize(150, 150);
         effectsSoundImage.addListener(new InputListener() {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -143,7 +143,7 @@ public class SubMenu implements Disposable {
         );
 
         clueImage = new Image(new Texture("clueImage.png"));
-        clueImage.setSize(7, 7);
+        clueImage.setSize(150, 150);
         clueImage.addListener(new InputListener() {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -161,13 +161,13 @@ public class SubMenu implements Disposable {
 
         );
 
-        table.add(continueImage).size(continueImage.getWidth(), continueImage.getHeight()).pad(1);
-        table.add(respawnImage).size(respawnImage.getWidth(), respawnImage.getHeight()).pad(1);
-        table.add(menuScreenImage).size(menuScreenImage.getWidth(), menuScreenImage.getHeight()).pad(1);
-        table.add(volumeImage).size(volumeImage.getWidth(), volumeImage.getHeight()).pad(1);
-        table.add(effectsSoundImage).size(effectsSoundImage.getWidth(), effectsSoundImage.getHeight()).pad(1);
+        table.add(continueImage).size(continueImage.getWidth(), continueImage.getHeight()).pad(10);
+        table.add(respawnImage).size(respawnImage.getWidth(), respawnImage.getHeight()).pad(10);
+        table.add(menuScreenImage).size(menuScreenImage.getWidth(), menuScreenImage.getHeight()).pad(10);
+        table.add(volumeImage).size(volumeImage.getWidth(), volumeImage.getHeight()).pad(10);
+        table.add(effectsSoundImage).size(effectsSoundImage.getWidth(), effectsSoundImage.getHeight()).pad(10);
         table.row();
-        table.add(clueImage).colspan(5).size(clueImage.getWidth(), clueImage.getHeight()).pad(1).padTop(9);
+        table.add(clueImage).colspan(5).size(clueImage.getWidth(), clueImage.getHeight()).pad(1).padTop(90);
 
         stage.addActor(table);
     }
@@ -186,6 +186,5 @@ public class SubMenu implements Disposable {
 
     @Override
     public void dispose() {
-        stage.dispose();
     }
 }

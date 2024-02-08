@@ -28,7 +28,7 @@ public class Controller implements Disposable {
     public Controller() {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
-        stage = new Stage(viewport, Vault.batch);
+        stage = new Stage(new FitViewport(1920,1080));
         Gdx.input.setInputProcessor(stage);
 
         //Botones a la izquierda
@@ -36,13 +36,13 @@ public class Controller implements Disposable {
         tableL.left().bottom();
         //Botones a la derecha
         Table tableR = new Table();
-        tableR.bottom();
+        tableR.right().bottom();
 
 
 
-        Image upImage = new Image(new Texture("up.png"));
+        upImage = new Image(new Texture("up.png"));
 
-        upImage.setSize(8, 8);
+        upImage.setSize(200, 200);
         upImage.addListener(new InputListener() {
 
             @Override
@@ -60,7 +60,7 @@ public class Controller implements Disposable {
 
 
         leftImage = new Image(new Texture("left.png"));
-        leftImage.setSize(8, 8);
+        leftImage.setSize(200, 200);
         leftImage.addListener(new InputListener() {
 
             @Override
@@ -77,8 +77,8 @@ public class Controller implements Disposable {
         });
 
 
-        Image rightImage = new Image(new Texture("right.png"));
-        rightImage.setSize(8, 8);
+        rightImage = new Image(new Texture("right.png"));
+        rightImage.setSize(200, 200);
         rightImage.addListener(new InputListener() {
 
             @Override
@@ -95,13 +95,9 @@ public class Controller implements Disposable {
         });
 
         //posicion en las tablas de los botones
-        tableL.row().pad(2,4,2,2);
-        tableL.add(leftImage).size(leftImage.getWidth(), leftImage.getHeight());
-        tableL.add();
+        tableL.add(leftImage).size(leftImage.getWidth(), leftImage.getHeight()).padRight(100);
         tableL.add(rightImage).size(rightImage.getWidth(), rightImage.getHeight());
-        tableL.getCell(rightImage).padLeft(-0);
-        tableR.row().pad(2, cam.viewportWidth*2-20, 2,2);
-        tableR.add(upImage).size(upImage.getWidth(), upImage.getHeight());
+        tableL.add(upImage).size(upImage.getWidth(), upImage.getHeight()).padLeft(1000);
 
         stage.addActor(tableL);
         stage.addActor(tableR);
