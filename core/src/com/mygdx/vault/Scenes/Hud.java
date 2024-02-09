@@ -93,6 +93,21 @@ public class Hud implements Disposable {
     private boolean pause;
     public Image pauseImage;
     private OrthographicCamera cam;
+
+    public Label.LabelStyle getLabelStyle() {
+        return labelStyle;
+    }
+
+    private  Label.LabelStyle labelStyle;
+
+    public void setTitleLabel(Label titleLabel) {
+        this.titleLabel = titleLabel;
+    }
+
+    public Label getTitleLabel() {
+        return titleLabel;
+    }
+
     private Label titleLabel;
     private Vault game;
 
@@ -104,7 +119,8 @@ public class Hud implements Disposable {
         this.text = text;
     }
 
-    private String text="";
+    private String text = "level1";
+    public Table table;
 
     public Hud(Stage stageC, Vault game) {
         cam = new OrthographicCamera();
@@ -114,9 +130,9 @@ public class Hud implements Disposable {
         Gdx.input.setInputProcessor(stage);
         BitmapFont font = generateFont();
 
-        Table table = new Table();
+        table = new Table();
         table.top().right().padTop(120).padRight(120).setFillParent(true);
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
 
         titleLabel = new Label(text, labelStyle);

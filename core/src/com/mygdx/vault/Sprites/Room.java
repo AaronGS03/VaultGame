@@ -22,9 +22,11 @@ public class Room extends InteractiveTileObject {
     }
 
     private Rectangle spawnPoint;
+    private PlayScreen screen;
 
     public Room(PlayScreen screen, Rectangle bounds, Mage player, OrthographicCamera gamecam, int level, OrthographicCamera backcam) {
         super(screen, bounds);
+        this.screen= screen;
         this.player = player;
         this.gamecam = gamecam;
         this.level = level;

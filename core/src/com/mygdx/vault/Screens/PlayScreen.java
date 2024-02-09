@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -165,6 +166,7 @@ public class PlayScreen implements Screen {
     }
 
     private boolean level8gimmick = false;
+
 
     public PlayScreen(Vault game, AssetManager manager, int levelSpawn) {
         this.manager = manager;
@@ -440,6 +442,9 @@ public class PlayScreen implements Screen {
             manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(volume);
             submenu.touch = false;
         }
+
+
+
         if (!hud.isPause()) {
 
             if (!player.isDead()) {
@@ -572,6 +577,7 @@ public class PlayScreen implements Screen {
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
     }
+    int newLevel=0;
     @Override
     public void render(float delta) {
         update(delta);
@@ -618,6 +624,20 @@ public class PlayScreen implements Screen {
         //render Lineas debug Box2d
         //b2dr.render(world, gamecam.combined);
 
+
+        if (player.getCurrentLevel()!=newLevel){
+            newLevel=player.getCurrentLevel();
+
+            hud.table.reset();
+            hud.table.top().right().padTop(120).padRight(120).setFillParent(true);
+            hud.setTitleLabel(new Label("Level: " + player.getCurrentLevel()+1, hud.getLabelStyle()));
+            hud.table.add(hud.pauseImage).right().size(hud.pauseImage.getWidth(), hud.pauseImage.getHeight());
+            hud.table.row();
+            hud.table.add(hud.getTitleLabel()).expandX().top().right().padRight(240).padTop(-150);
+
+
+
+        }
 
         if (hud.isPause()) {
             controller.leftImage.getStage().addActor(submenu.table);
