@@ -3023,7 +3023,7 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="sensor">
-  <object id="1172" x="32216" y="21180" width="2688" height="2080">
+  <object id="1172" x="32056" y="21180" width="2688" height="2080">
    <properties>
     <property name="level" value="10"/>
    </properties>

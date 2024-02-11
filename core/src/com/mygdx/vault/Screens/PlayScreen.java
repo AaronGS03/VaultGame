@@ -2,10 +2,12 @@ package com.mygdx.vault.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +26,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Controls.Controller;
@@ -84,6 +88,7 @@ public class PlayScreen implements Screen {
     private static float STEP_SOUND_INTERVAL = 0.4f; // Frecuencia deseada de los sonidos de pasos
     private static float LAND_SOUND_INTERVAL = 0.22f; // Frecuencia deseada de los sonidos de pasos
     private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
+
 
     public Array<Room> habitaciones = new Array<Room>();
     public Array<Door> doors = new Array<Door>();
@@ -200,8 +205,6 @@ public class PlayScreen implements Screen {
         creator = new B2WorldCreator(this, player, habitaciones, doors, gamecam, backcam);
 
 
-
-
         layers = new ParallaxLayer[9];
         layers[0] = new ParallaxLayer(new Texture("ParallaxCave1.png"), 7f, false, false);
         layers[2] = new ParallaxLayer(new Texture("ParallaxCave2.png"), 7.2f, false, false);
@@ -223,7 +226,7 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-
+        loadLevelTitles();
     }
 
     public TextureAtlas getAtlas() {
@@ -425,6 +428,7 @@ public class PlayScreen implements Screen {
 
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
+
         if (!sound) {
             music.setVolume(0);
         } else {
@@ -444,22 +448,21 @@ public class PlayScreen implements Screen {
         }
 
 
-
         if (!hud.isPause()) {
 
             if (!player.isDead()) {
                 handleInput(dt);
-                if (player.getCurrentLevel() == 9){
+                if (player.getCurrentLevel() == 9) {
                     player.b2body.applyForce(new Vector2(-20f, 0), player.b2body.getWorldCenter(), true);
                 }
 
             }
-            if (level10gimmick && level69gimmick) {
+            if (level10gimmick && level69gimmick && player.keys.collected) {
                 player.setCurrentLevel(11);
                 player.setDead(true);
-                level69gimmick=false;
-            }else {
-                level10gimmick=false;
+                level69gimmick = false;
+            } else {
+                level10gimmick = false;
             }
             if (level7gimmick) {
                 player.setCurrentLevel(8);
@@ -478,7 +481,7 @@ public class PlayScreen implements Screen {
                 level8gimmick = false;
             }
 
-            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass() ) {
+            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
                 if (stepSoundTimer <= 0) {
                     manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
@@ -577,7 +580,11 @@ public class PlayScreen implements Screen {
         gamecam.update();
         renderer.setView(gamecam); //esto hará que solo renderice lo que se ve en pantalla
     }
-    int newLevel=0;
+
+    int newLevel = -1;
+    Preferences prefs = Gdx.app.getPreferences("My Preferences");
+
+
     @Override
     public void render(float delta) {
         update(delta);
@@ -625,16 +632,20 @@ public class PlayScreen implements Screen {
         //b2dr.render(world, gamecam.combined);
 
 
-        if (player.getCurrentLevel()!=newLevel){
-            newLevel=player.getCurrentLevel();
+        if (player.getCurrentLevel() != newLevel) {
+            String title = getLevelTitle(player.getCurrentLevel() + 1);
+            newLevel = player.getCurrentLevel();
+            if (player.getCurrentLevel()>prefs.getInteger("highestLevel",0)){
+                prefs.putInteger("highestLevel",player.getCurrentLevel());
+                prefs.flush();
+            }
 
             hud.table.reset();
             hud.table.top().right().padTop(120).padRight(120).setFillParent(true);
-            hud.setTitleLabel(new Label("Level: " + player.getCurrentLevel()+1, hud.getLabelStyle()));
+            hud.setTitleLabel(new Label(title, hud.getLabelStyle()));
             hud.table.add(hud.pauseImage).right().size(hud.pauseImage.getWidth(), hud.pauseImage.getHeight());
             hud.table.row();
             hud.table.add(hud.getTitleLabel()).expandX().top().right().padRight(240).padTop(-150);
-
 
 
         }
@@ -655,6 +666,26 @@ public class PlayScreen implements Screen {
         submenu.draw();
         hud.draw();
         controller.draw();
+    }
+
+    private  JsonValue titlesObject;
+
+    public void loadLevelTitles() {
+        FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
+        String jsonData = fileHandle.readString();
+        JsonValue root = new JsonReader().parse(jsonData);
+        switch (game.language){
+            case 0:
+                titlesObject = root.get("titles");
+                break;
+            case 1:
+                titlesObject= root.get("titulos");
+                break;
+        }
+    }
+
+    public  String getLevelTitle(int level) {
+        return titlesObject.getString(level + "", "default");
     }
 
     @Override

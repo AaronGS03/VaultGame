@@ -1,0 +1,44 @@
+{
+  "buttons":{
+    "play": "Start",
+    "continue": "Continue",
+    "levels":"Levels",
+    "options":"Options",
+    "credits":"Credits"
+  },
+  "botones":{
+    "play": "Comenzar",
+    "continue": "Continuar",
+    "levels":"Niveles",
+    "options":"Opciones",
+    "credits":"Creditos"
+  },
+  "titulos": {
+    "1": "Nivel 1",
+    "2": "Nivel 2",
+    "3": "Nivel 3",
+    "4": "Nivel 4",
+    "5": "Nivel 5",
+    "6": "Nivel 6",
+    "7": "Nivel 7",
+    "8": "Nivel 8",
+    "9": "Nivel 9",
+    "10": "Nivel 10",
+    "11": "Nivel 11",
+    "12": "Nivel 12"
+  },
+  "titles": {
+    "1": "Level 1",
+    "2": "Level 2",
+    "3": "Level 3",
+    "4": "Level 4",
+    "5": "Level 5",
+    "6": "Level 6",
+    "7": "Level 7",
+    "8": "Level 8",
+    "9": "Level 9",
+    "10": "Level 10",
+    "11": "Level 11",
+    "12": "Level 12"
+  }
+}

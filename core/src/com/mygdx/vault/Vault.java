@@ -2,9 +2,11 @@ package com.mygdx.vault;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,10 +32,11 @@ public class Vault extends Game {
 
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public static SpriteBatch batch;
-
 	public AssetManager manager;
 	public float volume=0.2f;
-	
+	public int language=1;
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -44,8 +47,6 @@ public class Vault extends Game {
 		manager.load("audio/sounds/clickbutton.mp3", Sound.class);
 		manager.load("audio/sounds/doorKey.mp3", Sound.class);
 		manager.load("audio/sounds/lockedDoor.mp3", Sound.class);
-
-
 
 		manager.load("loadingScreenImage.png", Texture.class);
 

@@ -1,6 +1,7 @@
 package com.mygdx.vault.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -27,6 +28,8 @@ public class LevelSelectScreen implements Screen {
     Texture buttonTexture;
     Texture buttonTexturedown;
     BitmapFont font;
+    Preferences prefs = Gdx.app.getPreferences("My Preferences");
+
 
 
     public LevelSelectScreen(Vault game) {
@@ -119,10 +122,11 @@ public class LevelSelectScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     // Implementa la lógica para avanzar entre niveles
-                    //game.setScreen(new PlayScreen(game,game.manager, finalLevel));
-                    game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                    game.setScreen(new LoadingScreen(game, finalLevel));
-                    dispose();
+                    if (prefs.getInteger("highestLevel",0)<finalLevel){
+                        game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+                        game.setScreen(new LoadingScreen(game, finalLevel));
+                        dispose();
+                    }
                 }
             });
             levelButton.setWidth(buttonWidth);

@@ -1,9 +1,11 @@
 package com.mygdx.vault.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,6 +20,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.vault.Sprites.Mage;
@@ -31,20 +35,30 @@ public class MainMenuScreen implements Screen {
     Texture titleTexture;
     Texture mageTexture;
     Texture keyTexture;
+
+    int language;
+    TextButton playButton;
+    Preferences prefs = Gdx.app.getPreferences("My Preferences");
+
+
     public MainMenuScreen(Vault game) {
         this.game = game;
-        this.stage = new Stage(new FitViewport(1920,1080));
+        this.stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
+
+        this.language = game.language;
 
         Table table = new Table();
         table.bottom().setFillParent(true);
         stage.addActor(table);
 
-        BitmapFont font= generateFont();
+        BitmapFont font = generateFont();
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
         buttonStyle.fontColor = Color.BLACK;
+
+        loadLevelTitles();
 
         // Configura el fondo con la textura
         buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
@@ -52,7 +66,7 @@ public class MainMenuScreen implements Screen {
         TextureRegionDrawable buttonBackground = new TextureRegionDrawable(new TextureRegion(buttonTexture));
         buttonStyle.downFontColor = Color.WHITE;
         TextureRegionDrawable buttonBackgrounddown = new TextureRegionDrawable(new TextureRegion(buttonTexturedown));
-        buttonStyle.down =buttonBackgrounddown;
+        buttonStyle.down = buttonBackgrounddown;
         buttonStyle.up = buttonBackground;
         float paddingX = 120f;  // Ajusta según sea necesario
         float paddingY = 10f;  // Ajusta según sea necesario
@@ -61,10 +75,15 @@ public class MainMenuScreen implements Screen {
 
 
         // Crea los botones con el estilo personalizado
-        TextButton playButton = createButton("Jugar", buttonStyle);
-        TextButton levelsButton = createButton("Niveles", buttonStyle);
-        TextButton optionsButton = createButton("Opciones", buttonStyle);
-        TextButton creditsButton = createButton("Créditos", buttonStyle);
+        if (prefs.getInteger("highestLevel",0)==0){
+            playButton = createButton(getButtonText("play"), buttonStyle);
+        }else{
+            playButton = createButton(getButtonText("continue"), buttonStyle);
+
+        }
+        TextButton levelsButton = createButton(getButtonText("levels"), buttonStyle);
+        TextButton optionsButton = createButton(getButtonText("options"), buttonStyle);
+        TextButton creditsButton = createButton(getButtonText("credits"), buttonStyle);
 
         // Agrega un Image con el título del juego
         titleTexture = new Texture("loadingScreenImage.png"); // Asegúrate de tener esta imagen
@@ -84,7 +103,7 @@ public class MainMenuScreen implements Screen {
 
         // Ajusta la escala y posición del título según sea necesario
         mageImage.setScale(5f);  // Ajusta según tus necesidades
-        mageImage.setPosition((stage.getWidth()-400 - mageImage.getWidth() * mageImage.getScaleX()) / 2,
+        mageImage.setPosition((stage.getWidth() - 400 - mageImage.getWidth() * mageImage.getScaleX()) / 2,
                 stage.getHeight() - mageImage.getHeight() * mageImage.getScaleY() - 620); // Ajusta según tus necesidades
 
         // Añade el título al escenario
@@ -96,7 +115,7 @@ public class MainMenuScreen implements Screen {
 
         // Ajusta la escala y posición del título según sea necesario
         keyImage.setScale(4f);  // Ajusta según tus necesidades
-        keyImage.setPosition((stage.getWidth()+440 - keyImage.getWidth() * keyImage.getScaleX()) / 2,
+        keyImage.setPosition((stage.getWidth() + 440 - keyImage.getWidth() * keyImage.getScaleX()) / 2,
                 stage.getHeight() - keyImage.getHeight() * keyImage.getScaleY() - 700); // Ajusta según tus necesidades
 
         // Añade el título al escenario
@@ -107,8 +126,8 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new LoadingScreen(game,1));
-              dispose();
+                game.setScreen(new LoadingScreen(game, prefs.getInteger("highestLevel",0)+1));
+                dispose();
             }
         });
 
@@ -153,17 +172,36 @@ public class MainMenuScreen implements Screen {
         creditsButton.setWidth(buttonWidth);
         creditsButton.setHeight(buttonHeight);
 
-        table.add(playButton).padRight((stage.getWidth()/2)-350);
+        table.add(playButton).padRight((stage.getWidth() / 2) - 350);
         table.add(optionsButton);
         table.row();
-        table.add(levelsButton).padBottom(100).padRight((stage.getWidth()/2)-350);
+        table.add(levelsButton).padBottom(100).padRight((stage.getWidth() / 2) - 350);
         table.add(creditsButton).padBottom(100);
 
     }
+    private  JsonValue buttonsObject;
+    public void loadLevelTitles() {
+        FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
+        String jsonData = fileHandle.readString();
+        JsonValue root = new JsonReader().parse(jsonData);
+        switch (language) {
+            case 0:
+                buttonsObject = root.get("buttons");
+                break;
+            case 1:
+                buttonsObject = root.get("botones");
+                break;
+        }
+    }
+    public  String getButtonText(String button) {
+        return buttonsObject.getString(button, "default");
+    }
+
+
     private BitmapFont generateFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("cityburn.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        float fontSize = stage.getHeight()*0.06f;
+        float fontSize = stage.getHeight() * 0.06f;
         parameter.size = (int) fontSize;
         BitmapFont font = generator.generateFont(parameter);
         generator.dispose(); // Importante: liberar recursos del generador
