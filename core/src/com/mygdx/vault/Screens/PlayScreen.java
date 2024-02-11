@@ -59,13 +59,6 @@ public class PlayScreen implements Screen {
     private boolean touch = true;
     private int touchCount;
 
-    public boolean isSound() {
-        return sound;
-    }
-
-    public void setSound(boolean sound) {
-        this.sound = sound;
-    }
 
     private boolean sound = true;
     private int intervalTouch;
@@ -95,15 +88,6 @@ public class PlayScreen implements Screen {
 
     public int levelSpawn = 1;
     public float volume = 0.2f;
-
-    public boolean isEffects() {
-        return effects;
-    }
-
-    public void setEffects(boolean effects) {
-        this.effects = effects;
-    }
-
     private boolean effects = true;
 
     public boolean isOpenDoor() {
@@ -179,6 +163,9 @@ public class PlayScreen implements Screen {
 
         this.game = game;
         intervalTouch = 500;
+
+        this.effects=game.isEffects();
+        this.sound= game.isSound();
 
         this.levelSpawn = levelSpawn;
 
@@ -256,6 +243,7 @@ public class PlayScreen implements Screen {
             } else if (player.getCurrentLevel() == 6) {
                 gyroscopeMovement();
             } else if (player.getCurrentLevel() == 7) {
+                world.setGravity(new Vector2(world.getGravity().x, -45));
                 scrambleMovement();
             } else {
                 world.setGravity(new Vector2(world.getGravity().x, -45));
@@ -429,14 +417,14 @@ public class PlayScreen implements Screen {
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
 
-        if (!sound) {
+        if (!game.isSound()) {
             music.setVolume(0);
         } else {
             music.setVolume(1f);
         }
         game.volume = volume;
 
-        if (!effects) {
+        if (!game.isEffects()) {
             volume = 0;
         } else {
             volume = 0.2f;

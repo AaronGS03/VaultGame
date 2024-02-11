@@ -4,6 +4,8 @@
     "continue": "Continue",
     "levels":"Levels",
     "options":"Options",
+    "back":"Back",
+    "language":"Language",
     "credits":"Credits"
   },
   "botones":{
@@ -11,6 +13,8 @@
     "continue": "Continuar",
     "levels":"Niveles",
     "options":"Opciones",
+    "back":"Volver",
+    "language":"Idioma",
     "credits":"Creditos"
   },
   "titulos": {

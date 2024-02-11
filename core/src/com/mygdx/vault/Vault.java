@@ -3,6 +3,7 @@ package com.mygdx.vault;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -32,13 +33,36 @@ public class Vault extends Game {
 
 	//SpriteBatch contiene todos los sprites, que luego se muestran
 	public static SpriteBatch batch;
+
+
 	public AssetManager manager;
 	public float volume=0.2f;
 	public int language=1;
 
+	public boolean isEffects() {
+		return effects;
+	}
+
+	public void setEffects(boolean effects) {
+		this.effects = effects;
+	}
+
+	private boolean effects;
+
+	public boolean isSound() {
+		return sound;
+	}
+
+	public void setSound(boolean sound) {
+		this.sound = sound;
+	}
+
+	private boolean sound;
+
 
 	@Override
 	public void create () {
+
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
@@ -51,7 +75,15 @@ public class Vault extends Game {
 		manager.load("loadingScreenImage.png", Texture.class);
 
 		manager.finishLoading();
+		Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
+		effects= prefs.getBoolean("effects",true);
+		if (effects){
+			volume=0.2f;
+		}else {
+			volume=0;
+		}
+		sound=prefs.getBoolean("sound",true);
 		this.setScreen(new MainMenuScreen(this));
 
 

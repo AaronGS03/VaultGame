@@ -3,7 +3,6 @@ package com.mygdx.vault.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -15,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,8 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.vault.Sprites.Mage;
 import com.mygdx.vault.Vault;
 
 public class MainMenuScreen implements Screen {
@@ -38,13 +34,13 @@ public class MainMenuScreen implements Screen {
 
     int language;
     TextButton playButton;
-    Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
 
     public MainMenuScreen(Vault game) {
         this.game = game;
         this.stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
+        Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
         this.language = game.language;
 
@@ -58,7 +54,9 @@ public class MainMenuScreen implements Screen {
         buttonStyle.font = font;
         buttonStyle.fontColor = Color.BLACK;
 
-        loadLevelTitles();
+        loadButtonTitles();
+
+
 
         // Configura el fondo con la textura
         buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
@@ -144,9 +142,9 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+                game.setScreen(new OptionsScreen(game));
+                dispose();
 
-                // Acción al hacer clic en el botón de opciones
-                // Implementa la lógica correspondiente
             }
         });
 
@@ -180,7 +178,7 @@ public class MainMenuScreen implements Screen {
 
     }
     private  JsonValue buttonsObject;
-    public void loadLevelTitles() {
+    public void loadButtonTitles() {
         FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
         String jsonData = fileHandle.readString();
         JsonValue root = new JsonReader().parse(jsonData);

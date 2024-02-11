@@ -1,6 +1,7 @@
 package com.mygdx.vault.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -40,6 +41,7 @@ public class SubMenu implements Disposable {
         this.stage=stageC;
         Gdx.input.setInputProcessor(stage);
         this.screen= screen;
+        Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
         table = new Table();
         table.top().padTop(60).setFillParent(true);
@@ -108,7 +110,9 @@ public class SubMenu implements Disposable {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                                        touchButton();
-                                       screen.setSound(!screen.isSound());
+                                       game.setSound(!game.isSound());
+                                       prefs.putBoolean("sound",!prefs.getBoolean("sound"));
+                                       prefs.flush();
                                        return true;
                                    }
 
@@ -128,7 +132,9 @@ public class SubMenu implements Disposable {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                                        touchButton();
-                                       screen.setEffects(!screen.isEffects());
+                                       game.setEffects(!game.isEffects());
+                                       prefs.putBoolean("effects",!prefs.getBoolean("effects"));
+                                       prefs.flush();
                                        return true;
                                    }
 
