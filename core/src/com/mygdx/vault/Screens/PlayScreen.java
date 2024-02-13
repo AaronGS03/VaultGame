@@ -116,6 +116,18 @@ public class PlayScreen implements Screen {
 
     private boolean level10gimmick = false;
 
+    public void setLevel13gimmick(boolean level13gimmick) {
+        this.level13gimmick = level13gimmick;
+    }
+
+    private boolean level13gimmick = false;
+
+    public void setLevel14gimmick(boolean level14gimmick) {
+        this.level14gimmick = level14gimmick;
+    }
+
+    private boolean level14gimmick = false;
+
     public boolean isLevel69gimmick() {
         return level69gimmick;
     }
@@ -452,6 +464,19 @@ public class PlayScreen implements Screen {
             } else {
                 level10gimmick = false;
             }
+
+            if (level13gimmick) {
+                player.setCurrentLevel(12);
+                player.setDead(true);
+                level13gimmick=false;
+            }
+
+            if (level14gimmick) {
+                player.setCurrentLevel(12);
+                player.setDead(true);
+                level14gimmick=false;
+            }
+
             if (level7gimmick) {
                 player.setCurrentLevel(8);
                 player.setDead(true);
@@ -717,6 +742,8 @@ public class PlayScreen implements Screen {
         hud.dispose();
         submenu.dispose();
         controller.dispose();
+        music.dispose();
+
 
     }
 }

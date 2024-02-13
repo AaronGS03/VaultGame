@@ -82,6 +82,13 @@ public class Sensor extends Sprite {
             screen.setLevel10gimmick(true);
         }
 
+        if (level==13){
+            screen.setLevel13gimmick(true);
+        }
+        if (level==14){
+            screen.setLevel14gimmick(true);
+        }
+
         if (level==69){
             screen.setLevel69gimmick(true);
         }

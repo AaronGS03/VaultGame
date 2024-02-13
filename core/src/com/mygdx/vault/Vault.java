@@ -11,6 +11,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.vault.Screens.LoadingScreen;
 import com.mygdx.vault.Screens.MainMenuScreen;
@@ -65,7 +66,6 @@ public class Vault extends Game {
 
 		batch = new SpriteBatch();
 		manager = new AssetManager();
-		manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
 		manager.load("audio/sounds/clickbutton.mp3", Sound.class);
@@ -93,6 +93,7 @@ public class Vault extends Game {
 	public void render () {
 		//Delega el método render al Playscreen en uso
 		super.render();
+
 		manager.update();
 
 	}

@@ -26,17 +26,28 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.vault.Vault;
 
 public class OptionsScreen implements Screen {
-    private Vault game;
     private Stage stage;
     Texture buttonTexture;
     Texture buttonTexturedown;
     Image volumeImage;
     Image effectsSoundImage;
-    int language;
+    TextButton dropdownButton;
+    TextButton buttonEffectsSounds;
+    TextButton buttonMusic;
+    TextButton resetGameSave;
+
+    public int getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(int language) {
+        this.language = language;
+    }
+
+    private int language;
 
 
     public OptionsScreen(Vault game) {
-        this.game = game;
         this.stage = new Stage(new FitViewport(1920, 1080));
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
         this.language = game.language;
@@ -48,6 +59,7 @@ public class OptionsScreen implements Screen {
 
         BitmapFont font = generateFont();
 
+        loadButtonTitles();
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
         buttonStyle.font = font;
@@ -66,7 +78,7 @@ public class OptionsScreen implements Screen {
 
 
         // Botón de volver arriba a la izquierda
-        TextButton backButton = new TextButton("<", buttonStyle);
+        TextButton backButton = new TextButton(getButtonText("back"), buttonStyle);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,59 +88,134 @@ public class OptionsScreen implements Screen {
         });
 
         // Botón 1 sin texto
-        volumeImage = new Image(new Texture("volumeImage.png"));
+
+        if (prefs.getBoolean("sound")) {
+            volumeImage = new Image(new Texture("volumeImage.png"));
+
+        }else {
+            volumeImage = new Image(new Texture("noVolumeImage.png"));
+
+        }
         volumeImage.setSize(200, 200);
-        volumeImage.addListener(new InputListener() {
-                                    @Override
-                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                        game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-                                        game.setSound(!game.isSound());
-                                        prefs.putBoolean("sound", !prefs.getBoolean("sound"));
-                                        prefs.flush();
-                                        return true;
-                                    }
+        buttonMusic = new TextButton(getButtonText("music"), buttonStyle);
+        buttonMusic.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-                                    @Override
-                                    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setSound(!game.isSound());
 
+                prefs.putBoolean("sound", !prefs.getBoolean("sound"));
+                prefs.flush();
+                if (prefs.getBoolean("sound")) {
+                    table.reset();
+                    volumeImage=new Image(new Texture("volumeImage.png"));
+                    volumeImage.setSize(200, 200);
 
-                                    }
-                                }
+                    posTable(table, backButton, dropdownButton,volumeImage,buttonMusic,effectsSoundImage,buttonEffectsSounds);
 
-        );
+                }else{
+                    table.reset();
+                    volumeImage=new Image(new Texture("noVolumeImage.png"));
+                    volumeImage.setSize(200, 200);
 
-        effectsSoundImage = new Image(new Texture("effectsSoundsImage.png"));
+                    posTable(table, backButton, dropdownButton,volumeImage,buttonMusic,effectsSoundImage,buttonEffectsSounds);
+                }
+            }
+        });
+
+        if (prefs.getBoolean("effects")) {
+            effectsSoundImage = new Image(new Texture("effectsSoundsImage.png"));
+
+        }else {
+            effectsSoundImage=new Image(new Texture("noEffectsImage.png"));
+
+        }
         effectsSoundImage.setSize(200, 200);
-        effectsSoundImage.addListener(new InputListener() {
-                                          @Override
-                                          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                                              game.setEffects(!game.isEffects());
-                                              prefs.putBoolean("effects", !prefs.getBoolean("effects"));
-                                              game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-                                              prefs.flush();
-                                              return true;
-                                          }
+        buttonEffectsSounds = new TextButton(getButtonText("effects"), buttonStyle);
+        buttonEffectsSounds.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
 
-                                          @Override
-                                          public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setEffects(!game.isEffects());
+                if (game.isEffects()){
+                    game.volume=0.2f;
+                }else {
+                    game.volume=0;
 
+                }
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+                prefs.putBoolean("effects", !prefs.getBoolean("effects"));
+                prefs.flush();
+                if (prefs.getBoolean("effects")) {
+                    table.reset();
+                    effectsSoundImage=new Image(new Texture("effectsSoundsImage.png"));
+                    effectsSoundImage.setSize(200, 200);
 
-                                          }
-                                      }
+                    posTable(table, backButton, dropdownButton,volumeImage,buttonMusic,effectsSoundImage,buttonEffectsSounds);
 
-        );
+                }else{
+                    table.reset();
+                    effectsSoundImage=new Image(new Texture("noEffectsImage.png"));
+                    effectsSoundImage.setSize(200, 200);
+
+                    posTable(table, backButton, dropdownButton,volumeImage,buttonMusic,effectsSoundImage,buttonEffectsSounds);
+                }
+            }
+        });
+
         // Botón desplegable con texto
-        TextButton dropdownButton = new TextButton("Idioma", buttonStyle);
+        dropdownButton = new TextButton(getButtonText("language"), buttonStyle);
+        dropdownButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-        table.add(backButton).top().left().pad(20).row();
+                if (game.language==1){
+                    game.language=0;
+                }else{
+                    game.language++;
+
+                }
+                setLanguage(game.language);
+                loadButtonTitles();
+                table.reset();
+                backButton.setText(getButtonText("back"));
+                dropdownButton.setText(getButtonText("language"));
+                buttonMusic.setText(getButtonText("music"));
+                buttonEffectsSounds.setText(getButtonText("effects"));
+                resetGameSave.setText(getButtonText("reset"));
+                posTable(table, backButton, dropdownButton,volumeImage,buttonMusic,effectsSoundImage,buttonEffectsSounds);
+            }
+        });
+
+        resetGameSave = new TextButton(getButtonText("reset"), buttonStyle);
+        resetGameSave.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
+                prefs.putInteger("highestLevel",0);
+            }
+        });
+
+        posTable(table, backButton, dropdownButton,volumeImage,buttonMusic,effectsSoundImage,buttonEffectsSounds);
+    }
+
+    private void posTable(Table table, TextButton backButton, TextButton dropdownButton,Image volumeImage,TextButton buttonMusic, Image effectsSoundImage, TextButton buttonEffectsSounds) {
+        table.add(backButton).left().pad(20).row();
+        table.add(buttonMusic);
         table.add(volumeImage).size(volumeImage.getWidth(), volumeImage.getHeight());
+        table.row();
+        table.add(buttonEffectsSounds);
         table.add(effectsSoundImage).size(effectsSoundImage.getWidth(), effectsSoundImage.getHeight());
         table.row();
 
-        table.add(dropdownButton).center().padBottom(20).row();
+        table.add(dropdownButton).center().padBottom(20);
+        table.add(resetGameSave).center().padBottom(20).row();
     }
+
     private  JsonValue buttonsObject;
 
     public void loadButtonTitles() {
@@ -144,7 +231,9 @@ public class OptionsScreen implements Screen {
                 break;
         }
     }
-
+    public  String getButtonText(String button) {
+        return buttonsObject.getString(button, "default");
+    }
 
     @Override
     public void show() {

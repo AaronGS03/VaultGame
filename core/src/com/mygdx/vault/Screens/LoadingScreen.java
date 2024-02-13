@@ -5,17 +5,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.vault.Vault;
-
-import java.awt.Font;
 
 public class LoadingScreen implements Screen {
     private Vault game;
     private AssetManager manager;
     private boolean assetsLoaded = false;
-    private Texture loadingImage;
+    private Stage stage;
+    private Image loadingImage;
     public int level = 1;
 
     public LoadingScreen(Vault game, int level) {
@@ -23,67 +26,50 @@ public class LoadingScreen implements Screen {
         this.manager = game.manager;
         this.level = level;
 
-        // Cargar recursos para la pantalla de carga
-        manager.load("loadingScreenImage.png", Texture.class);
-
         // Cargar recursos para el juego
         manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
-        manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
-        manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
-        manager.load("audio/sounds/clickbutton.mp3", Sound.class);
-        manager.load("audio/sounds/doorKey.mp3", Sound.class);
-        manager.load("audio/sounds/lockedDoor.mp3", Sound.class);
-
-
-        try {
-            // Cargar otros recursos del juego si es necesario
-            loadingImage = manager.get("loadingScreenImage.png", Texture.class);
-            manager.finishLoading(); // Espera a que todos los recursos se carguen antes de continuar
-            assetsLoaded = true;
-        } catch (Exception e) {
-            // Manejo de excepciones, por ejemplo, mostrar un mensaje de error o cambiar de pantalla a una pantalla de error.
-            Gdx.app.error("LoadingScreen", "Error loading assets: " + e.getMessage());
-            assetsLoaded = false;
-        }
+        manager.finishLoading(); // Espera a que todos los recursos se carguen antes de continuar
+        assetsLoaded = true;
     }
 
     @Override
     public void show() {
-
+        // Crear la imagen de carga y agregarla al escenario
+        stage = new Stage();
+        loadingImage = new Image(new Texture("loadingScreenImage.png"));
+        stage.addActor(loadingImage);
     }
 
     @Override
     public void render(float delta) {
+     //   Gdx.gl.glClearColor(0, 0, 0, 1);
+    //    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+  //      stage.draw();
+
         if (assetsLoaded) {
-            // Cambia a la pantalla principal del juego cuando los recursos estén cargados
+            // Cambiar a la pantalla principal del juego cuando los recursos estén cargados
             game.setScreen(new PlayScreen(game, game.manager, level));
             dispose();
         }
-
     }
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() {}
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() {}
 
     @Override
     public void dispose() {
+        stage.dispose();
     }
 }
-
