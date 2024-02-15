@@ -32,11 +32,12 @@
     "5": "Alterando la gravedad",
     "6": "Hmmm... Hafefobia?",
     "7": "Distintos controles",
-    "8": "Lio mental",
+    "8": "Menudo lío!",
     "9": "Huh?",
-    "10": "Mal tiempo",
+    "10": "Mucho viento",
     "11": "Atrás",
-    "12": "Pulsa pausa"
+    "12": "Pulsa pausa",
+    "13": ""
   },
   "titles": {
     "1": "The key and the door",
@@ -46,10 +47,11 @@
     "5": "Flipping gravity!",
     "6": "Hmmm... Haphephobia?",
     "7": "Different controls",
-    "8": "Brain scramble",
+    "8": "What a mess!",
     "9": "Huh?",
     "10": "Bad weather",
     "11": "Back",
-    "12": "Press pause"
+    "12": "Press pause",
+    "13": ""
   }
 }

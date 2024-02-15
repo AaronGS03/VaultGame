@@ -197,6 +197,7 @@ public class OptionsScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
                 prefs.putInteger("highestLevel",0);
+                prefs.flush();
             }
         });
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="278" height="98" tilewidth="512" tileheight="512" infinite="0" nextlayerid="14" nextobjectid="2247">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="278" height="98" tilewidth="512" tileheight="512" infinite="0" nextlayerid="14" nextobjectid="2248">
  <tileset firstgid="1" source="Mossy - TileSet.tsx"/>
  <layer id="1" name="background" width="278" height="98">
   <data encoding="base64" compression="zlib">
@@ -242,7 +242,7 @@
   <object id="2165" x="52741" y="34446" width="18624" height="224"/>
   <object id="1318" x="36987" y="10382" width="16976" height="1280"/>
   <object id="1264" x="122364" y="47758" width="18624" height="224"/>
-  <object id="2170" x="67422" y="32398" width="19236" height="196"/>
+  <object id="2170" x="67422" y="32398" width="3204" height="196"/>
   <object id="1278" x="137080" y="45720" width="4152" height="232"/>
   <object id="1336" x="34616" y="4756" width="1876" height="192"/>
   <object id="2206" x="50552" y="17048" width="912" height="200"/>
@@ -251,7 +251,7 @@
   <object id="2210" x="50048" y="8340" width="2048" height="216"/>
   <object id="2214" x="34384" y="2880" width="512" height="2080"/>
   <object id="2216" x="16888" y="15528" width="512" height="2040"/>
-  <object id="2239" x="52224" y="41472" width="52448" height="224"/>
+  <object id="2239" x="52224" y="41472" width="14304" height="224"/>
   <object id="2241" x="52064" y="39664" width="52448" height="224"/>
  </objectgroup>
  <objectgroup id="5" name="plataform">
@@ -262,6 +262,7 @@
   <object id="2203" x="42876" y="16542" width="776" height="164"/>
   <object id="2204" x="41836" y="18606" width="1320" height="164"/>
   <object id="2205" x="45452" y="17054" width="1320" height="164"/>
+  <object id="2247" x="66464" y="41488" width="37984" height="224"/>
  </objectgroup>
  <objectgroup id="7" name="puertas">
   <object id="49" x="16896" y="6516" width="520" height="1824">
@@ -330,7 +331,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="8" name="room">
+ <objectgroup id="8" name="room" visible="0">
   <object id="107" x="0" y="0" width="17408" height="9216">
    <properties>
     <property name="level" type="int" value="0"/>

@@ -1,21 +1,13 @@
 package com.mygdx.vault;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.vault.Screens.LoadingScreen;
 import com.mygdx.vault.Screens.MainMenuScreen;
-import com.mygdx.vault.Screens.PlayScreen;
 
 public class Vault extends Game {
 	public static final float V_WIDTH = 17408;
@@ -60,11 +52,11 @@ public class Vault extends Game {
 
 	private boolean sound;
 
-
 	@Override
 	public void create () {
 
 		batch = new SpriteBatch();
+
 		manager = new AssetManager();
 		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
 		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);

@@ -434,6 +434,11 @@ public class PlayScreen implements Screen {
         } else {
             music.setVolume(1f);
         }
+        if (player.getCurrentLevel()==12){
+            music.stop();
+        }else{
+            music.play();
+        }
         game.volume = volume;
 
         if (!game.isEffects()) {
