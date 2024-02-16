@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -35,12 +36,14 @@ public class LevelSelectScreen implements Screen {
     Preferences prefs = Gdx.app.getPreferences("My Preferences");
     TextButton.TextButtonStyle buttonStyle;
     TextButton.TextButtonStyle buttonStyle2;
+    private Music music;
 
 
-    public LevelSelectScreen(Vault game) {
+    public LevelSelectScreen(Vault game, Music menuMusic) {
         this.game = game;
         this.stage = new Stage(new FitViewport(1920, 1080));
         this.language = game.language;
+        this.music=menuMusic;
         Gdx.input.setInputProcessor(stage);
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
         loadButtonTitles();
@@ -137,7 +140,7 @@ public class LevelSelectScreen implements Screen {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                            game.setScreen(new LoadingScreen(game, finalLevel));
+                            game.setScreen(new LoadingScreen(game, music, finalLevel));
                             dispose();
 
                         }
@@ -208,6 +211,7 @@ public class LevelSelectScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
         stage.draw();
     }
 

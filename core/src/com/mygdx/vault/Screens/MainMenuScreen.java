@@ -3,6 +3,7 @@ package com.mygdx.vault.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -34,6 +35,8 @@ public class MainMenuScreen implements Screen {
 
     int language;
     TextButton playButton;
+    private Music music;
+
 
 
     public MainMenuScreen(Vault game) {
@@ -56,7 +59,9 @@ public class MainMenuScreen implements Screen {
 
         loadButtonTitles();
 
-
+        music = game.manager.get("audio/music/mainMenuMusic.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
 
         // Configura el fondo con la textura
         buttonTexture = new Texture("button_background.png"); // Asegúrate de tener esta textura
@@ -124,7 +129,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new LoadingScreen(game, prefs.getInteger("highestLevel",0)+1));
+                game.setScreen(new LoadingScreen(game,music, prefs.getInteger("highestLevel",0)+1));
                 dispose();
             }
         });
@@ -133,7 +138,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new LevelSelectScreen(game));
+                game.setScreen(new LevelSelectScreen(game,music));
                 dispose();
             }
         });
@@ -142,7 +147,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new OptionsScreen(game));
+                game.setScreen(new OptionsScreen(game, music));
                 dispose();
 
             }
@@ -222,6 +227,13 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+
+        if (!game.isSound()) {
+            music.setVolume(0);
+        } else {
+            music.setVolume(1f);
+        }
+
         stage.draw();
     }
 

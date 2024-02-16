@@ -1,9 +1,9 @@
 package com.mygdx.vault.Sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -36,6 +36,8 @@ public class Door extends Sprite {
     protected Fixture fixture;
     protected Rectangle bounds;
 
+    public boolean change =false;
+
     public Door(PlayScreen screen, Rectangle bounds, Mage player, int level) {
         this.world = screen.getWorld();
         this.bounds = bounds;
@@ -43,7 +45,7 @@ public class Door extends Sprite {
         this.level = level;
         this.screen=screen;
 
-        texture = new TextureRegion(new Texture(("right.png")));
+        texture = new TextureRegion(new Texture(("closedDoor.png")));
         setRegion(texture.getTexture());
         defineDoor();
         setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
@@ -55,13 +57,14 @@ public class Door extends Sprite {
 
     public void defineDoor(){
         BodyDef bdef= new BodyDef();
+        bdef.position.set((bounds.getX()+bounds.getWidth()/2)/ Vault.PPM, (bounds.getY()+bounds.getHeight()/2)/Vault.PPM);
+        bdef.type =BodyDef.BodyType.StaticBody;
+        body = world.createBody(bdef);
+
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape= new PolygonShape();
 
-        bdef.type =BodyDef.BodyType.StaticBody;
-        bdef.position.set((bounds.getX()+bounds.getWidth()/2)/ Vault.PPM, (bounds.getY()+bounds.getHeight()/2)/Vault.PPM);
 
-        body = world.createBody(bdef);
 
         shape.setAsBox(bounds.getWidth() / 2/ Vault.PPM, bounds.getHeight()/2/Vault.PPM);
         fdef.shape = shape;
@@ -70,9 +73,25 @@ public class Door extends Sprite {
         fixture.setUserData(this);
     }
 
+    @Override
+    public void draw(Batch batch) {
+        change=false;
+        super.draw(batch);
+    }
+
     public void open() {
         screen.setOpenDoor(true);
+        setTexture(new TextureRegion(new Texture(("openedDoor.png"))));
+        setRegion(texture.getTexture());
+        setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
         screen.hitdoorlevel=level;
+    }
+    public void close(){
+        if (screen.isOpenDoor()){
+            setTexture(new TextureRegion(new Texture(("closedDoor.png"))));
+            setRegion(texture.getTexture());
+            setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
+        }
     }
 
 

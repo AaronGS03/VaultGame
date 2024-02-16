@@ -104,7 +104,16 @@ public class WorldContactListener implements ContactListener {
     public void endContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
-
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        switch (cDef) {
+            case Vault.DOOR_BIT | Vault.MAGE_BIT:
+                if (fixA.getFilterData().categoryBits == Vault.DOOR_BIT) {
+                    ((Door) fixA.getUserData()).close();
+                } else {
+                    ((Door) fixB.getUserData()).close();
+                }
+                break;
+        }
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;

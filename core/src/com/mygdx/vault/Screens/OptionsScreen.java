@@ -3,6 +3,7 @@ package com.mygdx.vault.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -35,6 +36,7 @@ public class OptionsScreen implements Screen {
     TextButton buttonEffectsSounds;
     TextButton buttonMusic;
     TextButton resetGameSave;
+    Vault game;
 
     public int getLanguage() {
         return language;
@@ -45,12 +47,15 @@ public class OptionsScreen implements Screen {
     }
 
     private int language;
+    private Music music;
 
 
-    public OptionsScreen(Vault game) {
+    public OptionsScreen(Vault game, Music music) {
         this.stage = new Stage(new FitViewport(1920, 1080));
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
         this.language = game.language;
+        this.music=music;
+        this.game=game;
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -245,6 +250,12 @@ public class OptionsScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        if (game.isSound()){
+            music.setVolume(1);
+        }else{
+            music.setVolume(0);
+        }
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();

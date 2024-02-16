@@ -176,8 +176,9 @@ public class PlayScreen implements Screen {
         this.game = game;
         intervalTouch = 500;
 
-        this.effects=game.isEffects();
-        this.sound= game.isSound();
+        this.effects = game.isEffects();
+        this.sound = game.isSound();
+
 
         this.levelSpawn = levelSpawn;
 
@@ -204,16 +205,11 @@ public class PlayScreen implements Screen {
         creator = new B2WorldCreator(this, player, habitaciones, doors, gamecam, backcam);
 
 
-        layers = new ParallaxLayer[9];
+        layers = new ParallaxLayer[4];
         layers[0] = new ParallaxLayer(new Texture("ParallaxCave1.png"), 7f, false, false);
-        layers[2] = new ParallaxLayer(new Texture("ParallaxCave2.png"), 7.2f, false, false);
-        layers[1] = new ParallaxLayer(new Texture("secs.png"), 7.2f, false, false);
-        layers[3] = new ParallaxLayer(new Texture("ParallaxCave3.png"), 7.3f, false, false);
-        layers[4] = new ParallaxLayer(new Texture("ParallaxCave4.png"), 7.4f, false, false);
-        layers[5] = new ParallaxLayer(new Texture("03.png"), 14f, true, false);
-        layers[6] = new ParallaxLayer(new Texture("05.png"), 0.1f, true, false);
-        layers[7] = new ParallaxLayer(new Texture("03.png"), 0.1f, true, false);
-        layers[8] = new ParallaxLayer(new Texture("02.png"), 0.1f, true, false);
+        layers[1] = new ParallaxLayer(new Texture("ParallaxCave2.png"), 7.2f, false, false);
+        layers[2] = new ParallaxLayer(new Texture("ParallaxCave3.png"), 7.3f, false, false);
+        layers[3] = new ParallaxLayer(new Texture("ParallaxCave4.png"), 7.4f, false, false);
 
         for (int i = layers.length - 1; i >= 0; i--) {
             layers[i].setCamera(backcam);
@@ -434,9 +430,9 @@ public class PlayScreen implements Screen {
         } else {
             music.setVolume(1f);
         }
-        if (player.getCurrentLevel()==12){
+        if (player.getCurrentLevel() == 12) {
             music.stop();
-        }else{
+        } else {
             music.play();
         }
         game.volume = volume;
@@ -473,13 +469,13 @@ public class PlayScreen implements Screen {
             if (level13gimmick) {
                 player.setCurrentLevel(12);
                 player.setDead(true);
-                level13gimmick=false;
+                level13gimmick = false;
             }
 
             if (level14gimmick) {
                 player.setCurrentLevel(12);
                 player.setDead(true);
-                level14gimmick=false;
+                level14gimmick = false;
             }
 
             if (level7gimmick) {
@@ -529,23 +525,23 @@ public class PlayScreen implements Screen {
                 }
             }
             if (openDoor) {
+
                 if (player.keys != null && hitdoorlevel != -1) {
                     if (player.keys.collected && (hitdoorlevel == player.getCurrentLevel() || (player.getCurrentLevel() == 10 && hitdoorlevel == 9)) && hitdoorlevel != 10) {
-                        doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("Spike.png"))));
-                        doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
+                        doors.get(hitdoorlevel).change = true;
                         doors.get(hitdoorlevel).getFixture().setSensor(true);
                         manager.get("audio/sounds/doorKey.mp3", Sound.class).play(volume);
 
                     } else {
-                        doors.get(hitdoorlevel).setTexture(new TextureRegion(new Texture(("right.png"))));
-                        doors.get(hitdoorlevel).setRegion(doors.get(player.getCurrentLevel()).getTexture());
                         manager.get("audio/sounds/lockedDoor.mp3", Sound.class).play(volume);
 
                         doors.get(hitdoorlevel).getFixture().setSensor(false);
 
                     }
                 }
-                openDoor = false;
+                setOpenDoor(false);
+
+
             }
 
 
@@ -613,15 +609,10 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(backcam.combined);
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-        for (int i = layers.length - 1; i >= 0; i--) {
-            if (i == 1) {
-//                if (secretSetting) {
-//                    layers[i].render(game.batch);
-//                }
-            } else {
-                layers[i].render(game.batch);
 
-            }
+        for (int i = layers.length - 1; i >= 0; i--) {
+            layers[i].render(game.batch);
+
 
         }
         if (secretSetting) {
@@ -641,6 +632,7 @@ public class PlayScreen implements Screen {
                 doors) {
             door.draw(game.batch);
         }
+
         game.batch.end();
         //mostrar pantalla
 
@@ -653,8 +645,8 @@ public class PlayScreen implements Screen {
         if (player.getCurrentLevel() != newLevel) {
             String title = getLevelTitle(player.getCurrentLevel() + 1);
             newLevel = player.getCurrentLevel();
-            if (player.getCurrentLevel()>prefs.getInteger("highestLevel",0)){
-                prefs.putInteger("highestLevel",player.getCurrentLevel());
+            if (player.getCurrentLevel() > prefs.getInteger("highestLevel", 0)) {
+                prefs.putInteger("highestLevel", player.getCurrentLevel());
                 prefs.flush();
             }
 
@@ -683,26 +675,26 @@ public class PlayScreen implements Screen {
 
         submenu.draw();
         hud.draw();
-        controller.draw();
+        controller.draw(delta);
     }
 
-    private  JsonValue titlesObject;
+    private JsonValue titlesObject;
 
     public void loadLevelTitles() {
         FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
         String jsonData = fileHandle.readString();
         JsonValue root = new JsonReader().parse(jsonData);
-        switch (game.language){
+        switch (game.language) {
             case 0:
                 titlesObject = root.get("titles");
                 break;
             case 1:
-                titlesObject= root.get("titulos");
+                titlesObject = root.get("titulos");
                 break;
         }
     }
 
-    public  String getLevelTitle(int level) {
+    public String getLevelTitle(int level) {
         return titlesObject.getString(level + "", "default");
     }
 

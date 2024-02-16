@@ -20,11 +20,13 @@ public class LoadingScreen implements Screen {
     private Stage stage;
     private Image loadingImage;
     public int level = 1;
+    private Music music;
 
-    public LoadingScreen(Vault game, int level) {
+    public LoadingScreen(Vault game, Music menuMusic, int level) {
         this.game = game;
         this.manager = game.manager;
         this.level = level;
+        this.music=menuMusic;
 
         // Cargar recursos para el juego
         manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
@@ -71,5 +73,6 @@ public class LoadingScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        music.dispose();
     }
 }

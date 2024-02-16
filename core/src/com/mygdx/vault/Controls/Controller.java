@@ -16,12 +16,16 @@ import com.mygdx.vault.Vault;
 public class Controller implements Disposable {
     Viewport viewport;
     Stage stage;
+    Stage stage2;
+    private float alpha = 1f; // Opacidad inicial
+    private float fadeSpeed = 0.2f; // Velocidad de desvanecimiento
     boolean leftPressed, rightPressed, upPressed;
     OrthographicCamera cam;
 
     public Image leftImage;
     public Image rightImage;
     public Image upImage;
+    private Image transitionTexture;
 
 
 
@@ -29,6 +33,7 @@ public class Controller implements Disposable {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
         stage = new Stage(new FitViewport(1920,1080));
+        stage2 = new Stage(new FitViewport(1920,1080));
         Gdx.input.setInputProcessor(stage);
 
         //Botones a la izquierda
@@ -37,6 +42,8 @@ public class Controller implements Disposable {
         //Botones a la derecha
         Table tableR = new Table();
         tableR.right().bottom();
+
+        transitionTexture=new Image(new Texture("loadingScreenImage.png"));
 
 
 
@@ -61,6 +68,7 @@ public class Controller implements Disposable {
 
         leftImage = new Image(new Texture("left.png"));
         leftImage.setSize(200, 200);
+
         leftImage.addListener(new InputListener() {
 
             @Override
@@ -101,10 +109,22 @@ public class Controller implements Disposable {
 
         stage.addActor(tableL);
         stage.addActor(tableR);
+        stage2.addActor(transitionTexture);
     }
 
-    public void draw() {
+    public void draw(float delta) {
+        alpha -= fadeSpeed * delta;
+        if (alpha < 0) {
+            alpha = 0;
+        }
+
+        transitionTexture.setColor(1,1,1,alpha);
+
         stage.draw();
+        if (stage2!=null){
+            stage2.draw();
+
+        }
     }
 
     public boolean isLeftPressed() {
@@ -138,5 +158,6 @@ public class Controller implements Disposable {
     @Override
     public void dispose() {
         stage.dispose();
+        stage2.dispose();
     }
 }

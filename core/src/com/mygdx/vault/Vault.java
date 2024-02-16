@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -63,6 +64,7 @@ public class Vault extends Game {
 		manager.load("audio/sounds/clickbutton.mp3", Sound.class);
 		manager.load("audio/sounds/doorKey.mp3", Sound.class);
 		manager.load("audio/sounds/lockedDoor.mp3", Sound.class);
+		manager.load("audio/music/mainMenuMusic.mp3", Music.class);
 
 		manager.load("loadingScreenImage.png", Texture.class);
 
