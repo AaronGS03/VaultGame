@@ -153,8 +153,8 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-                // Acción al hacer clic en el botón de créditos
-                // Implementa la lógica correspondiente
+               game.setScreen(new CredistScreen(game));
+               dispose();
             }
         });
 

@@ -18,9 +18,9 @@
     "options":"Opciones",
     "back":"Volver",
     "language":"Idioma",
-    "credits":"Creditos",
+    "credits":"Créditos",
     "reset":"Resetear juego",
-    "music":"Musica",
+    "music":"Música",
     "effects":"Efectos"
 
   },
@@ -53,5 +53,7 @@
     "11": "Back",
     "12": "Press pause",
     "13": ""
-  }
+  },
+  "credits": "Nothing yet...",
+  "creditos": "Nada todavía..."
 }
