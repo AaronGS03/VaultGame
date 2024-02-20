@@ -173,6 +173,7 @@ public class PlayScreen implements Screen {
         this.manager = manager;
         atlas = new TextureAtlas("Sprites.atlas");
 
+       
         this.game = game;
         intervalTouch = 500;
 
@@ -188,6 +189,7 @@ public class PlayScreen implements Screen {
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
+
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Vault.PPM);
         gamecam.position.set(17408 / Vault.PPM / 2, 11264 / Vault.PPM + 9216 / Vault.PPM / 2, 0);
         backcam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -740,6 +742,7 @@ public class PlayScreen implements Screen {
         submenu.dispose();
         controller.dispose();
         music.dispose();
+        creator.dispose();
 
 
     }

@@ -60,11 +60,12 @@ private Stage stage;
     public Array<Key> getKeys() {
         return keys;
     }
+    public TiledMap map;
 
 
     public B2WorldCreator(PlayScreen screen, Mage player, Array<Room> habitaciones, Array<Door> doors, OrthographicCamera gamecam, OrthographicCamera backcam) {
 
-        TiledMap map = screen.getMap();
+        map = screen.getMap();
 
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -150,6 +151,13 @@ private Stage stage;
 
 
 
+    }
+
+    public void dispose(){
+        if (map!=null){
+        map.dispose();
+
+        }
     }
 
 }

@@ -74,5 +74,6 @@ public class LoadingScreen implements Screen {
     public void dispose() {
         stage.dispose();
         music.dispose();
+
     }
 }

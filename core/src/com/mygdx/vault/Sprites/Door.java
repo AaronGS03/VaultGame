@@ -81,16 +81,16 @@ public class Door extends Sprite {
 
     public void open() {
         screen.setOpenDoor(true);
-        setTexture(new TextureRegion(new Texture(("openedDoor.png"))));
-        setRegion(texture.getTexture());
-        setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
+//        setTexture(new TextureRegion(new Texture(("openedDoor.png"))));
+//        setRegion(texture.getTexture());
+//        setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
         screen.hitdoorlevel=level;
     }
     public void close(){
         if (screen.isOpenDoor()){
-            setTexture(new TextureRegion(new Texture(("closedDoor.png"))));
-            setRegion(texture.getTexture());
-            setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
+//            setTexture(new TextureRegion(new Texture(("closedDoor.png"))));
+//            setRegion(texture.getTexture());
+//            setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,texture.getRegionWidth() / Vault.PPM, texture.getRegionHeight() / Vault.PPM);
         }
     }
 
