@@ -168,11 +168,12 @@ public class PlayScreen implements Screen {
 
     private boolean level8gimmick = false;
 
+    public MainMenuScreen mainMenuScreen;
+
 
     public PlayScreen(Vault game, AssetManager manager, int levelSpawn) {
         this.manager = manager;
         atlas = new TextureAtlas("Sprites.atlas");
-
        
         this.game = game;
         intervalTouch = 500;
@@ -475,8 +476,8 @@ public class PlayScreen implements Screen {
             }
 
             if (level14gimmick) {
-                player.setCurrentLevel(12);
-                player.setDead(true);
+                game.setScreen(new MainMenuScreen(game));
+                dispose();
                 level14gimmick = false;
             }
 

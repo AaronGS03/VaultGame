@@ -1,6 +1,6 @@
 package com.mygdx.vault;
 
-import android.os.Bundle;
+import  android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -14,5 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
         initialize(new Vault(), config);
 
     }
+
 }
 

@@ -15,9 +15,7 @@ public class Wall extends InteractiveTileObject {
     public Wall(PlayScreen screen, Rectangle bounds, Mage player, boolean slide) {
         super(screen, bounds);
         this.player = player;
-        if (slide) {
-            this.fdef.friction=0.1f;
-        }
+            this.fdef.friction=0.5f;
         fixture.setUserData(this);
         setCategoryFilter(Vault.WALL_BIT);
     }

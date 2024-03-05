@@ -38,8 +38,9 @@ public class LevelSelectScreen implements Screen {
     TextButton.TextButtonStyle buttonStyle2;
     private Music music;
 
+    private MainMenuScreen mainScreen;
 
-    public LevelSelectScreen(Vault game, Music menuMusic) {
+    public LevelSelectScreen(Vault game, Music menuMusic,MainMenuScreen screen) {
         this.game = game;
         this.stage = new Stage(new FitViewport(1920, 1080));
         this.language = game.language;
@@ -79,6 +80,8 @@ public class LevelSelectScreen implements Screen {
         buttonStyle.down = buttonBackgrounddown;
         buttonStyle.up = buttonBackground;
 
+        mainScreen= screen;
+
         float paddingX = 40f; // Ajusta según sea necesario
         float paddingY = 10f; // Ajusta según sea necesario
         buttonStyle.up.setMinWidth(buttonStyle.up.getMinWidth() + paddingX * 2);
@@ -113,7 +116,8 @@ public class LevelSelectScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(mainScreen);
+
             }
         });
 
@@ -140,8 +144,8 @@ public class LevelSelectScreen implements Screen {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                            game.setScreen(new LoadingScreen(game, music, finalLevel));
-                            dispose();
+                            game.setScreen(new LoadingScreen(game, music, finalLevel,mainScreen));
+                           // dispose();
 
                         }
                     });
@@ -203,6 +207,7 @@ public class LevelSelectScreen implements Screen {
     @Override
     public void show() {
         // Puedes realizar alguna inicialización adicional si es necesario
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

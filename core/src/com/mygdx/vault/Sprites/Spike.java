@@ -129,4 +129,8 @@ private boolean fake=false;
         screen.reset=true;
          Gdx.app.log("V","toque");
      }
+
+     public void dispose(){
+
+     }
 }

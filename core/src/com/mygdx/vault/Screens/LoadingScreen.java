@@ -22,7 +22,9 @@ public class LoadingScreen implements Screen {
     public int level = 1;
     private Music music;
 
-    public LoadingScreen(Vault game, Music menuMusic, int level) {
+    public MainMenuScreen mainMenuScreen;
+
+    public LoadingScreen(Vault game, Music menuMusic, int level,MainMenuScreen screen) {
         this.game = game;
         this.manager = game.manager;
         this.level = level;
@@ -32,6 +34,7 @@ public class LoadingScreen implements Screen {
         manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
         manager.finishLoading(); // Espera a que todos los recursos se carguen antes de continuar
         assetsLoaded = true;
+        this.mainMenuScreen = screen;
     }
 
     @Override
@@ -42,6 +45,8 @@ public class LoadingScreen implements Screen {
         stage.addActor(loadingImage);
     }
 
+   PlayScreen play;
+
     @Override
     public void render(float delta) {
      //   Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -51,7 +56,7 @@ public class LoadingScreen implements Screen {
 
         if (assetsLoaded) {
             // Cambiar a la pantalla principal del juego cuando los recursos estén cargados
-            game.setScreen(new PlayScreen(game, game.manager, level));
+            game.setScreen(  new PlayScreen(game,game.manager,level) );
             dispose();
         }
     }

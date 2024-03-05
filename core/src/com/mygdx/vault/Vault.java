@@ -9,6 +9,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.vault.Screens.MainMenuScreen;
+import com.mygdx.vault.Screens.PlayScreen;
+
+import jdk.jfr.internal.PlatformEventType;
 
 public class Vault extends Game {
 	public static final float V_WIDTH = 17408;
@@ -52,6 +55,7 @@ public class Vault extends Game {
 	}
 
 	private boolean sound;
+	private MainMenuScreen mainScreen;
 
 	@Override
 	public void create () {
@@ -70,7 +74,7 @@ public class Vault extends Game {
 
 		manager.finishLoading();
 		Preferences prefs = Gdx.app.getPreferences("My Preferences");
-
+		mainScreen= new MainMenuScreen(this);
 		effects= prefs.getBoolean("effects",true);
 		if (effects){
 			volume=0.2f;
@@ -78,7 +82,7 @@ public class Vault extends Game {
 			volume=0;
 		}
 		sound=prefs.getBoolean("sound",true);
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(mainScreen);
 
 
 	}

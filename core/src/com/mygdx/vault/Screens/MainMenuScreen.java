@@ -37,6 +37,7 @@ public class MainMenuScreen implements Screen {
     TextButton playButton;
     private Music music;
 
+    private LevelSelectScreen levelsScreen;
 
 
     public MainMenuScreen(Vault game) {
@@ -58,6 +59,7 @@ public class MainMenuScreen implements Screen {
         buttonStyle.fontColor = Color.BLACK;
 
         loadButtonTitles();
+
 
         music = game.manager.get("audio/music/mainMenuMusic.mp3", Music.class);
         music.setLooping(true);
@@ -125,21 +127,26 @@ public class MainMenuScreen implements Screen {
         stage.addActor(keyImage);
 
 
+        playButton.setUserObject(this);
         playButton.addListener(new ClickListener() {
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new LoadingScreen(game,music, prefs.getInteger("highestLevel",0)+1));
+                game.setScreen(new LoadingScreen(game,music, prefs.getInteger("highestLevel",0)+1, (MainMenuScreen) playButton.getUserObject()));
                 dispose();
             }
         });
-
+        if (levelsScreen == null) {
+            levelsScreen= new LevelSelectScreen(game,music,this);
+        }
         levelsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new LevelSelectScreen(game,music));
-                dispose();
+
+                game.setScreen(levelsScreen);
+
             }
         });
 
@@ -219,6 +226,8 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         // Puedes realizar alguna inicialización adicional si es necesario
+        Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override

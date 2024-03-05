@@ -158,6 +158,9 @@ private Stage stage;
         map.dispose();
 
         }
+        keys.clear();
+        spikes.clear();
+        fakespikes.clear();
     }
 
 }
