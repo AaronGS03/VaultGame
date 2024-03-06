@@ -39,8 +39,8 @@ public class Controller implements Disposable {
     public Controller() {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
-        stage = new Stage(new FitViewport(1920,1080));
-        stage2 = new Stage(new FitViewport(1920,1080));
+        stage = new Stage(new FitViewport(1920, 1080));
+        stage2 = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         // Botones a la izquierda
@@ -50,7 +50,7 @@ public class Controller implements Disposable {
         Table tableR = new Table();
         tableR.right().bottom();
 
-        transitionTexture=new Image(new Texture("loadingScreenImage.png"));
+        transitionTexture = new Image(new Texture("loadingScreenImage.png"));
 
         // Configuración de los botones de control
         upImage = new Image(new Texture("up.png"));
@@ -111,6 +111,7 @@ public class Controller implements Disposable {
 
     /**
      * Dibuja los controles y el efecto de transición en la pantalla.
+     *
      * @param delta El tiempo transcurrido desde el último fotograma en segundos.
      */
     public void draw(float delta) {
@@ -119,7 +120,7 @@ public class Controller implements Disposable {
         if (alpha < 0) {
             alpha = 0;
         }
-        transitionTexture.setColor(1,1,1,alpha);
+        transitionTexture.setColor(1, 1, 1, alpha);
 
         // Dibujar la escena de los controles
         stage.draw();
@@ -156,7 +157,8 @@ public class Controller implements Disposable {
 
     /**
      * Redimensiona la vista de los controles.
-     * @param width Ancho de la vista.
+     *
+     * @param width  Ancho de la vista.
      * @param height Alto de la vista.
      */
     public void resize(int width, int height) {

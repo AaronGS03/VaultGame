@@ -9,91 +9,79 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.vault.Screens.MainMenuScreen;
-import com.mygdx.vault.Screens.PlayScreen;
 
-import jdk.jfr.internal.PlatformEventType;
-
+/**
+ * Clase principal del juego. Extiende de Game de libGDX.
+ */
 public class Vault extends Game {
-	public static final float V_WIDTH = 17408;
-	public static final float V_HEIGHT = 9216;
-	public static  final float PPM = 200;//pixeles que se mueve un objeto por metro en box2d
+    // Dimensiones virtuales del juego
+    public static final float V_WIDTH = 17408;
+    public static final float V_HEIGHT = 9216;
+    public static final float PPM = 200; // Pixeles que se mueve un objeto por metro en box2d
 
-	public static final short NOTHING_BIT = 0;
-	public static final short DEFAULT_BIT = 1;
-	public static final short MAGE_BIT = 2;
-	public static final short PLATAFORM_BIT = 4;
-	public static final short ITEM =64;
-	public static final short DOOR_BIT = 16;
-	public static final short SPIKE_BIT = 8;
-	public static final short WALL_BIT = 32;
-	public static final short SENSOR_BIT = 128;
+    // Bits de colisión para los objetos del juego
+    public static final short NOTHING_BIT = 0;
+    public static final short DEFAULT_BIT = 1;
+    public static final short MAGE_BIT = 2;
+    public static final short PLATAFORM_BIT = 4;
+    public static final short ITEM = 64;
+    public static final short DOOR_BIT = 16;
+    public static final short SPIKE_BIT = 8;
+    public static final short WALL_BIT = 32;
+    public static final short SENSOR_BIT = 128;
 
-	//SpriteBatch contiene todos los sprites, que luego se muestran
-	public static SpriteBatch batch;
+    // SpriteBatch contiene todos los sprites, que luego se muestran
+    public static SpriteBatch batch;
 
+    public AssetManager manager; // Administrador de recursos del juego
+    public float volume = 0.2f; // Volumen de los efectos de sonido
+    public int language = 1; // Idioma del juego (1: inglés, 2: español)
 
-	public AssetManager manager;
-	public float volume=0.2f;
-	public int language=1;
+    public boolean effects; // Indica si los efectos de sonido están activados
+    public boolean sound; // Indica si el sonido está activado
+    private MainMenuScreen mainScreen; // Pantalla principal del juego
 
-	public boolean isEffects() {
-		return effects;
-	}
+    /**
+     * Método llamado al crear la instancia del juego.
+     */
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
 
-	public void setEffects(boolean effects) {
-		this.effects = effects;
-	}
+        manager = new AssetManager();
+        // Carga de recursos de audio y textura
+        manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
+        manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
+        manager.load("audio/sounds/clickbutton.mp3", Sound.class);
+        manager.load("audio/sounds/doorKey.mp3", Sound.class);
+        manager.load("audio/sounds/lockedDoor.mp3", Sound.class);
+        manager.load("audio/music/mainMenuMusic.mp3", Music.class);
+        manager.load("loadingScreenImage.png", Texture.class);
 
-	private boolean effects;
+        manager.finishLoading(); // Espera a que todos los recursos se carguen completamente
 
-	public boolean isSound() {
-		return sound;
-	}
+        // Obtención de las preferencias del juego
+        Preferences prefs = Gdx.app.getPreferences("My Preferences");
+        mainScreen = new MainMenuScreen(this);
+        // Configuración de los efectos de sonido
+        effects = prefs.getBoolean("effects", true);
+        if (effects) {
+            volume = 0.2f;
+        } else {
+            volume = 0;
+        }
+        // Configuración del sonido
+        sound = prefs.getBoolean("sound", true);
+        this.setScreen(mainScreen); // Establece la pantalla principal del juego
+    }
 
-	public void setSound(boolean sound) {
-		this.sound = sound;
-	}
+    /**
+     * Método llamado en cada frame para renderizar el juego.
+     */
+    @Override
+    public void render() {
+        super.render(); // Delega el método render al Playscreen en uso
 
-	private boolean sound;
-	private MainMenuScreen mainScreen;
-
-	@Override
-	public void create () {
-
-		batch = new SpriteBatch();
-
-		manager = new AssetManager();
-		manager.load("audio/sounds/Single-footstep-in-grass.mp3", Sound.class);
-		manager.load("audio/sounds/rustling-grass.mp3", Sound.class);
-		manager.load("audio/sounds/clickbutton.mp3", Sound.class);
-		manager.load("audio/sounds/doorKey.mp3", Sound.class);
-		manager.load("audio/sounds/lockedDoor.mp3", Sound.class);
-		manager.load("audio/music/mainMenuMusic.mp3", Music.class);
-
-		manager.load("loadingScreenImage.png", Texture.class);
-
-		manager.finishLoading();
-		Preferences prefs = Gdx.app.getPreferences("My Preferences");
-		mainScreen= new MainMenuScreen(this);
-		effects= prefs.getBoolean("effects",true);
-		if (effects){
-			volume=0.2f;
-		}else {
-			volume=0;
-		}
-		sound=prefs.getBoolean("sound",true);
-		this.setScreen(mainScreen);
-
-
-	}
-
-	@Override
-	public void render () {
-		//Delega el método render al Playscreen en uso
-		super.render();
-
-		manager.update();
-
-	}
-
+        manager.update(); // Actualiza el administrador de recursos
+    }
 }

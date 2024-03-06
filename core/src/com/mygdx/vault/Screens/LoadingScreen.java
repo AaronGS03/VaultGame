@@ -4,15 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.vault.Vault;
 
+/**
+ * Pantalla de carga que se muestra mientras se cargan los recursos del juego.
+ */
 public class LoadingScreen implements Screen {
     private Vault game;
     private AssetManager manager;
@@ -24,11 +24,19 @@ public class LoadingScreen implements Screen {
 
     public MainMenuScreen mainMenuScreen;
 
-    public LoadingScreen(Vault game, Music menuMusic, int level,MainMenuScreen screen) {
+    /**
+     * Constructor de la pantalla de carga.
+     *
+     * @param game      Instancia principal del juego.
+     * @param menuMusic Música del menú.
+     * @param level     Nivel que se va a cargar.
+     * @param screen    Pantalla principal del menú.
+     */
+    public LoadingScreen(Vault game, Music menuMusic, int level, MainMenuScreen screen) {
         this.game = game;
         this.manager = game.manager;
         this.level = level;
-        this.music=menuMusic;
+        this.music = menuMusic;
 
         // Cargar recursos para el juego
         manager.load("audio/music/forgotten-cave-159880.mp3", Music.class);
@@ -45,18 +53,11 @@ public class LoadingScreen implements Screen {
         stage.addActor(loadingImage);
     }
 
-   PlayScreen play;
-
     @Override
     public void render(float delta) {
-     //   Gdx.gl.glClearColor(0, 0, 0, 1);
-    //    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-  //      stage.draw();
-
         if (assetsLoaded) {
             // Cambiar a la pantalla principal del juego cuando los recursos estén cargados
-            game.setScreen(  new PlayScreen(game,game.manager,level) );
+            game.setScreen(new PlayScreen(game, game.manager, level));
             dispose();
         }
     }
@@ -67,18 +68,20 @@ public class LoadingScreen implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+    }
 
     @Override
-    public void hide() {}
+    public void hide() {
+    }
 
     @Override
     public void dispose() {
         stage.dispose();
         music.dispose();
-
     }
 }

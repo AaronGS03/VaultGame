@@ -42,36 +42,37 @@ public class SubMenu implements Disposable {
     public Image clueImage; // Imagen para el botón de pista
     public Label clueLabel; // Etiqueta para mostrar la pista
     private OrthographicCamera cam; // Cámara ortográfica para el menú de pausa
-    public boolean touch=false; // Indica si se ha tocado algún botón del menú
+    public boolean touch = false; // Indica si se ha tocado algún botón del menú
     private Mage player; // Referencia al jugador
     Screen screen; // Pantalla actual del juego
     public Table table; // Tabla para organizar los elementos del menú de pausa
     private Vault game; // Instancia del juego
     public Label.LabelStyle labelStyle; // Estilo de las etiquetas de texto
-    public String clue=""; // Pista actual
+    public String clue = ""; // Pista actual
 
     /**
      * Constructor de la clase SubMenu.
+     *
      * @param stageC La escena en la que se dibujará el menú de pausa.
-     * @param hud El HUD del juego.
-     * @param game La instancia del juego.
+     * @param hud    El HUD del juego.
+     * @param game   La instancia del juego.
      * @param player La instancia del jugador.
      * @param screen La pantalla actual del juego.
      */
     public SubMenu(Stage stageC, Hud hud, Vault game, Mage player, PlayScreen screen) {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
-        this.stage=stageC;
+        this.stage = stageC;
         BitmapFont font = generateFont();
 
         Gdx.input.setInputProcessor(stage);
-        this.screen= screen;
+        this.screen = screen;
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
-        this.game=game;
+        this.game = game;
 
         table = new Table();
         table.top().padTop(60).setFillParent(true);
-        this.player=player;
+        this.player = player;
 
         // Configuración de las imágenes de los botones y sus eventos de clic
         continueImage = new Image(new Texture("continueImage.png"));
@@ -79,7 +80,7 @@ public class SubMenu implements Disposable {
         continueImage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                hud.pause= false;
+                hud.pause = false;
                 touchButton();
                 return true;
             }
@@ -115,7 +116,7 @@ public class SubMenu implements Disposable {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 touchButton();
                 player.setDead(true);
-                hud.pause=false;
+                hud.pause = false;
                 return true;
             }
 
@@ -131,8 +132,8 @@ public class SubMenu implements Disposable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 touchButton();
-                game.setSound(!game.isSound());
-                prefs.putBoolean("sound",!prefs.getBoolean("sound"));
+                game.sound = !game.sound;
+                prefs.putBoolean("sound", !prefs.getBoolean("sound"));
                 prefs.flush();
                 return true;
             }
@@ -149,8 +150,8 @@ public class SubMenu implements Disposable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 touchButton();
-                game.setEffects(!game.isEffects());
-                prefs.putBoolean("effects",!prefs.getBoolean("effects"));
+                game.effects = !game.effects;
+                prefs.putBoolean("effects", !prefs.getBoolean("effects"));
                 prefs.flush();
                 return true;
             }
@@ -179,7 +180,7 @@ public class SubMenu implements Disposable {
 
         labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
-        clueLabel = new Label("+0.10 puntos por usar pista:\n"+clue,labelStyle);
+        clueLabel = new Label("+0.10 puntos por usar pista:\n" + clue, labelStyle);
         clueLabel.setColor(Color.WHITE);
         clueLabel.setVisible(false);
 
@@ -207,11 +208,12 @@ public class SubMenu implements Disposable {
      * Método para indicar que se ha tocado un botón del menú.
      */
     public void touchButton() {
-        touch=true;
+        touch = true;
     }
 
     /**
      * Genera un nuevo tipo de letra personalizado.
+     *
      * @return La fuente de texto generada.
      */
     private BitmapFont generateFont() {
@@ -226,7 +228,8 @@ public class SubMenu implements Disposable {
 
     /**
      * Redimensiona la vista del menú de pausa.
-     * @param width Ancho de la ventana.
+     *
+     * @param width  Ancho de la ventana.
      * @param height Altura de la ventana.
      */
     public void resize(int width, int height) {

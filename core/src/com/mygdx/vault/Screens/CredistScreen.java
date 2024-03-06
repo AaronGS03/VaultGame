@@ -25,39 +25,25 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.vault.Vault;
 
+/**
+ * Pantalla que muestra los créditos del juego.
+ */
 public class CredistScreen implements Screen {
 
     private Stage stage;
-    Texture buttonTexture;
-    Texture buttonTexturedown;
-
-    public int getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(int language) {
-        this.language = language;
-    }
-
+    private Texture buttonTexture;
+    private Texture buttonTexturedown;
     private int language;
-    public Label.LabelStyle getLabelStyle() {
-        return labelStyle;
-    }
-
-    private  Label.LabelStyle labelStyle;
-
-    public void setTitleLabel(Label titleLabel) {
-        this.titleLabel = titleLabel;
-    }
-
-    public Label getTitleLabel() {
-        return titleLabel;
-    }
-
+    private Label.LabelStyle labelStyle;
     private Label titleLabel;
     private JsonValue buttonsObject;
     private String creditsObject;
 
+    /**
+     * Constructor de la pantalla de créditos.
+     *
+     * @param game Instancia principal del juego.
+     */
     public CredistScreen(Vault game) {
         this.stage = new Stage(new FitViewport(1920, 1080));
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
@@ -74,7 +60,7 @@ public class CredistScreen implements Screen {
 
         labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
-        titleLabel = new Label("\nDeaths: "+prefs.getInteger("deaths")+"\n"+creditsObject,labelStyle);
+        titleLabel = new Label("\nDeaths: " + prefs.getInteger("deaths") + "\n" + creditsObject, labelStyle);
         titleLabel.setColor(Color.WHITE);
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -92,7 +78,6 @@ public class CredistScreen implements Screen {
         buttonStyle.up.setMinWidth(buttonStyle.up.getMinWidth() + paddingX * 2);
         buttonStyle.up.setMinHeight(buttonStyle.up.getMinHeight() + paddingY * 2);
 
-
         // Botón de volver arriba a la izquierda
         TextButton backButton = new TextButton(getButtonText("back"), buttonStyle);
         backButton.addListener(new ClickListener() {
@@ -106,6 +91,12 @@ public class CredistScreen implements Screen {
         posTable(table, backButton);
     }
 
+    /**
+     * Posiciona los elementos en la tabla de la interfaz gráfica.
+     *
+     * @param table      Tabla de la interfaz gráfica.
+     * @param backButton Botón de retroceso.
+     */
     private void posTable(Table table, TextButton backButton) {
         table.add(backButton).left().pad(20).row();
         ScrollPane scrollPane = new ScrollPane(titleLabel);
@@ -113,7 +104,9 @@ public class CredistScreen implements Screen {
         table.add(scrollPane).expand().fill().colspan(2).pad(20);
     }
 
-
+    /**
+     * Carga los textos de los botones y los créditos desde un archivo JSON.
+     */
     public void loadButtonTitles() {
         FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
         String jsonData = fileHandle.readString();
@@ -121,24 +114,26 @@ public class CredistScreen implements Screen {
         switch (language) {
             case 0:
                 buttonsObject = root.get("buttons");
-                break;
-            case 1:
-                buttonsObject = root.get("botones");
-                break;
-        }
-        switch (language) {
-            case 0:
                 creditsObject = root.getString("credits");
                 break;
             case 1:
+                buttonsObject = root.get("botones");
                 creditsObject = root.getString("creditos");
                 break;
         }
     }
-    public  String getButtonText(String button) {
+
+    /**
+     * Obtiene el texto del botón especificado.
+     *
+     * @param button Nombre del botón.
+     * @return Texto del botón.
+     */
+    public String getButtonText(String button) {
         return buttonsObject.getString(button, "default");
     }
 
+    // Métodos de la interfaz Screen
 
     @Override
     public void show() {
@@ -176,13 +171,18 @@ public class CredistScreen implements Screen {
         stage.dispose();
     }
 
+    /**
+     * Genera una fuente de texto personalizada.
+     *
+     * @return Fuente de texto generada.
+     */
     private BitmapFont generateFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("cityburn.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         float fontSize = stage.getHeight() * 0.06f;
         parameter.size = (int) fontSize;
         BitmapFont font = generator.generateFont(parameter);
-        generator.dispose(); // Importante: liberar recursos del generador
+        generator.dispose();
         return font;
     }
 }

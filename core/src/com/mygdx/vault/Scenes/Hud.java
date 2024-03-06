@@ -38,8 +38,9 @@ public class Hud implements Disposable {
 
     /**
      * Constructor de la clase Hud.
+     *
      * @param stageC La escena en la que se dibujará el HUD.
-     * @param game La instancia del juego.
+     * @param game   La instancia del juego.
      */
     public Hud(Stage stageC, Vault game) {
         cam = new OrthographicCamera();
@@ -89,7 +90,8 @@ public class Hud implements Disposable {
 
     /**
      * Redimensiona la vista del HUD.
-     * @param width Ancho de la vista.
+     *
+     * @param width  Ancho de la vista.
      * @param height Alto de la vista.
      */
     public void resize(int width, int height) {
@@ -98,6 +100,7 @@ public class Hud implements Disposable {
 
     /**
      * Genera una fuente de texto personalizada para el HUD.
+     *
      * @return La fuente de texto generada.
      */
     private BitmapFont generateFont() {

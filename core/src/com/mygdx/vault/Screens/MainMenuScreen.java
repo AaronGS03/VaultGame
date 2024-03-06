@@ -24,6 +24,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.vault.Vault;
 
+/**
+ * Pantalla de menú principal del juego.
+ */
 public class MainMenuScreen implements Screen {
     private Vault game;
     private Stage stage;
@@ -40,14 +43,19 @@ public class MainMenuScreen implements Screen {
     private LevelSelectScreen levelsScreen;
 
 
+    /**
+     * Constructor de la pantalla de menú principal.
+     *
+     * @param game Instancia principal del juego.
+     */
     public MainMenuScreen(Vault game) {
         this.game = game;
         this.stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
-        this.language = prefs.getInteger("lan",0);
-        game.language= this.language;
+        this.language = prefs.getInteger("lan", 0);
+        game.language = this.language;
 
         Table table = new Table();
         table.bottom().setFillParent(true);
@@ -81,9 +89,9 @@ public class MainMenuScreen implements Screen {
 
 
         // Crea los botones con el estilo personalizado
-        if (prefs.getInteger("highestLevel",0)==0){
+        if (prefs.getInteger("highestLevel", 0) == 0) {
             playButton = createButton(getButtonText("play"), buttonStyle);
-        }else{
+        } else {
             playButton = createButton(getButtonText("continue"), buttonStyle);
 
         }
@@ -134,12 +142,12 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
-                game.setScreen(new LoadingScreen(game,music, prefs.getInteger("highestLevel",0)+1, (MainMenuScreen) playButton.getUserObject()));
+                game.setScreen(new LoadingScreen(game, music, prefs.getInteger("highestLevel", 0) + 1, (MainMenuScreen) playButton.getUserObject()));
                 dispose();
             }
         });
         if (levelsScreen == null) {
-            levelsScreen= new LevelSelectScreen(game,music,this);
+            levelsScreen = new LevelSelectScreen(game, music, this);
         }
         levelsButton.addListener(new ClickListener() {
             @Override
@@ -166,8 +174,8 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 game.manager.get("audio/sounds/clickbutton.mp3", Sound.class).play(game.volume);
 
-               game.setScreen(new CredistScreen(game));
-               dispose();
+                game.setScreen(new CredistScreen(game));
+                dispose();
             }
         });
 
@@ -190,7 +198,12 @@ public class MainMenuScreen implements Screen {
         table.add(creditsButton).padBottom(100);
 
     }
-    private  JsonValue buttonsObject;
+
+    /**
+     * Carga los textos de los botones desde un archivo JSON.
+     */
+    private JsonValue buttonsObject;
+
     public void loadButtonTitles() {
         FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
         String jsonData = fileHandle.readString();
@@ -204,11 +217,23 @@ public class MainMenuScreen implements Screen {
                 break;
         }
     }
-    public  String getButtonText(String button) {
+
+    /**
+     * Obtiene el texto del botón especificado.
+     *
+     * @param button Nombre del botón.
+     * @return Texto del botón.
+     */
+    public String getButtonText(String button) {
         return buttonsObject.getString(button, "default");
     }
 
 
+    /**
+     * Genera una fuente de texto personalizada.
+     *
+     * @return Fuente de texto generada.
+     */
     private BitmapFont generateFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("cityburn.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -219,11 +244,21 @@ public class MainMenuScreen implements Screen {
         return font;
     }
 
+    /**
+     * Crea un botón con el texto y estilo especificados.
+     *
+     * @param text        Texto del botón.
+     * @param buttonStyle Estilo del botón.
+     * @return Botón creado.
+     */
     private TextButton createButton(String text, TextButton.TextButtonStyle buttonStyle) {
         TextButton button = new TextButton(text, buttonStyle);
         return button;
     }
 
+    /**
+     * Método llamado cuando la pantalla se muestra.
+     */
     @Override
     public void show() {
         // Puedes realizar alguna inicialización adicional si es necesario
@@ -231,6 +266,9 @@ public class MainMenuScreen implements Screen {
 
     }
 
+    /**
+     * Método llamado en cada frame para renderizar la pantalla.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -238,7 +276,7 @@ public class MainMenuScreen implements Screen {
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
 
-        if (!game.isSound()) {
+        if (!game.sound) {
             music.setVolume(0);
         } else {
             music.setVolume(1f);
@@ -247,11 +285,17 @@ public class MainMenuScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Método llamado cuando se cambia el tamaño de la ventana.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Libera los recursos de la pantalla cuando se destruye.
+     */
     @Override
     public void dispose() {
         stage.dispose();
@@ -261,6 +305,8 @@ public class MainMenuScreen implements Screen {
         mageTexture.dispose(); // Dispose de la textura del mago
         keyTexture.dispose(); // Dispose de la textura de la llave
     }
+
+    // Métodos restantes de la interfaz Screen, pero no se utilizan en este contexto
 
     @Override
     public void pause() {

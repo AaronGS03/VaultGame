@@ -174,8 +174,8 @@ public class PlayScreen implements Screen {
         this.game = game;
         intervalTouch = 500;
 
-        this.effects = game.isEffects();
-        this.sound = game.isSound();
+        this.effects = game.effects;
+        this.sound = game.sound;
 
 
         this.levelSpawn = levelSpawn;
@@ -424,7 +424,7 @@ public class PlayScreen implements Screen {
     //Aqui se maneja lo que ocurre en el juego
     public void update(float dt) {
 
-        if (!game.isSound()) {
+        if (!game.sound) {
             music.setVolume(0);
         } else {
             music.setVolume(1f);
@@ -436,7 +436,7 @@ public class PlayScreen implements Screen {
         }
         game.volume = volume;
 
-        if (!game.isEffects()) {
+        if (!game.effects) {
             volume = 0;
         } else {
             volume = 0.2f;
