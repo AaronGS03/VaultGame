@@ -484,12 +484,12 @@ public class PlayScreen implements Screen {
 
             if (level8gimmick && player.getCurrentLevel() == 8) {
                 for (Spike s :
-                        creator.getFakespikes()) {
+                        creator.fakespikes) {
                     s.fake();
                 }
-                creator.getSensors().get(3).getFixture().setSensor(true);
-                creator.getSensors().get(6).getFixture().setSensor(false);
-                creator.getSensors().get(2).body.destroyFixture(creator.getSensors().get(2).getFixture());
+                creator.sensors.get(3).fixture.setSensor(true);
+                creator.sensors.get(6).fixture.setSensor(false);
+                creator.sensors.get(2).body.destroyFixture(creator.sensors.get(2).fixture);
 
                 level8gimmick = false;
             }
@@ -552,7 +552,7 @@ public class PlayScreen implements Screen {
             player.update(dt);
 
 
-            for (Key key : creator.getKeys()) {
+            for (Key key : creator.keys) {
                 key.update(dt);
             }
 
@@ -620,13 +620,13 @@ public class PlayScreen implements Screen {
             player.setCurrentLevel(2);
         }
         player.draw(game.batch);
-        for (Spike spike : creator.getSpikes()) {
+        for (Spike spike : creator.spikes) {
             spike.draw(game.batch);
         }
-        for (Spike spike : creator.getFakespikes()) {
+        for (Spike spike : creator.fakespikes) {
             spike.draw(game.batch);
         }
-        for (Key key : creator.getKeys()) {
+        for (Key key : creator.keys) {
             key.draw(game.batch);
         }
         for (Door door :
@@ -667,7 +667,7 @@ public class PlayScreen implements Screen {
             submenu.table.row();
             submenu.table.add(submenu.clueImage).colspan(5).size(submenu.clueImage.getWidth(), submenu.clueImage.getHeight()).pad(1).padTop(90).row();
             submenu.clue=getClue(player.getCurrentLevel()+1);
-            submenu.clueLabel= new Label(submenu.clue,submenu.labelStyle);
+            submenu.clueLabel= new Label("+0.10p por ver pista\n"+submenu.clue,submenu.labelStyle);
             submenu.clueLabel.setVisible(false);
             submenu.table.add(submenu.clueLabel).colspan(5).padTop(200);
 

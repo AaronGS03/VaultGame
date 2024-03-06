@@ -16,18 +16,30 @@ import com.mygdx.vault.Sprites.Room;
 import com.mygdx.vault.Sprites.Spike;
 import com.mygdx.vault.Vault;
 
+/**
+ * Clase que gestiona los contactos entre fixtures en el mundo del juego.
+ * Implementa la interfaz ContactListener de Box2D.
+ */
 public class WorldContactListener implements ContactListener {
 
+    /** Booleano que indica si el contacto entre un ítem y el personaje principal ha sido manejado. */
     private boolean itemMageContactHandled = false;
 
+    /**
+     * Método invocado cuando comienza un contacto entre fixtures.
+     * @param contact El objeto Contact que representa el contacto entre fixtures.
+     */
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
+        // Combinar las categorías de bits de las fixtures en contacto
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (cDef) {
+            // Caso de colisión entre ítem y personaje principal
             case Vault.ITEM | Vault.MAGE_BIT:
+                // Manejar la interacción entre ítem y personaje principal
                 if (fixA.getFilterData().categoryBits == Vault.ITEM) {
                     if (fixB.getUserData() != "sideL" && fixB.getUserData() != "sideR" && fixB.getUserData() != "head" && fixB.getUserData() != "feet") {
                         Gdx.input.vibrate(200);
@@ -40,21 +52,27 @@ public class WorldContactListener implements ContactListener {
                     }
                 }
                 break;
+            // Caso de colisión entre trampa y personaje principal
             case Vault.SPIKE_BIT | Vault.MAGE_BIT:
+                // Activar la trampa
                 if (fixA.getFilterData().categoryBits == Vault.SPIKE_BIT) {
                     ((Spike) fixA.getUserData()).hit();
                 } else {
                     ((Spike) fixB.getUserData()).hit();
                 }
                 break;
+            // Caso de colisión entre sensor y personaje principal
             case Vault.SENSOR_BIT | Vault.MAGE_BIT:
+                // Activar el sensor
                 if (fixA.getFilterData().categoryBits == Vault.SENSOR_BIT) {
                     ((Sensor) fixA.getUserData()).active();
                 } else {
                     ((Sensor) fixB.getUserData()).active();
                 }
                 break;
+            // Caso de colisión entre puerta y personaje principal
             case Vault.DOOR_BIT | Vault.MAGE_BIT:
+                // Abrir la puerta
                 if (fixA.getFilterData().categoryBits == Vault.DOOR_BIT) {
                     ((Door) fixA.getUserData()).open();
                 } else {
@@ -62,6 +80,9 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
         }
+
+        // Manejar eventos específicos cuando el personaje principal contacta con los lados, cabeza o pies de un objeto interactivo
+        // Activar métodos correspondientes para manejar estos eventos
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
@@ -97,16 +118,21 @@ public class WorldContactListener implements ContactListener {
                 ((InteractiveTileObject) object.getUserData()).onFeetHit();
             }
         }
-
     }
 
+    /**
+     * Método invocado cuando finaliza un contacto entre fixtures.
+     * @param contact El objeto Contact que representa el contacto entre fixtures.
+     */
     @Override
     public void endContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
         switch (cDef) {
+            // Caso de finalización de contacto entre puerta y personaje principal
             case Vault.DOOR_BIT | Vault.MAGE_BIT:
+                // Cerrar la puerta
                 if (fixA.getFilterData().categoryBits == Vault.DOOR_BIT) {
                     ((Door) fixA.getUserData()).close();
                 } else {
@@ -114,6 +140,9 @@ public class WorldContactListener implements ContactListener {
                 }
                 break;
         }
+
+        // Manejar eventos específicos cuando el personaje principal deja de contactar con los lados o pies de un objeto interactivo
+        // Activar métodos correspondientes para manejar estos eventos
         if (fixA.getUserData() == "sideL" || fixB.getUserData() == "sideL") {
             Fixture sideL = fixA.getUserData() == "sideL" ? fixA : fixB;
             Fixture object = sideL == fixA ? fixB : fixA;
@@ -139,11 +168,11 @@ public class WorldContactListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-
+        // Método no implementado
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-
+        // Método no implementado
     }
 }

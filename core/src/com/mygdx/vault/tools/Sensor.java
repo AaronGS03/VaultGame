@@ -12,6 +12,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
 
+/**
+ * Clase que representa un sensor en el juego.
+ * Los sensores son utilizados para activar eventos específicos cuando un cuerpo entra en contacto con ellos.
+ */
 public class Sensor extends Sprite {
 
     public int level;
@@ -20,79 +24,82 @@ public class Sensor extends Sprite {
     protected PlayScreen screen;
     public Body body;
 
-    public Fixture getFixture() {
-        return fixture;
-    }
-
-    protected Fixture fixture;
+    public Fixture fixture;
     protected Rectangle bounds;
 
+    /**
+     * Constructor de Sensor.
+     *
+     * @param screen  Instancia de PlayScreen donde se creará el sensor.
+     * @param bounds  Límites del sensor.
+     * @param level   Nivel asociado al sensor.
+     */
     public Sensor(PlayScreen screen, Rectangle bounds, int level) {
         this.world = screen.getWorld();
         this.bounds = bounds;
         this.level = level;
-        this.screen=screen;
+        this.screen = screen;
 
         defineSensor();
-        setBounds(bounds.getX()/Vault.PPM,bounds.getY()/Vault.PPM,bounds.getWidth() / Vault.PPM, bounds.getHeight() / Vault.PPM);
+        setBounds(bounds.getX() / Vault.PPM, bounds.getY() / Vault.PPM, bounds.getWidth() / Vault.PPM, bounds.getHeight() / Vault.PPM);
         Filter filter = new Filter();
         filter.categoryBits = Vault.SENSOR_BIT;
         fixture.setFilterData(filter);
-
     }
 
-    public void defineSensor(){
-        BodyDef bdef= new BodyDef();
+    /**
+     * Método para definir el cuerpo y la fixture del sensor.
+     */
+    public void defineSensor() {
+        BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
-        PolygonShape shape= new PolygonShape();
+        PolygonShape shape = new PolygonShape();
 
-        bdef.type =BodyDef.BodyType.StaticBody;
-        bdef.position.set((bounds.getX()+bounds.getWidth()/2)/ Vault.PPM, (bounds.getY()+bounds.getHeight()/2)/Vault.PPM);
+        bdef.type = BodyDef.BodyType.StaticBody;
+        bdef.position.set((bounds.getX() + bounds.getWidth() / 2) / Vault.PPM, (bounds.getY() + bounds.getHeight() / 2) / Vault.PPM);
 
         body = world.createBody(bdef);
 
-        shape.setAsBox(bounds.getWidth() / 2/ Vault.PPM, bounds.getHeight()/2/Vault.PPM);
+        shape.setAsBox(bounds.getWidth() / 2 / Vault.PPM, bounds.getHeight() / 2 / Vault.PPM);
         fdef.shape = shape;
-        fdef.friction=1;
-        fixture= body.createFixture(fdef);
+        fdef.friction = 1;
+        fixture = body.createFixture(fdef);
         fixture.setUserData(this);
-        if (level==-1){
+        if (level == -1) {
             fixture.setSensor(false);
-
-        }else {
+        } else {
             fixture.setSensor(true);
-
         }
     }
 
+    /**
+     * Método para activar eventos específicos asociados al sensor.
+     */
     public void active() {
-        if (level==3){
-            screen.setLevel3gimmick(true);
-
-        }
-        if (level==7){
-            screen.setLevel7gimmick(true);
-
-        }
-        if (level==8){
+        switch (level) {
+            case 3:
+                screen.setLevel3gimmick(true);
+                break;
+            case 7:
+                screen.setLevel7gimmick(true);
+                break;
+            case 8:
                 screen.setLevel8gimmick(true);
-
-        }
-        if (level==10){
-            screen.setLevel10gimmick(true);
-        }
-
-        if (level==13){
-            screen.setLevel13gimmick(true);
-        }
-        if (level==14){
-            screen.setLevel14gimmick(true);
-        }
-
-        if (level==69){
-            screen.setLevel69gimmick(true);
+                break;
+            case 10:
+                screen.setLevel10gimmick(true);
+                break;
+            case 13:
+                screen.setLevel13gimmick(true);
+                break;
+            case 14:
+                screen.setLevel14gimmick(true);
+                break;
+            case 69:
+                screen.setLevel69gimmick(true);
+                break;
+            default:
+                break;
         }
     }
-
-
 }
