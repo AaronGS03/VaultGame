@@ -14,10 +14,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.vault.Controls.Controller;
+import com.mygdx.vault.Scenes.Controller;
 import com.mygdx.vault.Screens.PlayScreen;
 import com.mygdx.vault.Vault;
-import com.mygdx.vault.tools.Sensor;
 
 public class Mage extends Sprite {
 

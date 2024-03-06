@@ -11,11 +11,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -30,7 +26,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.vault.Controls.Controller;
+import com.mygdx.vault.Scenes.Controller;
 import com.mygdx.vault.Scenes.Hud;
 import com.mygdx.vault.Scenes.SubMenu;
 import com.mygdx.vault.Sprites.Door;
@@ -452,7 +448,7 @@ public class PlayScreen implements Screen {
         }
 
 
-        if (!hud.isPause()) {
+        if (!hud.pause) {
 
             if (!player.isDead()) {
                 handleInput(dt);
@@ -657,10 +653,10 @@ public class PlayScreen implements Screen {
 
             hud.table.reset();
             hud.table.top().right().padTop(120).padRight(120).setFillParent(true);
-            hud.setTitleLabel(new Label(title, hud.getLabelStyle()));
+            hud.titleLabel=new Label(title, hud.labelStyle);
             hud.table.add(hud.pauseImage).right().size(hud.pauseImage.getWidth(), hud.pauseImage.getHeight());
             hud.table.row();
-            hud.table.add(hud.getTitleLabel()).expandX().top().right().padRight(240).padTop(-150);
+            hud.table.add(hud.titleLabel).expandX().top().right().padRight(240).padTop(-150);
 
             submenu.table.reset();
             submenu.table.add(submenu.continueImage).size(submenu.continueImage.getWidth(), submenu.continueImage.getHeight()).pad(10);
@@ -677,7 +673,7 @@ public class PlayScreen implements Screen {
 
         }
 
-        if (hud.isPause()) {
+        if (hud.pause) {
             controller.leftImage.getStage().addActor(submenu.table);
 
 
