@@ -38,139 +38,207 @@ import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
 import com.mygdx.vault.tools.WorldContactListener;
 
+/**
+ * Pantalla de juego que implementa la interfaz Screen.
+ */
 public class PlayScreen implements Screen {
-    private Vault game;
-    private TextureAtlas atlas;
-    private OrthographicCamera gamecam; //camara del juego (2d)
-    private OrthographicCamera backcam; //camara del fondo (2d)
+    private Vault game; // Instancia del juego
+    private TextureAtlas atlas; // Atlas de texturas
+    private OrthographicCamera gamecam; // Cámara del juego (2D)
+    private OrthographicCamera backcam; // Cámara del fondo (2D)
 
-    private Viewport gamePort; // determina la escala o forma en la que se muestra la pantalla
+    private Viewport gamePort; // Determina la escala o forma en la que se muestra la pantalla
 
-    private TmxMapLoader mapLoader; //carga el mapa
-    private TiledMap map; //este es el mapa
-    private OrthogonalTiledMapRenderer renderer;
-    public Mage player;
-    private Mage player2;
-    private boolean secretSetting = false;
-    private boolean touch = true;
-    private int touchCount;
+    private TmxMapLoader mapLoader; // Cargador de mapas Tiled
+    private TiledMap map; // Mapa actual
+    private OrthogonalTiledMapRenderer renderer; // Renderizador de mapas Tiled
+    public Mage player; // Jugador
+    private Mage player2; // Jugador 2 (no utilizado)
+    private boolean secretSetting = false; // Configuración secreta activa
+    private boolean touch = true; // Indica si se permite el toque
+    private int touchCount; // Contador de toques
 
+    private boolean sound = true; // Indica si el sonido está activado
+    private int intervalTouch; // Intervalo de toque
+    // Variables de Box2D
+    private World world; // Mundo de Box2D
+    private Box2DDebugRenderer b2dr; // Renderizador de depuración de Box2D
+    private B2WorldCreator creator; // Creador del mundo de Box2D
+    private ParallaxLayer[] layers; // Capas de fondo paralaje
+    private AssetManager manager; // Administrador de recursos
 
-    private boolean sound = true;
-    private int intervalTouch;
-    //Variables de Box2d
-    private World world;
-    private Box2DDebugRenderer b2dr;
-    private B2WorldCreator creator;
-    private ParallaxLayer[] layers;
-    private AssetManager manager;
+    private Music music; // Música de fondo
+    Controller controller; // Controlador
 
-    private Music music;
-    Controller controller;
-
-    private Hud hud;
-    private SubMenu submenu;
-    private boolean pause = false;
-    private boolean isRespawning;
-    private float respawnTimer;
-    private float stepSoundTimer = 0;
+    private Hud hud; // Interfaz de usuario
+    private SubMenu submenu; // Submenú
+    private boolean pause = false; // Indica si el juego está en pausa
+    private boolean isRespawning; // Indica si el jugador está reapareciendo
+    private float respawnTimer; // Temporizador de reaparición
+    private float stepSoundTimer = 0; // Temporizador de sonido de pasos
     private static float STEP_SOUND_INTERVAL = 0.4f; // Frecuencia deseada de los sonidos de pasos
     private static float LAND_SOUND_INTERVAL = 0.22f; // Frecuencia deseada de los sonidos de pasos
     private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
 
+    public Array<Room> habitaciones = new Array<Room>(); // Array de habitaciones
+    public Array<Door> doors = new Array<Door>(); // Array de puertas
 
-    public Array<Room> habitaciones = new Array<Room>();
-    public Array<Door> doors = new Array<Door>();
+    public int levelSpawn = 1; // Nivel de aparición predeterminado
+    public float volume = 0.2f; // Volumen de sonido predeterminado
+    private boolean effects = true; // Indica si los efectos están activados
 
-    public int levelSpawn = 1;
-    public float volume = 0.2f;
-    private boolean effects = true;
-
+    /**
+     * Verifica si la puerta está abierta.
+     * @return true si la puerta está abierta, false de lo contrario
+     */
     public boolean isOpenDoor() {
         return openDoor;
     }
 
+    /**
+     * Establece el estado de la puerta.
+     * @param openDoor true para abrir la puerta, false para cerrarla
+     */
     public void setOpenDoor(boolean openDoor) {
         this.openDoor = openDoor;
     }
 
-    private boolean openDoor = false;
+    private boolean openDoor = false; // Indica si la puerta está abierta
 
+    /**
+     * Verifica si la configuración secreta está activada.
+     * @return true si la configuración secreta está activada, false de lo contrario
+     */
     public boolean isSecretSetting() {
         return secretSetting;
     }
 
-    public int hitdoorlevel = 0;
+    public int hitdoorlevel = 0; // Nivel de la puerta impactada
 
+    /**
+     * Verifica si el nivel 10 tiene truco activado.
+     * @return true si el truco del nivel 10 está activado, false de lo contrario
+     */
     public boolean isLevel10gimmick() {
         return level10gimmick;
     }
 
+    /**
+     * Establece el estado del truco del nivel 10.
+     * @param level10gimmick true para activar el truco del nivel 10, false para desactivarlo
+     */
     public void setLevel10gimmick(boolean level10gimmick) {
         this.level10gimmick = level10gimmick;
     }
 
-    private boolean level10gimmick = false;
+    private boolean level10gimmick = false; // Indica si el truco del nivel 10 está activado
 
+    /**
+     * Establece el estado del truco del nivel 13.
+     * @param level13gimmick true para activar el truco del nivel 13, false para desactivarlo
+     */
     public void setLevel13gimmick(boolean level13gimmick) {
         this.level13gimmick = level13gimmick;
     }
 
-    private boolean level13gimmick = false;
+    private boolean level13gimmick = false; // Indica si el truco del nivel 13 está activado
 
+    /**
+     * Establece el estado del truco del nivel 14.
+     * @param level14gimmick true para activar el truco del nivel 14, false para desactivarlo
+     */
     public void setLevel14gimmick(boolean level14gimmick) {
         this.level14gimmick = level14gimmick;
     }
 
-    private boolean level14gimmick = false;
+    private boolean level14gimmick = false; // Indica si el truco del nivel 14 está activado
 
+    /**
+     * Verifica si el truco del nivel 69 está activado.
+     * @return true si el truco del nivel 69 está activado, false de lo contrario
+     */
     public boolean isLevel69gimmick() {
         return level69gimmick;
     }
 
+    /**
+     * Establece el estado del truco del nivel 69.
+     * @param level69gimmick true para activar el truco del nivel 69, false para desactivarlo
+     */
     public void setLevel69gimmick(boolean level69gimmick) {
         this.level69gimmick = level69gimmick;
     }
 
-    private boolean level69gimmick = false;
+    private boolean level69gimmick = false; // Indica si el truco del nivel 69 está activado
 
+    /**
+     * Verifica si el truco del nivel 7 está activado.
+     * @return true si el truco del nivel 7 está activado, false de lo contrario
+     */
     public boolean isLevel7gimmick() {
         return level7gimmick;
     }
 
+    /**
+     * Establece el estado del truco del nivel 7.
+     * @param level7gimmick true para activar el truco del nivel 7, false para desactivarlo
+     */
     public void setLevel7gimmick(boolean level7gimmick) {
         this.level7gimmick = level7gimmick;
     }
 
-    private boolean level7gimmick = false;
+    private boolean level7gimmick = false; // Indica si el truco del nivel 7 está activado
 
+    /**
+     * Verifica si el truco del nivel 3 está activado.
+     * @return true si el truco del nivel 3 está activado, false de lo contrario
+     */
     public boolean isLevel3gimmick() {
         return level3gimmick;
     }
 
+    /**
+     * Establece el estado del truco del nivel 3.
+     * @param level3gimmick true para activar el truco del nivel 3, false para desactivarlo
+     */
     public void setLevel3gimmick(boolean level3gimmick) {
         this.level3gimmick = level3gimmick;
     }
 
-    private boolean level3gimmick = false;
+    private boolean level3gimmick = false; // Indica si el truco del nivel 3 está activado
 
+    /**
+     * Verifica si el truco del nivel 8 está activado.
+     * @return true si el truco del nivel 8 está activado, false de lo contrario
+     */
     public boolean isLevel8gimmick() {
         return level8gimmick;
     }
 
+    /**
+     * Establece el estado del truco del nivel 8.
+     * @param level8gimmick true para activar el truco del nivel 8, false para desactivarlo
+     */
     public void setLevel8gimmick(boolean level8gimmick) {
         this.level8gimmick = level8gimmick;
     }
 
-    private boolean level8gimmick = false;
+    private boolean level8gimmick = false; // Indica si el truco del nivel 8 está activado
 
-    public MainMenuScreen mainMenuScreen;
+    public MainMenuScreen mainMenuScreen; // Pantalla principal del menú
 
 
+    /**
+     * Constructor de la pantalla de juego.
+     *
+     * @param game        Instancia del juego.
+     * @param manager     Administrador de recursos.
+     * @param levelSpawn  Nivel de aparición inicial.
+     */
     public PlayScreen(Vault game, AssetManager manager, int levelSpawn) {
         this.manager = manager;
         atlas = new TextureAtlas("Sprites.atlas");
-       
+
         this.game = game;
         intervalTouch = 500;
 
@@ -223,44 +291,52 @@ public class PlayScreen implements Screen {
         loadLevelTitles();
     }
 
+    /**
+     * Obtiene el atlas de texturas.
+     * @return El atlas de texturas
+     */
     public TextureAtlas getAtlas() {
         return atlas;
     }
 
     @Override
     public void show() {
-
+        // Método de la interfaz Screen que se ejecuta cuando la pantalla se muestra
     }
 
-    public boolean reset = false;
+    public boolean reset = false; // Indica si se debe reiniciar el juego
 
+    /**
+     * Maneja la entrada del usuario.
+     * @param dt El tiempo delta
+     */
     public void handleInput(float dt) {
-        if (!player.dead) {
-            if (player.currentLevel == 5) {
-
-                if (!isRespawning) {
-                    handleDragInput();
+        if (!player.dead) { // Verifica si el jugador está vivo
+            if (player.currentLevel == 5) { // Nivel 5
+                if (!isRespawning) { // Si no está reapareciendo
+                    handleDragInput(); // Maneja la entrada de arrastre
                 } else {
-                    isDragging = false;
+                    isDragging = false; // No se está arrastrando
                 }
-            } else if (player.currentLevel == 4) {
-                gravityMovement();
-            } else if (player.currentLevel == 3 && level3gimmick) {
-                inversedMovement();
-            } else if (player.currentLevel == 6) {
-                gyroscopeMovement();
-            } else if (player.currentLevel == 7) {
-                world.setGravity(new Vector2(world.getGravity().x, -45));
-                scrambleMovement();
-            } else {
-                world.setGravity(new Vector2(world.getGravity().x, -45));
-                regularMovement();
-
+            } else if (player.currentLevel == 4) { // Nivel 4
+                gravityMovement(); // Movimiento gravitacional
+            } else if (player.currentLevel == 3 && level3gimmick) { // Nivel 3 con truco activado
+                inversedMovement(); // Movimiento invertido
+            } else if (player.currentLevel == 6) { // Nivel 6
+                gyroscopeMovement(); // Movimiento del giroscopio
+            } else if (player.currentLevel == 7) { // Nivel 7
+                world.setGravity(new Vector2(world.getGravity().x, -45)); // Ajusta la gravedad
+                scrambleMovement(); // Movimiento de desorden
+            } else { // Otros niveles
+                world.setGravity(new Vector2(world.getGravity().x, -45)); // Ajusta la gravedad
+                regularMovement(); // Movimiento regular
             }
-
         }
     }
 
+    /**
+     * Maneja el movimiento del giroscopio del dispositivo.
+     */
     private void gyroscopeMovement() {
         world.setGravity(new Vector2(world.getGravity().x, 0));
 
@@ -277,151 +353,171 @@ public class PlayScreen implements Screen {
     //Moviento del personaje movil
 
 
+    /**
+     * Indica si el jugador está siendo arrastrado.
+     */
     public boolean isDragging = false;
+
+    /**
+     * Indica si se debe detener el arrastre del jugador.
+     */
     public boolean stopdraggin = false;
 
+    /**
+     * Maneja la entrada de arrastre del jugador.
+     */
     private void handleDragInput() {
         Vector3 initialTouch = new Vector3();
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) { // Verifica si se está tocando la pantalla
             float touchX = Gdx.input.getX();
             float touchY = Gdx.input.getY();
             Vector3 touchPoint = new Vector3(touchX, touchY, 0);
-            gamecam.unproject(touchPoint); // devuelve el punto tocado
+            gamecam.unproject(touchPoint); // Convierte las coordenadas de la pantalla a coordenadas de la cámara del juego
 
             Rectangle playerBounds = player.getBoundingRectangle();
 
-            if (!isDragging) {
-                // Si es el inicio del toque, registra la posición inicial
+            if (!isDragging) { // Si no se está arrastrando
+                // Si el toque inicial está dentro de los límites del jugador, registra la posición inicial
                 if (playerBounds.contains(touchPoint.x, touchPoint.y)) {
                     initialTouch.set(touchPoint);
                     isDragging = true;
                 }
-                if (stopdraggin) {
-
+                if (stopdraggin) { // Si se debe detener el arrastre
+                    // Aplica un impulso lineal para detener el movimiento del jugador
                     player.b2body.applyLinearImpulse(new Vector2(0, world.getGravity().y), player.b2body.getWorldCenter(), true);
                     stopdraggin = false;
-
                 }
-            } else {
-                // Si ya se está arrastrando, actualiza la posición del personaje
-
+            } else { // Si ya se está arrastrando
+                // Actualiza la posición del jugador según la posición del toque
                 player.b2body.setTransform(touchPoint.x, touchPoint.y, player.b2body.getAngle());
-                player.isTouchingGrass=false;
-                stopdraggin = true;
-
+                player.isTouchingGrass=false; // Indica que el jugador ya no está tocando la hierba
+                stopdraggin = true; // Indica que se debe detener el arrastre
             }
-
         } else {
             // Reinicia el estado cuando se levanta el dedo
             isDragging = false;
         }
     }
 
+    /**
+     * Maneja el movimiento regular del jugador.
+     */
     private void regularMovement() {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
-
             if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
-
             }
-            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {
+                // Aplica un impulso lineal hacia arriba si no está en el aire y no está saltando
                 player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
                 controller.setUpPressed(false);
             }
         } else {
             player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
-
         }
 
-        //Movimiento personaje teclado
+        // Movimiento del jugador usando el teclado
         keyboardMovement();
     }
 
+
+    /**
+     * Maneja el movimiento inverso del jugador.
+     */
     private void inversedMovement() {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
-
             if (controller.isRightPressed() && player.b2body.getLinearVelocity().x >= -20) {
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
-
             }
-            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+            if (controller.isUpPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {
+                // Aplica un impulso lineal hacia arriba si no está en el aire y no está saltando
                 player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
                 controller.setUpPressed(false);
             }
         } else {
             player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
-
         }
 
-        //Movimiento personaje teclado
+        // Movimiento del jugador usando el teclado
         keyboardMovement();
     }
 
+    /**
+     * Maneja el movimiento caótico del jugador.
+     */
     private void scrambleMovement() {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
-
             if (controller.isUpPressed() && player.b2body.getLinearVelocity().x >= -20) {
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
-
             }
-            if (controller.isRightPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+            if (controller.isRightPressed() && player.b2body.getLinearVelocity().y == 0 && player.previousState != Mage.State.JUMPING && player.previousState != Mage.State.AIRTRANSITION) {
+                // Aplica un impulso lineal hacia arriba si no está en el aire y no está saltando
                 player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
                 controller.setRightPressed(false);
             }
         } else {
             player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
-
         }
 
-        //Movimiento personaje teclado
+        // Movimiento del jugador usando el teclado
         keyboardMovement();
     }
 
+    /**
+     * Maneja el movimiento con gravedad invertida del jugador.
+     */
     private void gravityMovement() {
         if (controller.isLeftPressed() || controller.isRightPressed() || controller.isUpPressed()) {
-
             if (controller.isLeftPressed() && player.b2body.getLinearVelocity().x >= -20) {
                 player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
             } else if (controller.isRightPressed() && player.b2body.getLinearVelocity().x <= 20) {
                 player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
-
             }
-            if (controller.isUpPressed()) {//getlinearvelocity detecta que está tocando el suelo viendo que no esta cayendo ni subiendo
+            if (controller.isUpPressed()) {
+                // Invierte la gravedad vertical del mundo
                 world.setGravity(new Vector2(world.getGravity().x, -world.getGravity().y));
-
                 controller.setUpPressed(false);
-
             }
         } else {
             player.b2body.applyForce(new Vector2(0, 0), player.b2body.getWorldCenter(), true);
-
         }
 
-        //Movimiento personaje teclado
+        // Movimiento del jugador usando el teclado
         keyboardMovement();
     }
 
+    /**
+     * Maneja el movimiento del jugador mediante el teclado.
+     */
     private void keyboardMovement() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            // Aplica un impulso lineal hacia arriba cuando se presiona la tecla de flecha hacia arriba
             player.b2body.applyLinearImpulse(new Vector2(0, 35f), player.b2body.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x >= -20) {
+            // Aplica una fuerza hacia la derecha si se presiona la tecla de flecha hacia la derecha
             player.b2body.applyForce(new Vector2(50f, 0), player.b2body.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x <= 20) {
+            // Aplica una fuerza hacia la izquierda si se presiona la tecla de flecha hacia la izquierda
             player.b2body.applyForce(new Vector2(-50f, 0), player.b2body.getWorldCenter(), true);
         }
     }
 
 
-    //Aqui se maneja lo que ocurre en el juego
+
+    /**
+     * Updates Mage's state and position.
+     *
+     * @param dt The time difference since the last frame.
+     */
     public void update(float dt) {
 
         if (!game.sound) {
@@ -599,7 +695,9 @@ public class PlayScreen implements Screen {
     int newLevel = -1;
     Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
-
+    /**
+     * Método para dibujar el juego.
+     */
     @Override
     public void render(float delta) {
         update(delta);
@@ -691,9 +789,19 @@ public class PlayScreen implements Screen {
         controller.draw(delta);
     }
 
+    /**
+     * Representa el objeto JSON que contiene los títulos de los niveles.
+     */
     private JsonValue titlesObject;
+
+    /**
+     * Representa el objeto JSON que contiene las pistas de los niveles.
+     */
     private JsonValue cluesObject;
 
+    /**
+     * Carga los títulos y las pistas de los niveles desde un archivo JSON.
+     */
     public void loadLevelTitles() {
         FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
         String jsonData = fileHandle.readString();
@@ -710,25 +818,54 @@ public class PlayScreen implements Screen {
         }
     }
 
+    /**
+     * Obtiene el título del nivel especificado.
+     *
+     * @param level El número del nivel.
+     * @return El título del nivel o "default" si no se encuentra.
+     */
     public String getLevelTitle(int level) {
         return titlesObject.getString(level + "", "default");
     }
+
+    /**
+     * Obtiene la pista del nivel especificado.
+     *
+     * @param level El número del nivel.
+     * @return La pista del nivel o "default" si no se encuentra.
+     */
     public String getClue(int level) {
         return cluesObject.getString(level + "", "default");
     }
 
+    /**
+     * Redimensiona la pantalla del juego.
+     *
+     * @param width  Ancho de la pantalla.
+     * @param height Altura de la pantalla.
+     */
     @Override
     public void resize(int width, int height) {
-        gamePort.update(width, height);//ajusta el tamaño de la pantalla en resizes
+        gamePort.update(width, height); // ajusta el tamaño de la pantalla en resizes
         controller.resize(width, height);
         hud.resize(width, height);
         submenu.resize(width, height);
     }
 
+    /**
+     * Obtiene el mapa del juego.
+     *
+     * @return El mapa del juego.
+     */
     public TiledMap getMap() {
         return map;
     }
 
+    /**
+     * Obtiene el mundo Box2D del juego.
+     *
+     * @return El mundo Box2D del juego.
+     */
     public World getWorld() {
         return world;
     }
@@ -748,6 +885,9 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Libera los recursos en uso
+     */
     @Override
     public void dispose() {
         map.dispose();
