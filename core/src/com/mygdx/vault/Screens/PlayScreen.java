@@ -476,7 +476,7 @@ public class PlayScreen implements Screen {
             }
 
             if (level14gimmick) {
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(new CredistScreen(game));
                 dispose();
                 level14gimmick = false;
             }
