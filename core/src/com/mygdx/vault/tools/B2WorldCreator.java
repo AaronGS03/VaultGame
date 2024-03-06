@@ -71,7 +71,7 @@ public class B2WorldCreator {
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             if (object.getProperties().containsKey("spawnPoint")) {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
-                habitaciones.get(Integer.parseInt(object.getProperties().get("spawnPoint") + "")).setSpawnPoint(rect);
+                habitaciones.get(Integer.parseInt(object.getProperties().get("spawnPoint") + "")).spawnPoint=rect;
             } else {
                 Rectangle rect = ((RectangleMapObject) object).getRectangle();
                 habitaciones.add(new Room(screen, rect, player, gamecam, Integer.parseInt(object.getProperties().get("level") + ""), backcam));

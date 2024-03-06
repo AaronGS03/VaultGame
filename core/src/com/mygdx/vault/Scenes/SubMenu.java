@@ -115,7 +115,7 @@ public class SubMenu implements Disposable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 touchButton();
-                player.setDead(true);
+                player.dead=true;
                 hud.pause = false;
                 return true;
             }

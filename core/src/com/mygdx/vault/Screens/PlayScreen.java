@@ -235,21 +235,21 @@ public class PlayScreen implements Screen {
     public boolean reset = false;
 
     public void handleInput(float dt) {
-        if (!player.isDead()) {
-            if (player.getCurrentLevel() == 5) {
+        if (!player.dead) {
+            if (player.currentLevel == 5) {
 
                 if (!isRespawning) {
                     handleDragInput();
                 } else {
                     isDragging = false;
                 }
-            } else if (player.getCurrentLevel() == 4) {
+            } else if (player.currentLevel == 4) {
                 gravityMovement();
-            } else if (player.getCurrentLevel() == 3 && level3gimmick) {
+            } else if (player.currentLevel == 3 && level3gimmick) {
                 inversedMovement();
-            } else if (player.getCurrentLevel() == 6) {
+            } else if (player.currentLevel == 6) {
                 gyroscopeMovement();
-            } else if (player.getCurrentLevel() == 7) {
+            } else if (player.currentLevel == 7) {
                 world.setGravity(new Vector2(world.getGravity().x, -45));
                 scrambleMovement();
             } else {
@@ -307,7 +307,7 @@ public class PlayScreen implements Screen {
                 // Si ya se está arrastrando, actualiza la posición del personaje
 
                 player.b2body.setTransform(touchPoint.x, touchPoint.y, player.b2body.getAngle());
-                player.setTouchingGrass(false);
+                player.isTouchingGrass=false;
                 stopdraggin = true;
 
             }
@@ -429,7 +429,7 @@ public class PlayScreen implements Screen {
         } else {
             music.setVolume(1f);
         }
-        if (player.getCurrentLevel() == 12) {
+        if (player.currentLevel == 12) {
             music.stop();
         } else {
             music.play();
@@ -450,24 +450,24 @@ public class PlayScreen implements Screen {
 
         if (!hud.pause) {
 
-            if (!player.isDead()) {
+            if (!player.dead) {
                 handleInput(dt);
-                if (player.getCurrentLevel() == 9) {
+                if (player.currentLevel == 9) {
                     player.b2body.applyForce(new Vector2(-20f, 0), player.b2body.getWorldCenter(), true);
                 }
 
             }
             if (level10gimmick && level69gimmick && player.keys.collected) {
-                player.setCurrentLevel(11);
-                player.setDead(true);
+                player.currentLevel=11;
+                player.dead=true;
                 level69gimmick = false;
             } else {
                 level10gimmick = false;
             }
 
             if (level13gimmick) {
-                player.setCurrentLevel(12);
-                player.setDead(true);
+                player.currentLevel=(12);
+                player.dead=(true);
                 level13gimmick = false;
             }
 
@@ -478,11 +478,11 @@ public class PlayScreen implements Screen {
             }
 
             if (level7gimmick) {
-                player.setCurrentLevel(8);
-                player.setDead(true);
+                player.currentLevel=(8);
+                player.dead=(true);
             }
 
-            if (level8gimmick && player.getCurrentLevel() == 8) {
+            if (level8gimmick && player.currentLevel == 8) {
                 for (Spike s :
                         creator.fakespikes) {
                     s.fake();
@@ -494,14 +494,14 @@ public class PlayScreen implements Screen {
                 level8gimmick = false;
             }
 
-            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass()) {
+            if (player.currentState == Mage.State.LANDING && player.isTouchingGrass) {
                 if (stepSoundTimer <= 0) {
                     manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = LAND_SOUND_INTERVAL; // Reinicia el temporizador
                 }
 
             }
-            if (player.currentState == Mage.State.JUMPING && player.isTouchingGrass()) {
+            if (player.currentState == Mage.State.JUMPING && player.isTouchingGrass) {
                 if (stepSoundTimer <= -0.3) {
                     manager.get("audio/sounds/Single-footstep-in-grass.mp3", Sound.class).play(volume);
                     stepSoundTimer = JUMP_SOUND_INTERVAL; // Reinicia el temporizador
@@ -515,7 +515,7 @@ public class PlayScreen implements Screen {
                 }
 
             }
-            if (player.isTouchingGrass() && player.b2body.getLinearVelocity().x != 0 && (controller.isRightPressed() || controller.isLeftPressed())) {
+            if (player.isTouchingGrass && player.b2body.getLinearVelocity().x != 0 && (controller.isRightPressed() || controller.isLeftPressed())) {
                 // Verifica el temporizador antes de reproducir el sonido
 
                 if (stepSoundTimer <= 0) {
@@ -526,15 +526,15 @@ public class PlayScreen implements Screen {
             if (openDoor) {
 
                 if (player.keys != null && hitdoorlevel != -1) {
-                    if (player.keys.collected && (hitdoorlevel == player.getCurrentLevel() || (player.getCurrentLevel() == 10 && hitdoorlevel == 9)) && hitdoorlevel != 10) {
+                    if (player.keys.collected && (hitdoorlevel == player.currentLevel || (player.currentLevel == 10 && hitdoorlevel == 9)) && hitdoorlevel != 10) {
                         doors.get(hitdoorlevel).change = true;
-                        doors.get(hitdoorlevel).getFixture().setSensor(true);
+                        doors.get(hitdoorlevel).fixture.setSensor(true);
                         manager.get("audio/sounds/doorKey.mp3", Sound.class).play(volume);
 
                     } else {
                         manager.get("audio/sounds/lockedDoor.mp3", Sound.class).play(volume);
 
-                        doors.get(hitdoorlevel).getFixture().setSensor(false);
+                        doors.get(hitdoorlevel).fixture.setSensor(false);
 
                     }
                 }
@@ -556,7 +556,7 @@ public class PlayScreen implements Screen {
                 key.update(dt);
             }
 
-            if (player.isDead() && stepSoundTimer <= -1.5) {
+            if (player.dead && stepSoundTimer <= -1.5) {
 
                 if (!isRespawning) {
                     respawnTimer -= dt;
@@ -570,13 +570,13 @@ public class PlayScreen implements Screen {
                     prefs.flush();
                     // Mover el personaje solo si no está en proceso de respawn
                     if (level7gimmick) {
-                        player.setCurrentLevel(8);
+                        player.currentLevel=(8);
                     }
                     if (level10gimmick) {
-                        player.setCurrentLevel(11);
+                        player.currentLevel=(11);
                     }
-                    player.b2body.setTransform(habitaciones.get(player.getCurrentLevel()).getSpawnPoint().x / Vault.PPM, habitaciones.get(player.getCurrentLevel()).getSpawnPoint().y / Vault.PPM, 0);
-                    player.setDead(false);
+                    player.b2body.setTransform(habitaciones.get(player.currentLevel).spawnPoint.x / Vault.PPM, habitaciones.get(player.currentLevel).spawnPoint.y / Vault.PPM, 0);
+                    player.dead=(false);
 
                     if (player.keys != null) {
                         player.keys.collected = false;
@@ -617,7 +617,7 @@ public class PlayScreen implements Screen {
 
         }
         if (secretSetting) {
-            player.setCurrentLevel(2);
+            player.currentLevel=(2);
         }
         player.draw(game.batch);
         for (Spike spike : creator.spikes) {
@@ -643,11 +643,11 @@ public class PlayScreen implements Screen {
         //b2dr.render(world, gamecam.combined);
 
 
-        if (player.getCurrentLevel() != newLevel) {
-            String title = getLevelTitle(player.getCurrentLevel() + 1);
-            newLevel = player.getCurrentLevel();
-            if (player.getCurrentLevel() > prefs.getInteger("highestLevel", 0)) {
-                prefs.putInteger("highestLevel", player.getCurrentLevel());
+        if (player.currentLevel != newLevel) {
+            String title = getLevelTitle(player.currentLevel + 1);
+            newLevel = player.currentLevel;
+            if (player.currentLevel > prefs.getInteger("highestLevel", 0)) {
+                prefs.putInteger("highestLevel", player.currentLevel);
                 prefs.flush();
             }
 
@@ -666,7 +666,7 @@ public class PlayScreen implements Screen {
             submenu.table.add(submenu.effectsSoundImage).size(submenu.effectsSoundImage.getWidth(), submenu.effectsSoundImage.getHeight()).pad(10);
             submenu.table.row();
             submenu.table.add(submenu.clueImage).colspan(5).size(submenu.clueImage.getWidth(), submenu.clueImage.getHeight()).pad(1).padTop(90).row();
-            submenu.clue=getClue(player.getCurrentLevel()+1);
+            submenu.clue=getClue(player.currentLevel+1);
             submenu.clueLabel= new Label("+0.10p por ver pista\n"+submenu.clue,submenu.labelStyle);
             submenu.clueLabel.setVisible(false);
             submenu.table.add(submenu.clueLabel).colspan(5).padTop(200);
