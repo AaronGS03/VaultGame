@@ -5,14 +5,21 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.vault.Screens.MainMenuScreen;
@@ -29,19 +36,27 @@ public class SubMenu implements Disposable {
     public Image volumeImage;
     public Image effectsSoundImage;
     public Image clueImage;
+    public Label clueLabel;
     private OrthographicCamera cam;
     public boolean touch=false;
     private Mage player;
     Screen screen;
     public Table table;
+    private Vault game;
+    public Label.LabelStyle labelStyle;
+    public String clue="";
+
 
     public SubMenu(Stage stageC, Hud hud, Vault game, Mage player, PlayScreen screen) {
         cam = new OrthographicCamera();
         viewport = new FitViewport(Vault.V_WIDTH / Vault.PPM, Vault.V_HEIGHT / Vault.PPM, cam);
         this.stage=stageC;
+        BitmapFont font = generateFont();
+
         Gdx.input.setInputProcessor(stage);
         this.screen= screen;
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
+        this.game=game;
 
         table = new Table();
         table.top().padTop(60).setFillParent(true);
@@ -154,6 +169,7 @@ public class SubMenu implements Disposable {
                                    @Override
                                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                                        touchButton();
+                                       clueLabel.setVisible(!clueLabel.isVisible());
                                        return true;
                                    }
 
@@ -166,6 +182,11 @@ public class SubMenu implements Disposable {
                                }
 
         );
+        labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        clueLabel = new Label("+0.10 puntos por usar pista:\n"+clue,labelStyle);
+        clueLabel.setColor(Color.WHITE);
+        clueLabel.setVisible(false);
 
         table.add(continueImage).size(continueImage.getWidth(), continueImage.getHeight()).pad(10);
         table.add(respawnImage).size(respawnImage.getWidth(), respawnImage.getHeight()).pad(10);
@@ -173,7 +194,8 @@ public class SubMenu implements Disposable {
         table.add(volumeImage).size(volumeImage.getWidth(), volumeImage.getHeight()).pad(10);
         table.add(effectsSoundImage).size(effectsSoundImage.getWidth(), effectsSoundImage.getHeight()).pad(10);
         table.row();
-        table.add(clueImage).colspan(5).size(clueImage.getWidth(), clueImage.getHeight()).pad(1).padTop(90);
+        table.add(clueImage).colspan(5).size(clueImage.getWidth(), clueImage.getHeight()).pad(1).padTop(90).row();
+        table.add(clueLabel).colspan(5);
 
         stage.addActor(table);
     }
@@ -186,6 +208,15 @@ public class SubMenu implements Disposable {
 
     }
 
+    private BitmapFont generateFont() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("cityburn.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        float fontSize = stage.getHeight() * 0.06f;
+        parameter.size = (int) fontSize;
+        BitmapFont font = generator.generateFont(parameter);
+        generator.dispose(); // Importante: liberar recursos del generador
+        return font;
+    }
     public void resize(int width, int height) {
         viewport.update(width, height);
     }

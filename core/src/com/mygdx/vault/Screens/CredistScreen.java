@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -73,7 +74,7 @@ public class CredistScreen implements Screen {
 
         labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
-        titleLabel = new Label(creditsObject ,labelStyle);
+        titleLabel = new Label("\nDeaths: "+prefs.getInteger("deaths")+"\n"+creditsObject,labelStyle);
         titleLabel.setColor(Color.WHITE);
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -107,7 +108,9 @@ public class CredistScreen implements Screen {
 
     private void posTable(Table table, TextButton backButton) {
         table.add(backButton).left().pad(20).row();
-        table.add(titleLabel).expandX().top().right().padRight(240).padTop(-150);
+        ScrollPane scrollPane = new ScrollPane(titleLabel);
+        scrollPane.setFadeScrollBars(false); // Opcional: desactivar el desvanecimiento de las barras de desplazamiento
+        table.add(scrollPane).expand().fill().colspan(2).pad(20);
     }
 
 

@@ -570,6 +570,8 @@ public class PlayScreen implements Screen {
                         respawnTimer = 0.5f; // Reiniciar el temporizador para futuras reapariciones
                     }
                 } else {
+                    prefs.putInteger("deaths",prefs.getInteger("deaths")+1);
+                    prefs.flush();
                     // Mover el personaje solo si no está en proceso de respawn
                     if (level7gimmick) {
                         player.setCurrentLevel(8);
@@ -660,6 +662,18 @@ public class PlayScreen implements Screen {
             hud.table.row();
             hud.table.add(hud.getTitleLabel()).expandX().top().right().padRight(240).padTop(-150);
 
+            submenu.table.reset();
+            submenu.table.add(submenu.continueImage).size(submenu.continueImage.getWidth(), submenu.continueImage.getHeight()).pad(10);
+            submenu.table.add(submenu.respawnImage).size(submenu.respawnImage.getWidth(), submenu.respawnImage.getHeight()).pad(10);
+            submenu.table.add(submenu.menuScreenImage).size(submenu.menuScreenImage.getWidth(), submenu.menuScreenImage.getHeight()).pad(10);
+            submenu.table.add(submenu.volumeImage).size(submenu.volumeImage.getWidth(), submenu.volumeImage.getHeight()).pad(10);
+            submenu.table.add(submenu.effectsSoundImage).size(submenu.effectsSoundImage.getWidth(), submenu.effectsSoundImage.getHeight()).pad(10);
+            submenu.table.row();
+            submenu.table.add(submenu.clueImage).colspan(5).size(submenu.clueImage.getWidth(), submenu.clueImage.getHeight()).pad(1).padTop(90).row();
+            submenu.clue=getClue(player.getCurrentLevel()+1);
+            submenu.clueLabel= new Label(submenu.clue,submenu.labelStyle);
+            submenu.clueLabel.setVisible(false);
+            submenu.table.add(submenu.clueLabel).colspan(5).padTop(200);
 
         }
 
@@ -682,6 +696,7 @@ public class PlayScreen implements Screen {
     }
 
     private JsonValue titlesObject;
+    private JsonValue cluesObject;
 
     public void loadLevelTitles() {
         FileHandle fileHandle = Gdx.files.internal("data/level_titles.json");
@@ -690,15 +705,20 @@ public class PlayScreen implements Screen {
         switch (game.language) {
             case 0:
                 titlesObject = root.get("titles");
+                cluesObject = root.get("clues");
                 break;
             case 1:
                 titlesObject = root.get("titulos");
+                cluesObject= root.get("pistas");
                 break;
         }
     }
 
     public String getLevelTitle(int level) {
         return titlesObject.getString(level + "", "default");
+    }
+    public String getClue(int level) {
+        return cluesObject.getString(level + "", "default");
     }
 
     @Override

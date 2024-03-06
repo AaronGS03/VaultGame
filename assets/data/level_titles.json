@@ -6,7 +6,7 @@
     "options":"Options",
     "back":"Back",
     "language":"Language",
-    "credits":"Credits",
+    "credits":". . .",
     "reset":"Reset data",
     "music":"Music",
     "effects":"Effects"
@@ -18,7 +18,7 @@
     "options":"Opciones",
     "back":"Volver",
     "language":"Idioma",
-    "credits":"Créditos",
+    "credits":". . .",
     "reset":"Resetear juego",
     "music":"Música",
     "effects":"Efectos"
@@ -37,7 +37,7 @@
     "10": "Mucho viento",
     "11": "Atrás",
     "12": "Pulsa pausa",
-    "13": ""
+    "13": "Fin"
   },
   "titles": {
     "1": "The key and the door",
@@ -52,8 +52,39 @@
     "10": "Bad weather",
     "11": "Back",
     "12": "Press pause",
-    "13": ""
+    "13": "End"
   },
-  "credits": "Nothing yet...",
-  "creditos": "Nada todavía..."
+  "pistas": {
+    "1": "Coge llave. Ve a la puerta",
+    "2": "Misma cosa. Distinta posición",
+    "3": "Una vez más, distinto lugar",
+    "4": "Izquierda es derecha y viceversa",
+    "5": "Pulsa salto para cambiar gravedad",
+    "6": "Arrastra con el dedo al personaje\nPuede que el punto este ligeramente\n atrás",
+    "7": "Prueba a mover el teléfono",
+    "8": "Simplemente adaptate",
+    "9": "Baja por el agujero. Luego ve por los\npinchos que faltan",
+    "10": "Inténtalo mejor. Es posible",
+    "11": "Vuelve por donde viniste",
+    "12": "Pulsa pausa con el personaje",
+    "13": "Sigue adelante"
+  },
+  "clues": {
+    "1": "Get key. Go to door",
+    "2": "Same thing. Different placement",
+    "3": "Once more. Different location",
+    "4": "Left is right and right is left",
+    "5": "Press jump to change gravity",
+    "6": "Drag the character with your finger\n Spot might be slightly\nbehind it",
+    "7": "Try tilting the phone",
+    "8": "Just adapt to them",
+    "9": "Drop down the hole,\nthen go through missing spikes",
+    "10": "Try harder. It's doable",
+    "11": "Go back through the door you came in",
+    "12": "Press pause with the character",
+    "13": "Keep going"
+  },
+
+  "credits": "Game's simple... or is it?:\n\n- Grab key. Go to next level through the door\n\n- If your character gets stuck or you think\n something isn't working properly, press\n the restart level button on the pause menu\n\n- If you get stuck on a level, you\nmay press the clue button\n on the same place to get a hint.\n\nCredits (thanks to all of them!!Go check them out):\n\n- Mossy Cavern tileset by Maaot at maaot.itch.io/mossy-cavern\n- Red hood pixel character by Legnops at:\nlegnops.itch.io/red-hood-character\n- Pixel art key from Frontend Pashtet at drxwat.itch.io/pixel-art-key\n- Original wood and dungeon doors by Lanea Zimmerman (AKA Sharm)\n found at: https://opengameart.org/content/lpc-animated-doors\n- Main menu theme song: Cave Temple Fantasy Dark\n form Pixabay at https://pixabay.com/users/pixabay-1/\n- In game song: Forgotten cave from Mavopix\n at https://pixabay.com/users/mavopix-2288045/\n\nSpecial thanks to:\n\n- Brent Aureli from the yt channel Brent Aureli Codes\n- Ian Rodríguez\n- Samuel Rodríguez\n- Javier Conde (+0.10 a la nota)\n",
+  "creditos": "\nEl juego es sencillo... o igual no tanto...:\n\n- Coge la llave. Ve al siguiente nivel a través por la puerta.\n\n- Si tu personaje se queda atascado o crees\n que algo no funciona correctamente, presiona el botón\n de reinicio de nivel en el menú de pausa.\n\n- Si te quedas atascado en un nivel, puedes\n presionar el botón de pista en el\n mismo lugar para obtener una sugerencia.\n\nCréditos (¡gracias a todos! ¡Ve a visitarlos!):\n\n- Tileset de Mossy Cavern por Maaot en maaot.itch.io/mossy-cavern\n- Red hood pixel character por Legnops en:\nlegnops.itch.io/red-hood-character\n- Pixel art key de Frontend Pashtet en drxwat.itch.io/pixel-art-key\n- Original wood and dungeon doors por Lanea Zimmerman\n (también conocida como Sharm) encontradas en:\n https://opengameart.org/content/lpc-animated-doors\n- Canción del tema principal del menú:\n Cave Temple Fantasy Dark de Pixabay\n en https://pixabay.com/users/pixabay-1/\n- Canción en el juego: Forgotten cave de Mavopix\n en https://pixabay.com/users/mavopix-2288045/\nAgradecimientos especiales a:\n\n- Brent Aureli del canal de YouTube Brent Aureli Codes\n- Ian Rodríguez\n- Samuel Rodríguez\n- Javier Conde (+0.10 a la nota)\n"
 }

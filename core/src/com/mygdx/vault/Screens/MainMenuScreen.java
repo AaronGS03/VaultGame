@@ -46,7 +46,8 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
-        this.language = game.language;
+        this.language = prefs.getInteger("lan",0);
+        game.language= this.language;
 
         Table table = new Table();
         table.bottom().setFillParent(true);
