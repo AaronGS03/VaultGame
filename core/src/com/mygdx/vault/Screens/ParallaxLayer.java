@@ -10,11 +10,21 @@ import com.mygdx.vault.Vault;
  * Clase que representa una capa de paralaje en un fondo.
  */
 public class ParallaxLayer {
+    /** Textura a ser utilizada */
     Texture texture;
+
+    /** Factor de escala de la textura */
     float factor;
+
+    /** Indica si la textura debe envolverse horizontalmente */
     boolean wrapHorizontally;
+
+    /** Indica si la textura debe envolverse verticalmente */
     boolean wrapVertically;
+
+    /** Cámara asociada a la textura */
     Camera camera;
+
 
     /**
      * Constructor de la capa de paralaje.

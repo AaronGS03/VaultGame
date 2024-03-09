@@ -28,19 +28,39 @@ import com.mygdx.vault.Vault;
  * Pantalla de menú principal del juego.
  */
 public class MainMenuScreen implements Screen {
+    /** Instancia principal del juego */
     private Vault game;
-    private Stage stage;
-    Texture buttonTexture;
-    Texture buttonTexturedown;
-    Texture titleTexture;
-    Texture mageTexture;
-    Texture keyTexture;
 
+    /** Escenario donde se colocan los elementos visuales */
+    private Stage stage;
+
+    /** Textura del botón */
+    private Texture buttonTexture;
+
+    /** Textura del botón presionado */
+    private Texture buttonTexturedown;
+
+    /** Textura del título */
+    private Texture titleTexture;
+
+    /** Textura del personaje "mage" */
+    private Texture mageTexture;
+
+    /** Textura de la llave */
+    private Texture keyTexture;
+
+    /** Idioma actual del juego */
     int language;
+
+    /** Botón para iniciar el juego */
     TextButton playButton;
+
+    /** Música de fondo del juego */
     private Music music;
 
+    /** Pantalla de selección de niveles */
     private LevelSelectScreen levelsScreen;
+
 
 
     /**

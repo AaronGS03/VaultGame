@@ -30,18 +30,39 @@ import com.mygdx.vault.Vault;
  * Pantalla de selección de niveles.
  */
 public class LevelSelectScreen implements Screen {
+    /** Instancia principal del juego */
     private Vault game;
+
+    /** Escenario donde se colocan los elementos visuales */
     private Stage stage;
+
+    /** Textura del botón */
     Texture buttonTexture;
+
+    /** Textura del botón cuando está presionado */
     Texture buttonTexturedown;
+
+    /** Textura del botón cuando no está hecho */
     Texture buttonTextureUndone;
+
+    /** Fuente utilizada para el texto */
     BitmapFont font;
+
+    /** Preferencias del juego */
     Preferences prefs = Gdx.app.getPreferences("My Preferences");
+
+    /** Estilo del botón de texto */
     TextButton.TextButtonStyle buttonStyle;
+
+    /** Segundo estilo del botón de texto */
     TextButton.TextButtonStyle buttonStyle2;
+
+    /** Música del juego */
     private Music music;
 
+    /** Pantalla principal del menú */
     private MainMenuScreen mainScreen;
+
 
     /**
      * Constructor de la pantalla de selección de niveles.

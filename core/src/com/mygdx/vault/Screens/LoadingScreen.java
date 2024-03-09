@@ -14,15 +14,30 @@ import com.mygdx.vault.Vault;
  * Pantalla de carga que se muestra mientras se cargan los recursos del juego.
  */
 public class LoadingScreen implements Screen {
+    /** Instancia principal del juego */
     private Vault game;
+
+    /** Administrador de activos para cargar recursos */
     private AssetManager manager;
+
+    /** Indica si los activos han sido cargados */
     private boolean assetsLoaded = false;
+
+    /** Escenario donde se colocan los elementos visuales */
     private Stage stage;
+
+    /** Imagen de carga que se muestra durante la carga */
     private Image loadingImage;
+
+    /** Nivel actual del juego */
     public int level = 1;
+
+    /** Música de fondo del juego */
     private Music music;
 
+    /** Pantalla principal del menú */
     public MainMenuScreen mainMenuScreen;
+
 
     /**
      * Constructor de la pantalla de carga.

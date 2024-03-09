@@ -22,12 +22,25 @@ import com.mygdx.vault.Vault;
  * Clase encargada de crear el mundo de Box2D basado en los objetos del mapa cargado.
  */
 public class B2WorldCreator {
+    /** Manejador de activos */
     AssetManager manager;
+
+    /** Array de objetos de tipo Spike */
     public Array<Spike> spikes;
+
+    /** Array de objetos de tipo Spike falsos */
     public Array<Spike> fakespikes;
+
+    /** Array de objetos de tipo Key */
     public Array<Key> keys;
+
+    /** Array de objetos de tipo Sensor */
     public Array<Sensor> sensors;
+
+    /** Escenario para la representación visual */
     private Stage stage;
+
+    /** Mapa tiled */
     public TiledMap map;
 
     /**

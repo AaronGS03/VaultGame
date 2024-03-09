@@ -28,18 +28,42 @@ import com.mygdx.vault.Vault;
  * Pantalla de opciones del juego.
  */
 public class OptionsScreen implements Screen {
+    /** Escenario donde se colocan los elementos visuales */
     private Stage stage;
+
+    /** Textura del botón */
     private Texture buttonTexture;
+
+    /** Textura del botón presionado */
     private Texture buttonTexturedown;
+
+    /** Imagen para el control de volumen */
     private Image volumeImage;
+
+    /** Imagen para el control de efectos de sonido */
     private Image effectsSoundImage;
+
+    /** Botón para cambiar el idioma */
     private TextButton languageButton;
+
+    /** Botón para controlar los efectos de sonido */
     private TextButton buttonEffectsSounds;
+
+    /** Botón para controlar la música */
     private TextButton buttonMusic;
+
+    /** Botón para restablecer el progreso del juego */
     private TextButton resetGameSave;
+
+    /** Instancia principal del juego */
     private Vault game;
+
+    /** Idioma actual del juego */
     private int language;
+
+    /** Música de fondo del juego */
     private Music music;
+
 
     /**
      * Constructor de la pantalla de opciones.

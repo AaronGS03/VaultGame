@@ -18,14 +18,24 @@ import com.mygdx.vault.Vault;
  */
 public class Sensor extends Sprite {
 
+    /** Nivel al que pertenece el objeto */
     public int level;
 
+    /** Mundo del juego */
     protected World world;
+
+    /** Pantalla de juego a la que pertenece el objeto */
     protected PlayScreen screen;
+
+    /** Cuerpo físico del objeto */
     public Body body;
 
+    /** Fixture del cuerpo físico */
     public Fixture fixture;
+
+    /** Area rectangular de limites del objeto */
     protected Rectangle bounds;
+
 
     /**
      * Constructor de Sensor.

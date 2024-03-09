@@ -38,54 +38,119 @@ import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
 import com.mygdx.vault.tools.WorldContactListener;
 
+import jdk.tools.jmod.Main;
+
 /**
  * Pantalla de juego que implementa la interfaz Screen.
  */
 public class PlayScreen implements Screen {
-    private Vault game; // Instancia del juego
-    private TextureAtlas atlas; // Atlas de texturas
-    private OrthographicCamera gamecam; // Cámara del juego (2D)
-    private OrthographicCamera backcam; // Cámara del fondo (2D)
+    /** Instancia del juego */
+    private Vault game;
 
-    private Viewport gamePort; // Determina la escala o forma en la que se muestra la pantalla
+    /** Atlas de texturas */
+    private TextureAtlas atlas;
 
-    private TmxMapLoader mapLoader; // Cargador de mapas Tiled
-    private TiledMap map; // Mapa actual
-    private OrthogonalTiledMapRenderer renderer; // Renderizador de mapas Tiled
-    public Mage player; // Jugador
-    private Mage player2; // Jugador 2 (no utilizado)
-    private boolean secretSetting = false; // Configuración secreta activa
-    private boolean touch = true; // Indica si se permite el toque
-    private int touchCount; // Contador de toques
+    /** Cámara del juego (2D) */
+    private OrthographicCamera gamecam;
 
-    private boolean sound = true; // Indica si el sonido está activado
-    private int intervalTouch; // Intervalo de toque
-    // Variables de Box2D
-    private World world; // Mundo de Box2D
-    private Box2DDebugRenderer b2dr; // Renderizador de depuración de Box2D
-    private B2WorldCreator creator; // Creador del mundo de Box2D
-    private ParallaxLayer[] layers; // Capas de fondo paralaje
-    private AssetManager manager; // Administrador de recursos
+    /** Cámara del fondo (2D) */
+    private OrthographicCamera backcam;
 
-    private Music music; // Música de fondo
-    Controller controller; // Controlador
+    /** Determina la escala o forma en la que se muestra la pantalla */
+    private Viewport gamePort;
 
-    private Hud hud; // Interfaz de usuario
-    private SubMenu submenu; // Submenú
-    private boolean pause = false; // Indica si el juego está en pausa
-    private boolean isRespawning; // Indica si el jugador está reapareciendo
-    private float respawnTimer; // Temporizador de reaparición
-    private float stepSoundTimer = 0; // Temporizador de sonido de pasos
-    private static float STEP_SOUND_INTERVAL = 0.4f; // Frecuencia deseada de los sonidos de pasos
-    private static float LAND_SOUND_INTERVAL = 0.22f; // Frecuencia deseada de los sonidos de pasos
-    private static float JUMP_SOUND_INTERVAL = 0.15f; // Frecuencia deseada de los sonidos de pasos
+    /** Cargador de mapas Tiled */
+    private TmxMapLoader mapLoader;
 
-    public Array<Room> habitaciones = new Array<Room>(); // Array de habitaciones
-    public Array<Door> doors = new Array<Door>(); // Array de puertas
+    /** Mapa actual */
+    private TiledMap map;
 
-    public int levelSpawn = 1; // Nivel de aparición predeterminado
-    public float volume = 0.2f; // Volumen de sonido predeterminado
-    private boolean effects = true; // Indica si los efectos están activados
+    /** Renderizador de mapas Tiled */
+    private OrthogonalTiledMapRenderer renderer;
+
+    /** Jugador */
+    public Mage player;
+
+    /** Jugador 2 (no utilizado) */
+    private Mage player2;
+
+    /** Indica si la configuración secreta está activa */
+    private boolean secretSetting = false;
+
+    /** Indica si se permite el toque */
+    private boolean touch = true;
+
+    /** Contador de toques */
+    private int touchCount;
+
+    /** Indica si el sonido está activado */
+    private boolean sound = true;
+
+    /** Intervalo de toque */
+    private int intervalTouch;
+
+    /** Mundo de Box2D */
+    private World world;
+
+    /** Renderizador de depuración de Box2D */
+    private Box2DDebugRenderer b2dr;
+
+    /** Creador del mundo de Box2D */
+    private B2WorldCreator creator;
+
+    /** Capas de fondo paralaje */
+    private ParallaxLayer[] layers;
+
+    /** Administrador de recursos */
+    private AssetManager manager;
+
+    /** Música de fondo */
+    private Music music;
+
+    /** Controlador */
+    Controller controller;
+
+    /** Interfaz de usuario */
+    private Hud hud;
+
+    /** Submenú */
+    private SubMenu submenu;
+
+    /** Indica si el juego está en pausa */
+    private boolean pause = false;
+
+    /** Indica si el jugador está reapareciendo */
+    private boolean isRespawning;
+
+    /** Temporizador de reaparición */
+    private float respawnTimer;
+
+    /** Temporizador de sonido de pasos */
+    private float stepSoundTimer = 0;
+
+    /** Frecuencia deseada de los sonidos de pasos */
+    private static float STEP_SOUND_INTERVAL = 0.4f;
+
+    /** Frecuencia deseada de los sonidos de aterrizaje */
+    private static float LAND_SOUND_INTERVAL = 0.22f;
+
+    /** Frecuencia deseada de los sonidos de salto */
+    private static float JUMP_SOUND_INTERVAL = 0.15f;
+
+    /** Array de habitaciones */
+    public Array<Room> habitaciones = new Array<Room>();
+
+    /** Array de puertas */
+    public Array<Door> doors = new Array<Door>();
+
+    /** Nivel de aparición predeterminado */
+    public int levelSpawn = 1;
+
+    /** Volumen de sonido predeterminado */
+    public float volume = 0.2f;
+
+    /** Indica si los efectos están activados */
+    private boolean effects = true;
 
     /**
      * Verifica si la puerta está abierta.
@@ -567,11 +632,7 @@ public class PlayScreen implements Screen {
                 level13gimmick = false;
             }
 
-            if (level14gimmick) {
-                game.setScreen(new CredistScreen(game));
-                dispose();
-                level14gimmick = false;
-            }
+
 
             if (level7gimmick) {
                 player.currentLevel=(8);
@@ -787,6 +848,11 @@ public class PlayScreen implements Screen {
         submenu.draw();
         hud.draw();
         controller.draw(delta);
+        if (level14gimmick) {
+            game.setScreen(new CredistScreen(game));
+            level14gimmick = false;
+            this.dispose();
+        }
     }
 
     /**

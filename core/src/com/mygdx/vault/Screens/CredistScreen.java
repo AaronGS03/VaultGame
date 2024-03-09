@@ -30,14 +30,30 @@ import com.mygdx.vault.Vault;
  */
 public class CredistScreen implements Screen {
 
+    /** Escenario donde se colocan los elementos visuales */
     private Stage stage;
+
+    /** Textura del botón */
     private Texture buttonTexture;
+
+    /** Textura del botón cuando está presionado */
     private Texture buttonTexturedown;
+
+    /** Idioma utilizado */
     private int language;
+
+    /** Estilo de la etiqueta de texto */
     private Label.LabelStyle labelStyle;
+
+    /** Etiqueta de título */
     private Label titleLabel;
+
+    /** Objeto que contiene los botones */
     private JsonValue buttonsObject;
+
+    /**Objeto que contiente los Créditos del juego */
     private String creditsObject;
+
 
     /**
      * Constructor de la pantalla de créditos.

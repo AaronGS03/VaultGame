@@ -14,8 +14,12 @@ android {
         }
 
     }
+    packagingOptions {
+        exclude 'androidsupportmultidexversion.txt'
+    }
     dependencies {
         implementation 'com.google.android.gms:play-services-ads:22.6.0'
+        implementation 'com.android.support:multidex:1.0.3'
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
@@ -25,6 +29,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 34
         versionCode 1
+        multiDexEnabled true
         versionName "1.0"
     }
     buildTypes {
