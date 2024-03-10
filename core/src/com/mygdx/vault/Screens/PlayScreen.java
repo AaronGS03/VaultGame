@@ -38,7 +38,6 @@ import com.mygdx.vault.Vault;
 import com.mygdx.vault.tools.B2WorldCreator;
 import com.mygdx.vault.tools.WorldContactListener;
 
-import jdk.tools.jmod.Main;
 
 /**
  * Pantalla de juego que implementa la interfaz Screen.
